@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A089CFC21831F8E000908F3 /* event.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A089CFB21831F8E000908F3 /* event.cc */; };
 		1A98BAA02180464E00A3ED72 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BA9F2180464E00A3ED72 /* main.cpp */; };
 		1A98BAAF2180468700A3ED72 /* kk.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAAE2180468700A3ED72 /* kk.cc */; };
 		1A98BAB321806C2A00A3ED72 /* jit.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAB121806C2A00A3ED72 /* jit.cc */; };
 		1A98BAC321806CF500A3ED72 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAC121806CF500A3ED72 /* duktape.c */; };
+		1ADA68CE2182E8C3004FD840 /* dispatch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA68CD2182E8C3004FD840 /* dispatch.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A089CFA21831F76000908F3 /* event.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = event.h; sourceTree = "<group>"; };
+		1A089CFB21831F8E000908F3 /* event.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = event.cc; sourceTree = "<group>"; };
 		1A98BA9C2180464E00A3ED72 /* kk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kk; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A98BA9F2180464E00A3ED72 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		1A98BAAD2180467D00A3ED72 /* kk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = kk.h; sourceTree = "<group>"; };
@@ -35,6 +39,10 @@
 		1A98BAC021806CF500A3ED72 /* duk_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duk_config.h; sourceTree = "<group>"; };
 		1A98BAC121806CF500A3ED72 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		1A98BAC221806CF500A3ED72 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
+		1ADA68C92182E1E9004FD840 /* ui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
+		1ADA68CB2182E1E9004FD840 /* jit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jit.h; sourceTree = "<group>"; };
+		1ADA68CC2182E8AF004FD840 /* dispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dispatch.h; sourceTree = "<group>"; };
+		1ADA68CD2182E8C3004FD840 /* dispatch.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dispatch.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,23 +75,28 @@
 		1A98BA9E2180464E00A3ED72 /* kk */ = {
 			isa = PBXGroup;
 			children = (
+				1ADA68C82182E1E9004FD840 /* native */,
 				1A98BABF21806CCD00A3ED72 /* duktape */,
-				1A98BAAC2180466500A3ED72 /* src */,
+				1A98BAAC2180466500A3ED72 /* kk */,
 				1A98BA9F2180464E00A3ED72 /* main.cpp */,
 			);
 			path = kk;
 			sourceTree = "<group>";
 		};
-		1A98BAAC2180466500A3ED72 /* src */ = {
+		1A98BAAC2180466500A3ED72 /* kk */ = {
 			isa = PBXGroup;
 			children = (
 				1A98BAAD2180467D00A3ED72 /* kk.h */,
 				1A98BAAE2180468700A3ED72 /* kk.cc */,
 				1A98BAB021806C1C00A3ED72 /* jit.h */,
 				1A98BAB121806C2A00A3ED72 /* jit.cc */,
+				1A089CFA21831F76000908F3 /* event.h */,
+				1A089CFB21831F8E000908F3 /* event.cc */,
+				1ADA68CC2182E8AF004FD840 /* dispatch.h */,
+				1ADA68CD2182E8C3004FD840 /* dispatch.cc */,
 			);
-			name = src;
-			path = ../../src;
+			name = kk;
+			path = ../../kk;
 			sourceTree = "<group>";
 		};
 		1A98BABF21806CCD00A3ED72 /* duktape */ = {
@@ -95,6 +108,16 @@
 			);
 			name = duktape;
 			path = ../../lib/duktape/src;
+			sourceTree = "<group>";
+		};
+		1ADA68C82182E1E9004FD840 /* native */ = {
+			isa = PBXGroup;
+			children = (
+				1ADA68C92182E1E9004FD840 /* ui.h */,
+				1ADA68CB2182E1E9004FD840 /* jit.h */,
+			);
+			name = native;
+			path = ../../native;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -153,9 +176,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ADA68CE2182E8C3004FD840 /* dispatch.cc in Sources */,
 				1A98BAC321806CF500A3ED72 /* duktape.c in Sources */,
 				1A98BAB321806C2A00A3ED72 /* jit.cc in Sources */,
 				1A98BAA02180464E00A3ED72 /* main.cpp in Sources */,
+				1A089CFC21831F8E000908F3 /* event.cc in Sources */,
 				1A98BAAF2180468700A3ED72 /* kk.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +305,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				HEADER_SEARCH_PATHS = (
+					../,
+					../lib/duktape/src,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -290,6 +319,10 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				HEADER_SEARCH_PATHS = (
+					../,
+					../lib/duktape/src,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
