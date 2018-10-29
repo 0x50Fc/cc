@@ -17,6 +17,7 @@
 
 namespace kk {
     
+    
     class JITContext : public Object {
     public:
         JITContext();
@@ -28,8 +29,9 @@ namespace kk {
         virtual Object * get(void * heapptr);
         virtual void * get(Object * object,duk_context * ctx);
         virtual std::map<Object *, std::map<duk_context *,void *>>::iterator find(Object * object);
-        
         static JITContext * current();
+
+        KK_CLASS(JITContext,Object)
         
     protected:
         std::map<Object *,Weak<Object>> _weakObjects;
@@ -38,18 +40,12 @@ namespace kk {
         std::map<Object *, std::map<duk_context *,void *>> _objectsWithObject;
     };
     
-    struct Class {
-        Class * isa;
-        CString name;
-        duk_ret_t (*prototype)(duk_context * ctx);
-    };
+    void addOpenlib(std::function<void(duk_context *)> && openlib);
     
-    class JSClass {
-    public:
-        virtual Class * isa() = 0;
-    };
+    void openlib(duk_context * ctx);
     
-    void SetPrototype(duk_context * ctx, duk_idx_t idx, CString className);
+    
+    void SetPrototype(duk_context * ctx, duk_idx_t idx, const Class * isa);
     
     void SetObject(duk_context * ctx, duk_idx_t idx, Object * object);
     
@@ -381,16 +377,20 @@ namespace kk {
     }
     
     template<class T,typename ... TArgs>
-    void PushClass(duk_context * ctx) {
+    void PushClass(duk_context * ctx, std::function<void(duk_context *)> && func) {
         
-        Class * isa = & T::Class;
+        const Class * isa = & T::Class;
         
         PushConstructor<T,TArgs...>(ctx);
         
         duk_push_object(ctx);
         
         if(isa->isa) {
-            SetPrototype(ctx, -1, isa->isa->name);
+            SetPrototype(ctx, -1, isa->isa);
+        }
+        
+        if(func != nullptr) {
+            func(ctx);
         }
         
         duk_set_prototype(ctx, -2);

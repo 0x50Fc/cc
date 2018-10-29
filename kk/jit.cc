@@ -168,6 +168,20 @@ namespace kk {
         return v.get();
     }
     
+    static std::list<std::function<void(duk_context *)>> _Openlibs;
+    
+    void addOpenlib(std::function<void(duk_context *)> && openlib) {
+        _Openlibs.push_back(openlib);
+    }
+    
+    void openlib(duk_context * ctx) {
+        auto i = _Openlibs.begin();
+        while(i != _Openlibs.end()) {
+            (*i)(ctx);
+            i ++;
+        }
+    }
+    
     static duk_ret_t Object_dealloc(duk_context * ctx) {
         
         void * heapptr = duk_get_heapptr(ctx, -1);
@@ -199,9 +213,9 @@ namespace kk {
         
     }
     
-    void SetPrototype(duk_context * ctx, duk_idx_t idx, CString className) {
+    void SetPrototype(duk_context * ctx, duk_idx_t idx, const Class * isa) {
         
-        duk_get_global_string(ctx, className);
+        duk_get_global_string(ctx, isa->name);
         
         if(duk_is_function(ctx, -1)) {
             duk_get_prototype(ctx, -1);
@@ -254,9 +268,9 @@ namespace kk {
         SetObject(ctx, -1, object);
         
         {
-            JSClass * isa = dynamic_cast<JSClass *>(object);
+            const Class * isa = object->isa();
             if(isa != nullptr) {
-                SetPrototype(ctx, -1, isa->isa()->name);
+                SetPrototype(ctx, -1, isa);
             }
         }
         

@@ -88,19 +88,19 @@ int main(int argc, const char * argv[]) {
     std::cout << i << std::endl;
 
     {
-        kk::DispatchQueue queue(10);
+        kk::Strong<kk::DispatchQueue> queue = kk::DispatchQueueCreate("Queue",kk::DispatchQueueTypeConcurrent);
         
         for(int i=0;i<20;i++) {
-            queue.async([i]()->void{
-                kk::Log("[DispatchQueue] [async] [OK] %d",i);
+            queue->async([i]()->void{
+                kk::Log("[DispatchQueue] [async] [OK] %d %d",i,std::this_thread::get_id());
             });
         }
         
-        queue.sync([]()->void{
+        queue->sync([]()->void{
             kk::Log("[DispatchQueue] [sync] [OK]");
         });
         
-        std::this_thread::sleep_for(std::chrono::seconds(60));
+        std::this_thread::sleep_for(std::chrono::seconds(6));
         
         kk::Log("[DispatchQueue] [DONE]");
     }

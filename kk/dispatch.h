@@ -14,21 +14,39 @@
 
 namespace kk {
     
+    enum DispatchQueueType {
+        DispatchQueueTypeSerial,
+        DispatchQueueTypeConcurrent
+    };
+    
     class DispatchQueue : public Object {
     public:
-        DispatchQueue();
-        DispatchQueue(kk::Uint maxConcurrent);
-        virtual ~DispatchQueue();
-        virtual void async(std::function<void()> && func);
-        virtual void sync(std::function<void()> && func);
-    protected:
-        kk::Uint _maxConcurrent;
-        std::queue<std::function<void()>> _queue;
-        std::mutex _lock;
-        std::condition_variable _wait;
-        std::list<std::shared_ptr<std::thread>> _threads;
-        kk::Boolean _loopbreak;
+        virtual void async(std::function<void()> && func) = 0;
+        virtual void sync(std::function<void()> && func) = 0;
     };
+    
+    enum DispatchSourceType {
+        DispatchSourceTypeRead,
+        DispatchSourceTypeWrite,
+        DispatchSourceTypeTimer,
+        DispatchSourceTypeSignal
+    };
+    
+    class DispatchSource : public Object {
+    public:
+        virtual void suspend() = 0;
+        virtual void resume() = 0;
+        virtual void cancel() = 0;
+        virtual void setTimer(kk::Uint64 start,kk::Uint64 interval) = 0;
+        virtual void setEvent(std::function<void()> && func) = 0;
+        virtual void setCancel(std::function<void()> && func) = 0;
+    };
+    
+    kk::Strong<DispatchQueue> DispatchQueueCreate(kk::CString name,DispatchQueueType type);
+    
+    kk::Strong<DispatchSource> DispatchSourceCreate(kk::Uint64 fd,DispatchSourceType type,DispatchQueue * queue);
+    
+    DispatchQueue * GetMainDispatchQueue();
     
 }
 

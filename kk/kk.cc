@@ -154,16 +154,87 @@ namespace kk {
         return a;
     }
     
+    kk::Boolean String::startsWith(kk::CString v) {
+        if(v == nullptr) {
+            return true;
+        }
+        char * p = (char *) c_str();
+        char * a = (char *) v;
+        while(a) {
+            if(*a == 0) {
+                return true;
+            }
+            if(*p != *a) {
+                return false;
+            }
+            if(*p == 0) {
+                return false;
+            }
+            p ++;
+            a ++;
+        }
+        return false;
+    }
+    
+    kk::Boolean String::startsWith(kk::String &v) {
+        return startsWith(v.c_str());
+    }
+    
+    kk::Boolean String::endsWith(kk::CString v) {
+        
+        if(v == nullptr) {
+            return true;
+        }
+        
+        size_t n = length();
+        size_t l = strlen(v);
+
+        if(l == 0) {
+            return true;
+        }
+        
+        if(n < l) {
+            return false;
+        }
+        
+        char * p = (char *) c_str() + n - 1;
+        char * a = (char *) v + l -1;
+        
+        while(*p == *a) {
+            n --;
+            l --;
+            p --;
+            a --;
+            
+            if(l == 0) {
+                return true;
+            }
+            if(n == 0) {
+                return false;
+            }
+        }
+        
+        return false;
+    }
+    
+    kk::Boolean String::endsWith(kk::String &v) {
+        return endsWith(v.c_str());
+    }
+    
+    String String::substr(kk::Int i,size_t length) {
+        return String(this->c_str(),i,length);
+    }
+    
+    String String::substr(kk::Int i) {
+        return String(this->c_str(),i);
+    }
+    
     Ref::Ref():_object(nullptr) {
         
     }
     
     Object * Ref::get() {
         return _object;
-    }
-    
-    String::~String() {
-        Log("[String] [dealloc]");
     }
     
     Function::~Function() {
@@ -850,16 +921,20 @@ namespace kk {
             * (char *) _data = 0;
         }
     }
-
+    
     void LogV(const char * format, va_list va) {
         
         time_t now = time(NULL);
         
+        char data[2048];
+        
         struct tm * p = localtime(&now);
         
-        printf("[KK] [%04d-%02d-%02d %02d:%02d:%02d] ",1900 + p->tm_year,p->tm_mon + 1,p->tm_mday,p->tm_hour,p->tm_min,p->tm_sec);
-        vprintf(format, va);
-        printf("\n");
+        size_t n = snprintf(data,sizeof(data), "[KK] [%04d-%02d-%02d %02d:%02d:%02d] ",1900 + p->tm_year,p->tm_mon + 1,p->tm_mday,p->tm_hour,p->tm_min,p->tm_sec);
+        
+        n += vsnprintf(data + n, sizeof(data) - n ,format, va);
+        
+        printf("%s\n",data);
         
     }
     

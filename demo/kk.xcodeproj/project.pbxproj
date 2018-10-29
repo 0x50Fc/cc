@@ -12,7 +12,7 @@
 		1A98BAAF2180468700A3ED72 /* kk.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAAE2180468700A3ED72 /* kk.cc */; };
 		1A98BAB321806C2A00A3ED72 /* jit.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAB121806C2A00A3ED72 /* jit.cc */; };
 		1A98BAC321806CF500A3ED72 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A98BAC121806CF500A3ED72 /* duktape.c */; };
-		1ADA68CE2182E8C3004FD840 /* dispatch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1ADA68CD2182E8C3004FD840 /* dispatch.cc */; };
+		ACB9EF4A2183F1F5002FFAA0 /* dispatch-GCD.cc in Sources */ = {isa = PBXBuildFile; fileRef = ACB9EF492183F1F5002FFAA0 /* dispatch-GCD.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,8 +41,10 @@
 		1A98BAC221806CF500A3ED72 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
 		1ADA68C92182E1E9004FD840 /* ui.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ui.h; sourceTree = "<group>"; };
 		1ADA68CB2182E1E9004FD840 /* jit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = jit.h; sourceTree = "<group>"; };
-		1ADA68CC2182E8AF004FD840 /* dispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dispatch.h; sourceTree = "<group>"; };
-		1ADA68CD2182E8C3004FD840 /* dispatch.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dispatch.cc; sourceTree = "<group>"; };
+		1ADA68CC2182E8AF004FD840 /* dispatch_v1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dispatch_v1.h; sourceTree = "<group>"; };
+		1ADA68CD2182E8C3004FD840 /* dispatch_v1.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dispatch_v1.cc; sourceTree = "<group>"; };
+		ACB9EF482183F1F5002FFAA0 /* dispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dispatch.h; sourceTree = "<group>"; };
+		ACB9EF492183F1F5002FFAA0 /* dispatch-GCD.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "dispatch-GCD.cc"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +94,10 @@
 				1A98BAB121806C2A00A3ED72 /* jit.cc */,
 				1A089CFA21831F76000908F3 /* event.h */,
 				1A089CFB21831F8E000908F3 /* event.cc */,
-				1ADA68CC2182E8AF004FD840 /* dispatch.h */,
-				1ADA68CD2182E8C3004FD840 /* dispatch.cc */,
+				ACB9EF482183F1F5002FFAA0 /* dispatch.h */,
+				ACB9EF492183F1F5002FFAA0 /* dispatch-GCD.cc */,
+				1ADA68CC2182E8AF004FD840 /* dispatch_v1.h */,
+				1ADA68CD2182E8C3004FD840 /* dispatch_v1.cc */,
 			);
 			name = kk;
 			path = ../../kk;
@@ -176,7 +180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ADA68CE2182E8C3004FD840 /* dispatch.cc in Sources */,
+				ACB9EF4A2183F1F5002FFAA0 /* dispatch-GCD.cc in Sources */,
 				1A98BAC321806CF500A3ED72 /* duktape.c in Sources */,
 				1A98BAB321806C2A00A3ED72 /* jit.cc in Sources */,
 				1A98BAA02180464E00A3ED72 /* main.cpp in Sources */,
@@ -303,6 +307,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
 				HEADER_SEARCH_PATHS = (
@@ -317,6 +322,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
 				HEADER_SEARCH_PATHS = (

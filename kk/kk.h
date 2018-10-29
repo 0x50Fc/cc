@@ -64,6 +64,20 @@ namespace kk {
         virtual String substr(kk::Int i,size_t length);
         virtual String substr(kk::Int i);
     };
+    
+    struct Class {
+        const Class * isa;
+        CString name;
+    };
+    
+    
+#define KK_CLASS(T,S) \
+public: \
+virtual const kk::Class * isa() { return T::Class(); } \
+static const kk::Class * Class() { \
+    static kk::Class isa = { S::Class() , #T }; \
+    return & isa; \
+};
 
     class Object {
         
@@ -88,6 +102,12 @@ namespace kk {
         
         virtual void unWeak(Object ** ptr);
         
+        virtual const Class * isa() { return Object::Class(); }
+        
+        static const Class * Class() {
+            static kk::Class isa = { nullptr, "Object" };
+            return & isa;
+        };
     };
     
     class Atomic {

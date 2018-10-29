@@ -59,8 +59,8 @@ namespace kk {
                 if(func == nullptr) {
                     _prefixs.erase(i);
                 } else {
-                    std::list<Strong<Object>> & vs = i->second;
-                    std::list<Strong<Object>>::iterator n = vs.begin();
+                    auto vs = i->second;
+                    auto n = vs.begin();
                     while(n != vs.end()) {
                         if((*n).get() == func) {
                             n = vs.erase(n);
@@ -76,8 +76,8 @@ namespace kk {
                 if(func == nullptr) {
                     _events.erase(i);
                 } else {
-                    std::list<Strong<Object>> & vs = i->second;
-                    std::list<Strong<Object>>::iterator n = vs.begin();
+                    auto vs = i->second;
+                    auto n = vs.begin();
                     while(n != vs.end()) {
                         if((*n).get() == func) {
                             n = vs.erase(n);
@@ -114,9 +114,9 @@ namespace kk {
         }
         
         String n(name);
-        std::map<String,std::list<Strong<Object>>>::iterator i = _prefixs.begin();
+        auto i = _prefixs.begin();
         while(i != _prefixs.end()) {
-            if(n.startsWith(i->first)) {
+            if(n.startsWith(i->first.c_str())) {
                 return true;
             }
             i ++;
@@ -130,7 +130,7 @@ namespace kk {
         
         String n(name);
         
-        std::map<String,std::list<Strong<Object>>>::iterator i = _events.find(n);
+        auto i = _events.find(n);
         
         if(i != _events.end()) {
             vs = i->second;
@@ -138,13 +138,18 @@ namespace kk {
         
         i = _prefixs.begin();
         while(i != _prefixs.end()) {
-            if(n.startsWith(i->first)) {
-                //todo
+            if(n.startsWith(i->first.c_str())) {
+                auto vs = i->second;
+                auto k = vs.begin();
+                while(k != vs.end()) {
+                    vs.push_back(*k);
+                    k ++;
+                }
             }
             i ++;
         }
         
-        std::list<Strong<Object>>::iterator k = vs.begin();
+        auto k = vs.begin();
         
         while(k != vs.end()) {
             {
