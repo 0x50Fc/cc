@@ -1,0 +1,128 @@
+//
+//  ui.h
+//  kk
+//
+//  Created by zhanghailong on 2018/10/29.
+//  Copyright © 2018年 kkmofang.cn. All rights reserved.
+//
+
+#ifndef ui_ui_h
+#define ui_ui_h
+
+#include <kk/kk.h>
+#include <kk/dispatch.h>
+
+namespace kk {
+    
+    namespace ui {
+        
+        typedef kk::Float Float;
+        
+        struct Point {
+            Float x,y;
+        };
+        
+        struct Size {
+            Float width,height;
+        };
+        
+        struct Rect {
+            Point origin;
+            Size size;
+        };
+        
+        struct Color {
+        public:
+            Color();
+            Color(Float r,Float g,Float b,Float a);
+            Color(kk::CString v);
+            Color(kk::Uint v);
+            Float r,g,b,a;
+        };
+        
+        class Palette {
+        public:
+            Palette(std::initializer_list<std::pair<const kk::String,Color>> &&v);
+            virtual void set(kk::CString name,Color v);
+            virtual Color get(kk::CString name);
+            static Palette Default;
+        protected:
+            std::map<kk::String,Color> _values;
+        };
+        
+        enum FontStyle {
+            FontStyleNormal,FontStyleItalic
+        };
+        
+        enum FontWeight {
+            FontWeightNormal,FontWeightBold
+        };
+        
+        struct Font {
+        public:
+            Font():size(14),style(FontStyleNormal),weight(FontWeightNormal){}
+            Font(Float size):size(size),style(FontStyleNormal),weight(FontWeightNormal){}
+            Font(kk::String family,Float size,FontStyle style,FontWeight weight):family(family),size(size),style(style),weight(weight){}
+            kk::String family;
+            Float size;
+            FontStyle style;
+            FontWeight weight;
+        };
+        
+        enum TextAlign {
+            TextAlignStart,
+            TextAlignEnd,
+            TextAlignCenter,
+            TextAlignLeft,
+            TextAlignRight
+        };
+    
+        enum TextBaseline {
+            TextBaselineAlphabetic,
+            TextBaselineTop,
+            TextBaselineHanging,
+            TextBaselineMiddle,
+            TextBaselineIdeographic,
+            TextBaselineBottom,
+        };
+        
+        struct Transform {
+            Float a, b, c, d;
+            Float tx, ty;
+        };
+        
+        enum ImageState {
+            ImageStateNone,ImageStateLoading,ImageStateError,ImageStateLoaded
+        };
+        
+        class Image {
+        public:
+            virtual ImageState state() = 0;
+            virtual kk::Uint width() = 0;
+            virtual kk::Uint height() = 0;
+            virtual kk::CString src() = 0;
+            virtual void setSrc(kk::CString src) = 0;
+            virtual void copyPixels(void * data) = 0;
+            virtual Boolean isCopyPixels() = 0;
+        };
+        
+        class Context : public Object {
+        public:
+            Context(kk::CString basePath);
+            virtual kk::CString basePath();
+        protected:
+            kk::String _basePath;
+        };
+        
+        kk::Strong<Image> ImageCreate(Context * context,kk::CString src);
+        
+        std::function<void(Context * ,Image *)> & getImageLoader();
+        
+        void setImageLoader(std::function<void(Context * ,Image *)> && func);
+        
+    }
+    
+    
+}
+
+#endif /* ui_h */
