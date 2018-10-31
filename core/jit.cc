@@ -213,6 +213,28 @@ namespace kk {
         
     }
     
+    void SetWeakObject(duk_context * ctx, duk_idx_t idx, Object * object) {
+        
+        if(duk_is_object(ctx, idx) || duk_is_function(ctx, idx)) {
+            
+            duk_get_finalizer(ctx, idx);
+            
+            if(duk_is_function(ctx, -1)) {
+                duk_pop(ctx);
+                return;
+            } else {
+                duk_pop(ctx);
+            }
+            
+            duk_push_c_function(ctx, Object_dealloc, 1);
+            duk_set_finalizer(ctx, idx - 1);
+            
+            JITContext::current()->weak(ctx, duk_get_heapptr(ctx, idx), object);
+            
+        }
+        
+    }
+    
     void SetPrototype(duk_context * ctx, duk_idx_t idx, const Class * isa) {
         
         duk_get_global_string(ctx, isa->name);
@@ -266,6 +288,27 @@ namespace kk {
         
         duk_push_object(ctx);
         SetObject(ctx, -1, object);
+        
+        {
+            const Class * isa = object->isa();
+            if(isa != nullptr) {
+                SetPrototype(ctx, -1, isa);
+            }
+        }
+        
+    }
+    
+    void PushWeakObject(duk_context * ctx, Object * object) {
+        
+        void * heapptr = JITContext::current()->get(object, ctx);
+        
+        if(heapptr != nullptr) {
+            duk_push_heapptr(ctx, heapptr);
+            return;
+        }
+        
+        duk_push_object(ctx);
+        SetWeakObject(ctx, -1, object);
         
         {
             const Class * isa = object->isa();

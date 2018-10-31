@@ -9,8 +9,11 @@
 #ifndef ui_ui_h
 #define ui_ui_h
 
-#include <kk/kk.h>
-#include <kk/dispatch.h>
+#include <core/kk.h>
+#include <core/event.h>
+#include <core/dispatch.h>
+#include <core/jit.h>
+#include <core/timer.h>
 
 namespace kk {
     
@@ -106,12 +109,29 @@ namespace kk {
             virtual Boolean isCopyPixels() = 0;
         };
         
-        class Context : public Object {
+
+        class Context : public EventEmitter, public TimerSource {
         public:
-            Context(kk::CString basePath);
+            Context(kk::CString basePath,kk::DispatchQueue * queue);
             virtual kk::CString basePath();
+            virtual kk::DispatchQueue * queue();
+            virtual duk_context * jsContext();
+            virtual kk::String absolutePath(kk::CString path);
+            virtual kk::String getContent(kk::CString path);
+            virtual void set(kk::Object * object);
+            virtual kk::Object * get(kk::Object * object);
+            virtual void remove(kk::Object * object);
+            virtual void exec(kk::CString path,TObject<String, Any> * librarys);
+            virtual void exec(kk::CString path,JSObject * librarys);
+            static void Openlib();
+            
+            KK_CLASS(Context, EventEmitter, "UIContext");
+            
         protected:
             kk::String _basePath;
+            kk::Strong<kk::DispatchQueue> _queue;
+            duk_context * _jsContext;
+            std::map<void *,kk::Strong<kk::Object>> _objects;
         };
         
         kk::Strong<Image> ImageCreate(Context * context,kk::CString src);

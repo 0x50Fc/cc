@@ -9,7 +9,7 @@
 #ifndef element_h
 #define element_h
 
-#include <kk/event.h>
+#include <core/event.h>
 
 namespace kk {
     
@@ -24,11 +24,8 @@ namespace kk {
         virtual Element * element();
         virtual Boolean isCancelBubble();
         virtual void cancelBubble();
-        virtual Object * data();
-        virtual void setData(Object * data);
     protected:
         Boolean _cancelBubble;
-        Strong<Object> _data;
         Strong<Element> _element;
     };
     

@@ -62,6 +62,20 @@ namespace kk {
             
         }
         
+        void View::Openlib() {
+            
+            kk::Openlib<>::add([](duk_context * ctx)->void{
+                
+                kk::PushInterface<View>(ctx, [](duk_context * ctx)->void{
+                    
+                    kk::PutMethod<View,void,kk::CString,kk::CString>(ctx, -1, "set", &View::set);
+                    
+                });
+                
+            });
+            
+        }
+        
     }
     
 }

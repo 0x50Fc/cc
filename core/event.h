@@ -15,6 +15,13 @@
 namespace kk {
     
     class Event : public Object {
+    public:
+        virtual Object * data();
+        virtual void setData(Object * data);
+        KK_CLASS(Event,Object,"Event")
+        static void Openlib();
+    protected:
+        Strong<Object> _data;
     };
     
     class EventEmitter : public Object {
@@ -27,6 +34,10 @@ namespace kk {
         virtual void off();
         virtual kk::Boolean has(kk::CString name);
         virtual void emit(kk::CString name,Event * event);
+        
+        KK_CLASS(EventEmitter,Object,"EventEmitter")
+        
+        static void Openlib();
     protected:
         virtual void on(kk::CString name,Object * func);
         virtual void off(kk::CString name,Object * func);

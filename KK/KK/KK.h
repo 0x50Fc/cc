@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <KK/KKViewProtocol.h>
+#import <KK/KKApp.h>
+#import <KK/KKPage.h>
+#import <KK/UIView+KKViewProtocol.h>
 
 //! Project version number for KK.
 FOUNDATION_EXPORT double KKVersionNumber;

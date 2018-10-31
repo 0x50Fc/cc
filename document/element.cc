@@ -27,14 +27,6 @@ namespace kk {
         _cancelBubble =true;
     }
     
-    Object * ElementEvent::data() {
-        return _data;
-    }
-    
-    void ElementEvent::setData(Object * data) {
-        _data = data;
-    }
-    
     Element::Element(Document * document,CString name, ElementKey elementId)
         :_document(document),_name(name),_elementId(elementId),_depth(0) {
         

@@ -12,7 +12,6 @@
 
 namespace kk {
     
-    
     class GCDDispatchQueue : public DispatchQueue {
     public:
         
@@ -56,7 +55,7 @@ namespace kk {
         return new GCDDispatchQueue(name,type);
     }
     
-    DispatchQueue * GetMainDispatchQueue() {
+    DispatchQueue * mainDispatchQueue() {
         static DispatchQueue * v = nullptr;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -115,8 +114,8 @@ namespace kk {
             dispatch_cancel(_source);
         }
         
-        virtual void setTimer(kk::Uint64 start,kk::Uint64 interval) {
-            dispatch_source_set_timer(_source, start, interval, 0);
+        virtual void setTimer(kk::Uint64 delay,kk::Uint64 interval) {
+            dispatch_source_set_timer(_source, dispatch_walltime(NULL, delay * NSEC_PER_MSEC), interval * NSEC_PER_MSEC, 0);
         }
         
         virtual void setEvent(std::function<void()> && func) {

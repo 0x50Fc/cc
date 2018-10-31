@@ -35,7 +35,7 @@ namespace kk {
         if(a != nullptr) {
             a->unlock();
         }
-        
+     
     }
     
     String Object::toString() {
@@ -230,23 +230,19 @@ namespace kk {
     }
 
     Function::~Function() {
-        Log("[Function] [dealloc]");
     }
     
     Any::~Any() {
         if(_data) {
             free(_data);
         }
-        Log("[Any] [dealloc]");
     }
     
     Any::Any(const Any & v):Any() {
-        if(v.type < TypeObject) {
-            stringValue = v.stringValue;
-            length = v.length;
-        }
         type = v.type;
         objectValue = v.objectValue;
+        stringValue = v.stringValue;
+        length = v.length;
         if(v.type == TypeString) {
             setLString(v.stringValue, v.length);
         }
@@ -448,6 +444,17 @@ namespace kk {
         if(v != nullptr) {
             type = TypeString;
             setCString(v);
+        }
+        return * this;
+    }
+    Any & Any::operator=(const Any & v) {
+        reset();
+        type = v.type;
+        objectValue = v.objectValue;
+        stringValue = v.stringValue;
+        length = v.length;
+        if(v.type == TypeString) {
+            setLString(v.stringValue, v.length);
         }
         return * this;
     }
@@ -897,22 +904,22 @@ namespace kk {
         setLString(string, string ?  strlen(string) : 0);
     }
     
-    void Any::setLString(CString string,size_t length) {
+    void Any::setLString(CString string,size_t len) {
         
         if(string) {
             
             if(_size == 0) {
-                _size = length + 1;
+                _size = len + 1;
                 _data = malloc(_size);
             } else if(_size < length + 1) {
-                _size = length + 1;
+                _size = len + 1;
                 _data = realloc(_data, _size);
             }
             
-            memcpy(_data, string, length + 1);
+            memcpy(_data, string, len + 1);
             
             stringValue = (CString) _data;
-            length = length;
+            length = len;
             
         } else if(_size > 0){
             * (char *) _data = 0;

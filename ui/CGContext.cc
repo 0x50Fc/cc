@@ -26,9 +26,7 @@ namespace kk {
             PatternType Pattern::type() {
                 return _type;
             }
-            
-            
-            
+
             ImageData::ImageData(Uint width,Uint height):_data(nullptr),_width(width),_height(height) {
                 size_t n =_width * height * 4;
                 _data = (Ubyte *) malloc(n);

@@ -10,6 +10,25 @@
 
 namespace kk {
     
+    Object * Event::data() {
+        return _data;
+    }
+    
+    void Event::setData(Object * data) {
+        _data = data;
+    }
+    
+    void Event::Openlib() {
+        
+        kk::Openlib<>::add([](duk_context * ctx)->void{
+            
+            kk::PushClass<Event>(ctx, [](duk_context * ctx)->void{
+                kk::PutProperty<Event,Object *>(ctx, -1, "data", &Event::data,&Event::setData);
+            });
+            
+        });
+        
+    }
     
     void EventEmitter::on(kk::CString name,Object * func) {
         String n = name;
@@ -176,6 +195,21 @@ namespace kk {
             }
             k ++;
         }
+    }
+    
+    void EventEmitter::Openlib() {
+        
+        kk::Openlib<>::add([](duk_context * ctx)->void{
+            
+            kk::PushClass<EventEmitter>(ctx, [](duk_context * ctx)->void{
+                kk::PutMethod<EventEmitter,void,kk::CString,JSObject *>(ctx, -1, "on", &EventEmitter::on);
+                kk::PutMethod<EventEmitter,void,kk::CString,JSObject *>(ctx, -1, "off", &EventEmitter::off);
+                kk::PutMethod<EventEmitter,kk::Boolean,kk::CString>(ctx, -1, "has", &EventEmitter::has);
+                kk::PutMethod<EventEmitter,void,kk::CString,Event *>(ctx, -1, "emit", &EventEmitter::emit);
+            });
+            
+        });
+        
     }
     
     

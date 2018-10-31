@@ -127,10 +127,10 @@ namespace kk {
             static kk::Strong<kk::DispatchQueue> _queue = nullptr;
             
             if(_queue == nullptr) {
-                _queue = new kk::createDispatchQueue("kk::ui::Image",kk::DispatchQueueTypeSerial);
+                _queue = kk::createDispatchQueue("kk::ui::Image",kk::DispatchQueueTypeSerial);
             }
             
-            kk::Weak<kk::DispatchQueue> current = nullptr; // kk::DispatchQueue::current();
+            kk::Weak<kk::DispatchQueue> current = context->queue();
             
             kk::Weak<Image> v(image);
             kk::Weak<Context> ctx(context);

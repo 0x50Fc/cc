@@ -73,11 +73,11 @@ namespace kk {
     };
     
     
-#define KK_CLASS(T,S) \
+#define KK_CLASS(T,S,name) \
 public: \
 virtual const kk::Class * isa() { return T::Class(); } \
 static const kk::Class * Class() { \
-    static kk::Class isa = { S::Class() , #T }; \
+    static kk::Class isa = { S::Class() , name }; \
     return & isa; \
 };
 
@@ -204,11 +204,11 @@ static const kk::Class * Class() { \
             }
         }
         virtual void set(Object * object) {
-            if(object != nullptr) {
-                object->unWeak(&_object);
-            }
             if(_object != nullptr) {
-                _object->weak(&_object);
+                _object->unWeak(&_object);
+            }
+            if(object != nullptr) {
+                object->weak(&_object);
             }
             _object = object;
         }

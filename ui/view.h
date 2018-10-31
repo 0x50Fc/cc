@@ -10,8 +10,8 @@
 #define ui_view_h
 
 #include <ui/ui.h>
-#include <kk/event.h>
-#include <kk/dispatch.h>
+#include <core/event.h>
+#include <core/dispatch.h>
 
 namespace kk {
     
@@ -49,6 +49,10 @@ namespace kk {
             virtual kk::Strong<View> obtainView(kk::CString reuse);
             virtual void recycleView(View * view,kk::CString reuse);
             virtual void removeRecycleViews();
+            
+            KK_CLASS(View, EventEmitter, "UIView");
+            
+            static void Openlib();
         protected:
             std::map<kk::String,std::list<kk::Strong<View>>> _obtainViews;
         };

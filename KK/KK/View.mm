@@ -140,6 +140,7 @@ namespace kk {
                     }
                     CFRelease(_view);
                 }
+                kk::Log("[OSView] [dealloc]");
             }
             
             virtual void set(kk::CString name,kk::CString value) {
@@ -254,6 +255,10 @@ namespace kk {
                 
             }
             
+        }
+        
+        kk::Strong<View> createView(CFTypeRef view) {
+            return new OSView(view);
         }
         
         kk::Strong<Canvas> createCanvas() {

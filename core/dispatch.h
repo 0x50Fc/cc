@@ -12,6 +12,8 @@
 #include <core/kk.h>
 #include <list>
 
+
+
 namespace kk {
     
     enum DispatchQueueType {
@@ -37,7 +39,7 @@ namespace kk {
         virtual void suspend() = 0;
         virtual void resume() = 0;
         virtual void cancel() = 0;
-        virtual void setTimer(kk::Uint64 start,kk::Uint64 interval) = 0;
+        virtual void setTimer(kk::Uint64 delay,kk::Uint64 interval) = 0;
         virtual void setEvent(std::function<void()> && func) = 0;
         virtual void setCancel(std::function<void()> && func) = 0;
     };
@@ -46,7 +48,8 @@ namespace kk {
     
     kk::Strong<DispatchSource> createDispatchSource(kk::Uint64 fd,DispatchSourceType type,DispatchQueue * queue);
     
-    DispatchQueue * GetMainDispatchQueue();
+    DispatchQueue * mainDispatchQueue();
+    
     
 }
 

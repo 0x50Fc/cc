@@ -30,9 +30,6 @@ namespace kk {
         virtual void * get(Object * object,duk_context * ctx);
         virtual std::map<Object *, std::map<duk_context *,void *>>::iterator find(Object * object);
         static JITContext * current();
-
-        KK_CLASS(JITContext,Object)
-        
     protected:
         std::map<Object *,Weak<Object>> _weakObjects;
         std::map<Object *,Strong<Object>> _strongObjects;
@@ -40,16 +37,37 @@ namespace kk {
         std::map<Object *, std::map<duk_context *,void *>> _objectsWithObject;
     };
     
-    void addOpenlib(std::function<void(duk_context *)> && openlib);
-    
-    void openlib(duk_context * ctx);
+    template<class ... TArgs>
+    class Openlib {
+    protected:
+        static std::list<std::function<void(duk_context *,TArgs ... args)>> & funcs() {
+            static std::list<std::function<void(duk_context *,TArgs ...)>> vs;
+            return vs;
+        }
+    public:
+        static void add(std::function<void(duk_context *,TArgs ... args)> && func) {
+            funcs().push_back(func);
+        }
+        static void openlib(duk_context * ctx,TArgs ... args) {
+            auto m = funcs();
+            auto i = m.begin();
+            while(i != m.end()) {
+                (*i)(ctx, args...);
+                i ++;
+            }
+        }
+    };
     
     
     void SetPrototype(duk_context * ctx, duk_idx_t idx, const Class * isa);
     
     void SetObject(duk_context * ctx, duk_idx_t idx, Object * object);
     
+    void SetWeakObject(duk_context * ctx, duk_idx_t idx, Object * object);
+    
     void PushObject(duk_context * ctx, Object * object);
+    
+    void PushWeakObject(duk_context * ctx, Object * object);
     
     Object * GetObject(duk_context * ctx, duk_idx_t idx);
     
@@ -202,7 +220,7 @@ namespace kk {
             duk_pop(ctx);
             
             if(func) {
-                std::function<TReturn(TArgs...)> & fn = func->func();
+                std::function<TReturn(TArgs...)> & fn = * func;
                 return Call(std::move(fn),ctx);
             }
            
@@ -233,20 +251,30 @@ namespace kk {
         }
     }
     
-    template<typename T>
-    void PutProperty(duk_context * ctx, duk_idx_t idx, CString name, T (Object::*getter)(), void (Object::*setter)(T value)) {
-        
+    template<class TObject,typename T,typename ... TArgs>
+    union Method {
+        T (TObject::*method)(TArgs ...args);
+        void * pointer;
+    };
+    
+    template<class TObject,typename T>
+    void PutProperty(duk_context * ctx, duk_idx_t idx, CString name, T (TObject::*getter)(), void (TObject::*setter)(T value)) {
+
         auto getter_fn = [](duk_context * ctx) -> duk_ret_t {
             duk_push_this(ctx);
-            Object * object = GetObject(ctx, -1);
+            TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
+            
+            Method<TObject,T> GETTER;
+            
+            GETTER.method = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            T(Object::*func)() = (T(Object::*)()) duk_to_pointer(ctx, -1);
+            GETTER.pointer = duk_to_pointer(ctx, -1);
             duk_pop_2(ctx);
-            if(object && func) {
-                Any v = (object->*func)();
+            if(object && GETTER.pointer != nullptr) {
+                Any v = (object->*GETTER.method)();
                 PushAny(ctx, v);
                 return 1;
             }
@@ -255,95 +283,130 @@ namespace kk {
         
         auto setter_fn = [](duk_context * ctx) -> duk_ret_t {
             duk_push_this(ctx);
-            Object * object = GetObject(ctx, -1);
+            TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
+            
+            Method<TObject,void,T> SETTER;
+            
+            SETTER.method = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            void (Object::*func)(T v) = (void (Object::*)(T v)) duk_to_pointer(ctx, -1);
+            SETTER.pointer = duk_to_pointer(ctx, -1);
             duk_pop_2(ctx);
             
-            if(object && func) {
+            if(object && SETTER.pointer != nullptr) {
                 Any v ;
                 GetAny(ctx,-1,v);
-                (object->*func)((T) v);
+                (object->*SETTER.method)((T) v);
             }
             return 0;
         };
         
+        
+        Method<TObject,T> GETTER;
+        Method<TObject, void,T> SETTER;
+        
+        GETTER.method = nullptr;
+        GETTER.method = getter;
+        SETTER.method = nullptr;
+        SETTER.method = setter;
+        
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, getter_fn, 0);
         {
-            duk_push_pointer(ctx, (void *) getter);
+            duk_push_pointer(ctx, GETTER.pointer);
             duk_put_prop_string(ctx, -2, "__func");
         }
+    
         duk_push_c_function(ctx, setter_fn, 1);
         {
-            duk_push_pointer(ctx, (void *) setter);
+            duk_push_pointer(ctx, SETTER.pointer);
             duk_put_prop_string(ctx, -2, "__func");
         }
-        duk_def_prop(ctx, idx - 3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_HAVE_SETTER);
+        
+        duk_def_prop(ctx, idx - 3, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_HAVE_SETTER | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
         
     }
     
-    template<typename TReturn,typename ... TArgs>
-    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (Object::*method)(TArgs ...),typename std::enable_if<std::is_void<TReturn>::value>::type* = 0) {
+    template<class TObject,typename T>
+    void PutProperty(duk_context * ctx, duk_idx_t idx, CString name, T (TObject::*getter)()) {
+        PutProperty<TObject,T>(ctx,idx,name,getter,(void (TObject::*)(T v)) nullptr);
+    }
+    
+    template<class TObject,typename TReturn,typename ... TArgs>
+    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (TObject::*method)(TArgs ...),typename std::enable_if<std::is_void<TReturn>::value>::type* = 0) {
     
         auto fn = [](duk_context * ctx) -> duk_ret_t {
             duk_push_this(ctx);
-            Object * object = GetObject(ctx, -1);
+            TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
+            
+            Method<TObject,TReturn,TArgs...> METHOD;
+            
+            METHOD.method = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            TReturn (Object::*func)(TArgs ...) = (TReturn (Object::*)(TArgs ...)) duk_to_pointer(ctx, -1);
+            METHOD.pointer = duk_to_pointer(ctx, -1);
             duk_pop_2(ctx);
-            
-            if(object && func) {
-                auto fn = [object,func](TArgs ... args) -> TReturn {
-                    (object->*func)(args...);
+ 
+            if(object && METHOD.pointer) {
+                std::function<TReturn(TArgs...)> fn = [object,METHOD](TArgs ... args) -> TReturn {
+                    (object->*METHOD.method)(args...);
                 };
                 return Call(std::move(fn), ctx);
             }
             return 0;
         };
         
+        Method<TObject,TReturn,TArgs...> METHOD;
+        
+        METHOD.method = nullptr;
+        METHOD.method = method;
+        
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, fn, sizeof...(TArgs));
         {
-            duk_push_pointer(ctx, (void *) method);
+            duk_push_pointer(ctx, METHOD.pointer);
             duk_put_prop_string(ctx, -2, "__func");
         }
         duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
         
     }
     
-    template<typename TReturn,typename ... TArgs>
-    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (Object::*method)(TArgs ...),typename std::enable_if<!std::is_void<TReturn>::value>::type* = 0) {
+    template<class TObject,typename TReturn,typename ... TArgs>
+    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (TObject::*method)(TArgs ...),typename std::enable_if<!std::is_void<TReturn>::value>::type* = 0) {
         
         auto fn = [](duk_context * ctx) -> duk_ret_t {
             duk_push_this(ctx);
-            Object * object = GetObject(ctx, -1);
+            TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
+            
+            Method<TObject,TReturn,TArgs...> METHOD;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            TReturn (Object::*func)(TArgs ...) = (TReturn (Object::*)(TArgs ...)) duk_to_pointer(ctx, -1);
+            METHOD.pointer = duk_to_pointer(ctx, -1);
             duk_pop_2(ctx);
             
-            if(object && func) {
-                auto fn = [object,func](TArgs ... args) -> TReturn {
-                    return (object->*func)(args...);
+            if(object && METHOD.pointer) {
+                std::function<TReturn(TArgs...)> fn = [object,METHOD](TArgs ... args) -> TReturn {
+                    return (object->*METHOD.method)(args...);
                 };
                 return Call(std::move(fn), ctx);
             }
             return 0;
         };
         
+        Method<TObject,TReturn,TArgs...> METHOD;
+        
+        METHOD.method = method;
+        
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, fn, sizeof...(TArgs));
         {
-            duk_push_pointer(ctx, (void *) method);
+            duk_push_pointer(ctx, METHOD.pointer);
             duk_put_prop_string(ctx, -2, "__func");
         }
         duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
@@ -379,7 +442,7 @@ namespace kk {
     template<class T,typename ... TArgs>
     void PushClass(duk_context * ctx, std::function<void(duk_context *)> && func) {
         
-        const Class * isa = & T::Class;
+        const Class * isa = T::Class();
         
         PushConstructor<T,TArgs...>(ctx);
         
@@ -397,6 +460,33 @@ namespace kk {
         
         duk_put_global_string(ctx, isa->name);
     }
+    
+    
+    
+    template<class T,typename ... TArgs>
+    void PushInterface(duk_context * ctx, std::function<void(duk_context *)> && func) {
+        
+        const Class * isa = T::Class();
+        
+        duk_push_c_function(ctx, [](duk_context * ctx)->duk_ret_t{
+            return 0;
+        }, 0);
+        
+        duk_push_object(ctx);
+        
+        if(isa->isa) {
+            SetPrototype(ctx, -1, isa->isa);
+        }
+        
+        if(func != nullptr) {
+            func(ctx);
+        }
+        
+        duk_set_prototype(ctx, -2);
+        
+        duk_put_global_string(ctx, isa->name);
+    }
+    
     
     class JSObject : public Object {
     public:
