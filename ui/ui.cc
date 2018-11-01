@@ -124,7 +124,7 @@ namespace kk {
             kk::Log("[UI] [FATAL] %s",msg);
         }
         
-        Context::Context(kk::CString basePath,kk::DispatchQueue * queue):_basePath(basePath),_queue(queue) {
+        Context::Context(kk::CString basePath,kk::DispatchQueue * queue):EventEmitter(), _basePath(basePath),_queue(queue) {
             _jsContext = duk_create_heap(nullptr, nullptr, nullptr, nullptr, Context_duk_fatal_function);
             kk::Openlib<>::openlib(_jsContext);
             kk::Openlib<kk::TimerSource *>::openlib(_jsContext, this);

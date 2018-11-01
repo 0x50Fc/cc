@@ -23,15 +23,24 @@ namespace kk {
         
         struct Point {
             Float x,y;
+            operator kk::Any() {
+                return kk::Any(new TObject<kk::String, kk::Float>({{"x",x},{"y",y}}));
+            }
         };
         
         struct Size {
             Float width,height;
+            operator kk::Any() {
+                return kk::Any(new TObject<kk::String, kk::Float>({{"width",width},{"height",height}}));
+            }
         };
         
         struct Rect {
             Point origin;
             Size size;
+            operator kk::Any() {
+                return kk::Any(new TObject<kk::String, kk::Float>({{"x",origin.x},{"y",origin.y},{"width",size.width},{"height",size.height}}));
+            }
         };
         
         struct Color {

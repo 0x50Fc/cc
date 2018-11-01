@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import <KK/KKViewProtocol.h>
+#import <WebKit/WebKit.h>
 
 @interface UIView (KKViewProtocol) <KKViewProtocol>
 
 @end
+
+@interface UIScrollView (KKViewProtocol) <KKViewProtocol>
+
+@end
+
+
+@interface WKWebView (KKViewProtocol) <KKViewProtocol>
+
+@end
+

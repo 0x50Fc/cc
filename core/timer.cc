@@ -11,19 +11,32 @@
 namespace kk {
     
     
-    Timer::Timer(DispatchQueue * queue, kk::Uint64 start,kk::Uint64 interval, std::function<void()> && func):_func(func) {
+    Timer::Timer(DispatchQueue * queue, kk::Uint64 delay,kk::Uint64 interval) {
         _source = createDispatchSource(0, DispatchSourceTypeTimer, queue);
-        _source->resume();
+        _source->setTimer(delay, interval);
+
+    }
+    
+    void Timer::setEvent(std::function<void()> && func) {
+        if(_source) {
+            _source->setEvent(std::move(func));
+        }
     }
     
     Timer::~Timer() {
         if(_source) {
             _source->cancel();
         }
+        kk::Log("[Timer] [dealloc]");
+    }
+    
+    void Timer::resume() {
+        if(_source) {
+            _source->resume();
+        }
     }
     
     void Timer::cancel() {
-        _func = nullptr;
         if(_source) {
             _source->cancel();
             _source = nullptr;
@@ -33,20 +46,25 @@ namespace kk {
     void Timer::Openlib() {
         
         kk::Openlib<TimerSource *>::add([](duk_context * ctx, TimerSource * source)->void {
-            Weak<TimerSource> s = source;
+            
+            Weak<Object> s = dynamic_cast<Object *>(source);
             
             PushFunction(ctx, new TFunction<kk::Uint64, JSObject *,kk::Int>([s](JSObject * func,kk::Int tv)->kk::Uint64{
                 
-                kk::Strong<TimerSource> source = s.operator->();
+                kk::Strong<Object> o = s.operator->();
+                
+                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
                 
                 if(source != nullptr) {
                     kk::Strong<JSObject> fn = func;
-                    Timer * v = new Timer(s->queue(),tv,0,[fn]()->void{
-                        kk::Strong<JSObject> & func = (kk::Strong<JSObject> &) fn;
-                        func->invoke<void>(nullptr);
-                        func = nullptr;
+                    Timer * v = new Timer(source->queue(),tv,0);
+                    v->setEvent([fn,source,v]()->void{
+                        fn->invoke<void>(nullptr);
+                        v->cancel();
+                        source->remove(v);
                     });
                     source->set(v);
+                    v->resume();
                     return (kk::Uint64) v;
                 }
                 
@@ -57,11 +75,13 @@ namespace kk {
             
             PushFunction(ctx, new TFunction<void, kk::Uint64>([s](kk::Uint64 id )->void{
                 
-                kk::Strong<TimerSource> source = s.operator->();
+                kk::Strong<Object> o = s.operator->();
+                
+                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
                 
                 if(source != nullptr && id != 0) {
                     
-                    Timer * v = dynamic_cast<Timer *>(s->get((kk::Object *) id));
+                    Timer * v = dynamic_cast<Timer *>(source->get((kk::Object *) id));
                     
                     if(v != nullptr) {
                         v->cancel();
@@ -76,15 +96,19 @@ namespace kk {
             
             PushFunction(ctx, new TFunction<kk::Uint64, JSObject *,kk::Int>([s](JSObject * func,kk::Int tv)->kk::Uint64{
                 
-                kk::Strong<TimerSource> source = s.operator->();
+                kk::Strong<Object> o = s.operator->();
+                
+                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
                 
                 if(source != nullptr) {
                     kk::Strong<JSObject> fn = func;
-                    Timer * v = new Timer(s->queue(),tv,tv,[fn]()->void{
+                    Timer * v = new Timer(source->queue(),tv,tv);
+                    v->setEvent([fn]()->void{
                         kk::Strong<JSObject> & func = (kk::Strong<JSObject> &) fn;
                         func->invoke<void>(nullptr);
                     });
                     source->set(v);
+                                v->resume();
                     return (kk::Uint64) v;
                 }
                 
@@ -95,11 +119,13 @@ namespace kk {
             
             PushFunction(ctx, new TFunction<void, kk::Uint64>([s](kk::Uint64 id )->void{
                 
-                kk::Strong<TimerSource> source = s.operator->();
+                kk::Strong<Object> o = s.operator->();
+                
+                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
                 
                 if(source != nullptr && id != 0) {
                     
-                    Timer * v = dynamic_cast<Timer *>(s->get((kk::Object *) id));
+                    Timer * v = dynamic_cast<Timer *>(source->get((kk::Object *) id));
                     
                     if(v != nullptr) {
                         v->cancel();

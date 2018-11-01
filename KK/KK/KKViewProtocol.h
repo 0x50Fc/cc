@@ -10,11 +10,15 @@
 
 @protocol KKViewProtocol <NSObject>
 
++(instancetype) KKViewCreate;
+
 -(void) KKViewObtain:(void *) view;
 
 -(void) KKViewSetAttribute:(const char *) key value:(const char *) value;
 
 -(void) KKViewRecycle:(void *) view;
+
+-(UIView *) KKViewContentView;
 
 @end
 

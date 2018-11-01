@@ -41,7 +41,6 @@ namespace kk {
         virtual void cancel() = 0;
         virtual void setTimer(kk::Uint64 delay,kk::Uint64 interval) = 0;
         virtual void setEvent(std::function<void()> && func) = 0;
-        virtual void setCancel(std::function<void()> && func) = 0;
     };
     
     kk::Strong<DispatchQueue> createDispatchQueue(kk::CString name,DispatchQueueType type);

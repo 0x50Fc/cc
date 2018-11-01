@@ -20,6 +20,7 @@ namespace kk {
         class App : public Context {
         public:
             App(kk::CString basePath);
+            virtual ~App();
             virtual DispatchQueue * queue(kk::CString name);
             virtual Context * getContext(kk::CString path,kk::CString queue);
             virtual void open(kk::CString uri,kk::Boolean animated);

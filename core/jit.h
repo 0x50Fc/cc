@@ -252,9 +252,8 @@ namespace kk {
     }
     
     template<class TObject,typename T,typename ... TArgs>
-    union Method {
+    struct Method {
         T (TObject::*method)(TArgs ...args);
-        void * pointer;
     };
     
     template<class TObject,typename T>
@@ -265,16 +264,14 @@ namespace kk {
             TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
             
-            Method<TObject,T> GETTER;
-            
-            GETTER.method = nullptr;
-            
+            Method<TObject,T> * GETTER = nullptr;
+     
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            GETTER.pointer = duk_to_pointer(ctx, -1);
+            GETTER = (Method<TObject,T> *) duk_get_buffer(ctx, -1, nullptr);
             duk_pop_2(ctx);
-            if(object && GETTER.pointer != nullptr) {
-                Any v = (object->*GETTER.method)();
+            if(object && GETTER && GETTER->method != nullptr) {
+                Any v = (object->*GETTER->method)();
                 PushAny(ctx, v);
                 return 1;
             }
@@ -286,19 +283,17 @@ namespace kk {
             TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
             
-            Method<TObject,void,T> SETTER;
-            
-            SETTER.method = nullptr;
+            Method<TObject,void,T> * SETTER = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            SETTER.pointer = duk_to_pointer(ctx, -1);
+            SETTER = (Method<TObject,void,T> *) duk_get_buffer(ctx, -1, nullptr);
             duk_pop_2(ctx);
             
-            if(object && SETTER.pointer != nullptr) {
+            if(object && SETTER && SETTER->method != nullptr) {
                 Any v ;
                 GetAny(ctx,-1,v);
-                (object->*SETTER.method)((T) v);
+                (object->*SETTER->method)((T) v);
             }
             return 0;
         };
@@ -307,21 +302,21 @@ namespace kk {
         Method<TObject,T> GETTER;
         Method<TObject, void,T> SETTER;
         
-        GETTER.method = nullptr;
         GETTER.method = getter;
-        SETTER.method = nullptr;
         SETTER.method = setter;
         
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, getter_fn, 0);
         {
-            duk_push_pointer(ctx, GETTER.pointer);
+            void * v = duk_push_fixed_buffer(ctx, sizeof(GETTER));
+            memcpy(v,&GETTER,sizeof(GETTER));
             duk_put_prop_string(ctx, -2, "__func");
         }
     
         duk_push_c_function(ctx, setter_fn, 1);
         {
-            duk_push_pointer(ctx, SETTER.pointer);
+            void * v = duk_push_fixed_buffer(ctx, sizeof(SETTER));
+            memcpy(v,&SETTER,sizeof(SETTER));
             duk_put_prop_string(ctx, -2, "__func");
         }
         
@@ -331,7 +326,40 @@ namespace kk {
     
     template<class TObject,typename T>
     void PutProperty(duk_context * ctx, duk_idx_t idx, CString name, T (TObject::*getter)()) {
-        PutProperty<TObject,T>(ctx,idx,name,getter,(void (TObject::*)(T v)) nullptr);
+        
+        auto getter_fn = [](duk_context * ctx) -> duk_ret_t {
+            duk_push_this(ctx);
+            TObject * object = (TObject *) GetObject(ctx, -1);
+            duk_pop(ctx);
+            
+            Method<TObject,T> * GETTER = nullptr;
+            
+            duk_push_current_function(ctx);
+            duk_get_prop_string(ctx, -1, "__func");
+            GETTER = (Method<TObject,T> *) duk_get_buffer(ctx, -1, nullptr);
+            duk_pop_2(ctx);
+            if(object && GETTER && GETTER->method != nullptr) {
+                Any v = (object->*GETTER->method)();
+                PushAny(ctx, v);
+                return 1;
+            }
+            return 0;
+        };
+        
+        
+        Method<TObject,T> GETTER;
+        
+        GETTER.method = getter;
+        
+        duk_push_string(ctx, name);
+        duk_push_c_function(ctx, getter_fn, 0);
+        {
+            void * v = duk_push_fixed_buffer(ctx, sizeof(GETTER));
+            memcpy(v,&GETTER,sizeof(GETTER));
+            duk_put_prop_string(ctx, -2, "__func");
+        }
+        
+        duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_GETTER | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
     }
     
     template<class TObject,typename TReturn,typename ... TArgs>
@@ -342,18 +370,16 @@ namespace kk {
             TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
             
-            Method<TObject,TReturn,TArgs...> METHOD;
-            
-            METHOD.method = nullptr;
+            Method<TObject,TReturn,TArgs...> * METHOD = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            METHOD.pointer = duk_to_pointer(ctx, -1);
+            METHOD = (Method<TObject,TReturn,TArgs...> *) duk_get_buffer(ctx, -1, nullptr);
             duk_pop_2(ctx);
  
-            if(object && METHOD.pointer) {
+            if(object && METHOD && METHOD->method != nullptr) {
                 std::function<TReturn(TArgs...)> fn = [object,METHOD](TArgs ... args) -> TReturn {
-                    (object->*METHOD.method)(args...);
+                    (object->*METHOD->method)(args...);
                 };
                 return Call(std::move(fn), ctx);
             }
@@ -362,13 +388,13 @@ namespace kk {
         
         Method<TObject,TReturn,TArgs...> METHOD;
         
-        METHOD.method = nullptr;
         METHOD.method = method;
         
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, fn, sizeof...(TArgs));
         {
-            duk_push_pointer(ctx, METHOD.pointer);
+            void * v = duk_push_fixed_buffer(ctx, sizeof(METHOD));
+            memcpy(v,&METHOD,sizeof(METHOD));
             duk_put_prop_string(ctx, -2, "__func");
         }
         duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
@@ -383,16 +409,16 @@ namespace kk {
             TObject * object = (TObject *) GetObject(ctx, -1);
             duk_pop(ctx);
             
-            Method<TObject,TReturn,TArgs...> METHOD;
+            Method<TObject,TReturn,TArgs...> * METHOD = nullptr;
             
             duk_push_current_function(ctx);
             duk_get_prop_string(ctx, -1, "__func");
-            METHOD.pointer = duk_to_pointer(ctx, -1);
+            METHOD = (Method<TObject,TReturn,TArgs...> *) duk_get_buffer(ctx, -1, nullptr);
             duk_pop_2(ctx);
             
-            if(object && METHOD.pointer) {
+            if(object && METHOD && METHOD->method != nullptr) {
                 std::function<TReturn(TArgs...)> fn = [object,METHOD](TArgs ... args) -> TReturn {
-                    return (object->*METHOD.method)(args...);
+                    return (object->*METHOD->method)(args...);
                 };
                 return Call(std::move(fn), ctx);
             }
@@ -406,7 +432,76 @@ namespace kk {
         duk_push_string(ctx, name);
         duk_push_c_function(ctx, fn, sizeof...(TArgs));
         {
-            duk_push_pointer(ctx, METHOD.pointer);
+            void * v = duk_push_fixed_buffer(ctx, sizeof(METHOD));
+            memcpy(v,&METHOD,sizeof(METHOD));
+            duk_put_prop_string(ctx, -2, "__func");
+        }
+        duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
+        
+    }
+    
+    template<class TObject,typename TReturn,typename ... TArgs>
+    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (*func)(TObject * object,TArgs ...),typename std::enable_if<std::is_void<TReturn>::value>::type* = 0) {
+        
+        auto fn = [](duk_context * ctx) -> duk_ret_t {
+            duk_push_this(ctx);
+            TObject * object = (TObject *) GetObject(ctx, -1);
+            duk_pop(ctx);
+            
+            Method<TObject,TReturn,TArgs...> * METHOD = nullptr;
+            
+            duk_push_current_function(ctx);
+            duk_get_prop_string(ctx, -1, "__func");
+            TReturn (*func)(TObject * object,TArgs ...) = (TReturn (*)(TObject * object,TArgs ...)) duk_to_pointer(ctx, -1);
+            duk_pop_2(ctx);
+            
+            if(object && METHOD && METHOD->method != nullptr) {
+                std::function<TReturn(TObject,TArgs...)> fn = [object,func](TArgs ... args) -> TReturn {
+                    (*func)(object,args...);
+                };
+                return Call(std::move(fn), ctx);
+            }
+            return 0;
+        };
+        
+        duk_push_string(ctx, name);
+        duk_push_c_function(ctx, fn, sizeof...(TArgs));
+        {
+            duk_push_pointer(ctx, func);
+            duk_put_prop_string(ctx, -2, "__func");
+        }
+        duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
+        
+    }
+    
+    template<class TObject,typename TReturn,typename ... TArgs>
+    void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (*func)(TObject * object,TArgs ...),typename std::enable_if<!std::is_void<TReturn>::value>::type* = 0) {
+        
+        auto fn = [](duk_context * ctx) -> duk_ret_t {
+            duk_push_this(ctx);
+            TObject * object = (TObject *) GetObject(ctx, -1);
+            duk_pop(ctx);
+            
+            Method<TObject,TReturn,TArgs...> * METHOD = nullptr;
+            
+            duk_push_current_function(ctx);
+            duk_get_prop_string(ctx, -1, "__func");
+            TReturn (*func)(TObject * object,TArgs ...) = (TReturn (*)(TObject * object,TArgs ...)) duk_to_pointer(ctx, -1);
+            duk_pop_2(ctx);
+            
+            if(object && METHOD && METHOD->method != nullptr) {
+                std::function<TReturn(TObject,TArgs...)> fn = [object,func](TArgs ... args) -> TReturn {
+                    return (*func)(object,args...);
+                };
+                return Call(std::move(fn), ctx);
+            }
+            return 0;
+        };
+        
+        duk_push_string(ctx, name);
+        duk_push_c_function(ctx, fn, sizeof...(TArgs));
+        {
+            duk_push_pointer(ctx, func);
             duk_put_prop_string(ctx, -2, "__func");
         }
         duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);

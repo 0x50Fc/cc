@@ -40,6 +40,9 @@ namespace kk {
             }
             
             duk_destroy_heap(_jsContext);
+            
+            kk::Log("[Page] [dealloc]");
+            
         }
         
         kk::DispatchQueue * Page::queue() {
@@ -48,7 +51,7 @@ namespace kk {
         
         void Page::set(kk::Object * object) {
             auto i = _objects.find(object);
-            if(i != _objects.end()) {
+            if(i == _objects.end()) {
                 _objects[object] = object;
             }
         }

@@ -60,6 +60,7 @@ namespace kk {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
             v = new kk::GCDDispatchQueue(dispatch_get_main_queue());
+            v->retain();
         });
         return v;
     }
@@ -92,14 +93,11 @@ namespace kk {
                 this->onEvent();
             });
             
-            dispatch_source_set_cancel_handler(_source, ^{
-                this->onCancel();
-            });
-            
         }
         
         virtual ~GCDDispatchSource() {
             dispatch_release(_source);
+            kk::Log("[GCDDispatchSource] [dealloc]");
         }
         
         virtual void suspend() {
@@ -122,9 +120,6 @@ namespace kk {
             _event = func;
         }
         
-        virtual void setCancel(std::function<void()> && func) {
-            _cancel = func;
-        }
     protected:
         
         virtual void onEvent() {
@@ -133,17 +128,9 @@ namespace kk {
                 fn();
             }
         }
-        
-        virtual void onCancel() {
-            if(_cancel != nullptr) {
-                std::function<void()> fn = _cancel;
-                fn();
-            }
-        }
-        
+
         ::dispatch_source_t _source;
         std::function<void()> _event;
-        std::function<void()> _cancel;
     };
     
     kk::Strong<DispatchSource> createDispatchSource(kk::Uint64 fd,DispatchSourceType type,DispatchQueue * queue) {

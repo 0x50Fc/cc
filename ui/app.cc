@@ -21,6 +21,11 @@ namespace kk {
             
         }
         
+        App::~App() {
+            
+            kk::Log("[App] [dealloc]");
+        }
+        
         Context * App::getContext(kk::CString path,kk::CString queue) {
             auto i = _contexts.find(path);
             if(i != _contexts.end()) {

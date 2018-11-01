@@ -6,8 +6,8 @@
 //  Copyright © 2018年 kkmofang.cn. All rights reserved.
 //
 
-#ifndef ui_timer_h
-#define ui_timer_h
+#ifndef kk_timer_h
+#define kk_timer_h
 
 #include <kk/kk.h>
 #include <kk/jit.h>
@@ -25,13 +25,14 @@ namespace kk {
     
     class Timer : public Object {
     public:
-        Timer(DispatchQueue * queue, kk::Uint64 start,kk::Uint64 interval, std::function<void()> && func);
+        Timer(DispatchQueue * queue, kk::Uint64 delay,kk::Uint64 interval);
         virtual ~Timer();
+        virtual void setEvent(std::function<void()> && func);
+        virtual void resume();
         virtual void cancel();
         static void Openlib();
     protected:
         Strong<DispatchSource> _source;
-        std::function<void()> _func;
     };
     
 }

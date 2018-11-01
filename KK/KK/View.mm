@@ -8,6 +8,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 #import "KKViewProtocol.h"
 
 #include <ui/ui.h>
@@ -127,7 +128,7 @@ namespace kk {
                     CFRetain(view);
                     UIView * v = (__bridge UIView *) _view;
                     if([v respondsToSelector:@selector(KKViewObtain:)]) {
-                        [(id<KKViewProtocol>) v KKViewObtain:(void *) _view];
+                        [(id<KKViewProtocol>) v KKViewObtain:this];
                     }
                 }
             }
@@ -136,7 +137,7 @@ namespace kk {
                 @autoreleasepool {
                     UIView * v = (__bridge UIView *) _view;
                     if([v respondsToSelector:@selector(KKViewRecycle:)]) {
-                        [(id<KKViewProtocol>) v KKViewRecycle:(void *) _view];
+                        [(id<KKViewProtocol>) v KKViewRecycle:this];
                     }
                     CFRelease(_view);
                 }
@@ -215,6 +216,9 @@ namespace kk {
                 }
                 @autoreleasepool {
                     UIView * v = (__bridge UIView *) _view;
+                    if([v respondsToSelector:@selector(KKViewContentView)]) {
+                        v = [(id<KKViewProtocol>) v KKViewContentView];
+                    }
                     UIView * b = (__bridge UIView *) ov->_view;
                     if(position == SubviewPositionFront) {
                         [v addSubview:b];
@@ -222,12 +226,26 @@ namespace kk {
                         [v insertSubview:b atIndex:0];
                     }
                 }
+                View::addSubview(view, position);
             }
             
             virtual void removeView() {
                 @autoreleasepool {
                     UIView * v = (__bridge UIView *) _view;
                     [v removeFromSuperview];
+                }
+                View::removeView();
+            }
+            
+            virtual void evaluateJavaScript(kk::CString code) {
+                if(code == nullptr) {
+                    return;
+                }
+                @autoreleasepool {
+                    UIView * v = (__bridge UIView *) _view;
+                    if([v respondsToSelector:@selector(evaluateJavaScript:completionHandler:)]) {
+                        [(WKWebView *) v evaluateJavaScript:[NSString stringWithCString:code encoding:NSUTF8StringEncoding] completionHandler:nil];
+                    }
                 }
             }
             
@@ -246,10 +264,10 @@ namespace kk {
                 ::Class isa = NSClassFromString([NSString stringWithCString:name encoding:NSUTF8StringEncoding]);
                 
                 if(isa == nullptr) {
-                    return nullptr;
+                    isa = [UIView class];
                 }
                 
-                UIView * view = [[isa alloc] initWithFrame:CGRectZero];
+                UIView * view = [isa KKViewCreate];
                 
                 return new OSView((__bridge CFTypeRef) view);
                 

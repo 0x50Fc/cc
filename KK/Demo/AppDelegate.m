@@ -10,7 +10,7 @@
 #import <KK/KK.h>
 
 @interface AppDelegate () {
-    KKApp * _app;
+    
 }
 
 @end
@@ -25,12 +25,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+
     
     [self.window makeKeyAndVisible];
     
-    _app = [[KKApp alloc] initWithBasePath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"main"]];
+    KKApp * app = [[KKApp alloc] initWithBasePath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"main"]];
    
-    [_app run:@{}];
+    [app run:@{}];
     
     return YES;
 }

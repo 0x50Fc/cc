@@ -32,7 +32,9 @@ namespace kk {
         
         kk::Strong<Canvas> createCanvas();
         
-        enum SubviewPosition {
+        typedef kk::Uint SubviewPosition;
+        
+        enum {
             SubviewPositionFront,SubviewPositionBack
         };
         
@@ -40,12 +42,15 @@ namespace kk {
         public:
             virtual void set(kk::CString name,kk::CString value) = 0;
             virtual void setFrame(Rect & frame) = 0;
+            virtual void setFrame(Float x,Float y,Float width,Float height);
             virtual void setContentSize(Size & size) = 0;
+            virtual void setContentSize(Float width,Float height);
             virtual void setContentOffset(Point & offset) = 0;
             virtual Point contentOffset() = 0;
             virtual void createCanvas(std::function<void(Canvas *)> && func,DispatchQueue * queue) = 0;
-            virtual void addSubview(View * view,SubviewPosition position) = 0;
-            virtual void removeView() = 0;
+            virtual void evaluateJavaScript(kk::CString code) = 0;
+            virtual void addSubview(View * view,SubviewPosition position);
+            virtual void removeView();
             virtual kk::Strong<View> obtainView(kk::CString reuse);
             virtual void recycleView(View * view,kk::CString reuse);
             virtual void removeRecycleViews();
@@ -55,6 +60,8 @@ namespace kk {
             static void Openlib();
         protected:
             std::map<kk::String,std::list<kk::Strong<View>>> _obtainViews;
+            std::map<View *,Strong<View>> _subviews;
+            Weak<View> _parent;
         };
         
         
