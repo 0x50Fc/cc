@@ -12,6 +12,10 @@ namespace kk {
     
     namespace ui {
     
+        View::View(ViewConfiguration * configuration,Context * context):_configuration(configuration),_context(context) {
+            
+        }
+        
         void View::addSubview(View * view,SubviewPosition position) {
             view->View::removeView();
             view->_parent = this;
@@ -67,6 +71,10 @@ namespace kk {
             
         }
         
+        Context * View::context() {
+            return _context;
+        }
+        
         void View::removeRecycleViews() {
             
             auto i = _obtainViews.begin();
@@ -87,6 +95,10 @@ namespace kk {
             
         }
         
+        ViewConfiguration * View::configuration() {
+            return _configuration;
+        }
+        
         void View::Openlib() {
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
@@ -102,12 +114,43 @@ namespace kk {
                     kk::PutProperty<View,Point>(ctx, -1, "contentOffset", &View::contentOffset);
                     
                     duk_push_string(ctx, "create");
-                    kk::PushFunction(ctx, (Any (*)(CString))([](CString name)->Any{
-                        Strong<View> v = createView(name);
+                    kk::PushFunction(ctx, (Any (*)(CString,ViewConfiguration *,Context *))([](CString name,ViewConfiguration * configuration,Context * context)->Any{
+                        Strong<View> v = createView(name,configuration,context);
                         return Any(v.get());
                     }));
                     
                     duk_def_prop(ctx, -4, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+                    
+                });
+                
+            });
+            
+        }
+        
+        void WebViewConfiguration::addUserScript(kk::CString code,WebViewUserScriptInjectionTime injectionTime) {
+            _userScripts.push_back({code,injectionTime});
+        }
+        
+        void WebViewConfiguration::addUserAction(kk::CString pattern,kk::CString name,WebViewActionPolicy policy) {
+            _userActions.push_back({pattern,name,policy});
+        }
+        
+        std::vector<WebViewUserScript> & WebViewConfiguration::userScripts() {
+            return _userScripts;
+        }
+        
+        std::vector<WebViewUserAction> & WebViewConfiguration::userActions() {
+            return _userActions;
+        }
+        
+        void WebViewConfiguration::Openlib() {
+            
+            kk::Openlib<>::add([](duk_context * ctx)->void{
+                
+                kk::PushClass<WebViewConfiguration>(ctx, [](duk_context * ctx)->void{
+                    
+                    kk::PutMethod<WebViewConfiguration,void,kk::CString,kk::Uint>(ctx, -1, "addUserScript", &WebViewConfiguration::addUserScript);
+                    kk::PutMethod<WebViewConfiguration,void,kk::CString,kk::CString,kk::Uint>(ctx, -1, "addUserAction", &WebViewConfiguration::addUserAction);
                     
                 });
                 

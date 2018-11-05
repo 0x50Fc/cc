@@ -61,17 +61,23 @@ namespace kk {
             emit("open", e);
         }
         
+        kk::Strong<View> App::createView(kk::CString name,ViewConfiguration * configuration) {
+            return kk::ui::createView(name, configuration, this);
+        }
+        
         void App::Openlib() {
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
                 
-                kk::PushInterface<App, kk::CString>(ctx, [](duk_context * ctx)->void{
+                kk::PushInterface<App>(ctx, [](duk_context * ctx)->void{
                     
                     kk::PutMethod<App,Context *,kk::CString,kk::CString>(ctx, -1, "getContext", &App::getContext);
                     
                     kk::PutMethod<App,DispatchQueue *,kk::CString>(ctx, -1, "queue", &App::queue);
                     
                     kk::PutMethod<App,void,kk::CString,kk::Boolean>(ctx, -1, "open", &App::open);
+                
+                    kk::PutStrongMethod<App,View,kk::CString,ViewConfiguration *>(ctx,-1,"createView",&App::createView);
                     
                 });
                 

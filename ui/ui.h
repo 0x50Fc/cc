@@ -30,6 +30,8 @@ namespace kk {
         
         struct Size {
             Float width,height;
+            Size();
+            Size(Float width,Float height);
             operator kk::Any() {
                 return kk::Any(new TObject<kk::String, kk::Float>({{"width",width},{"height",height}}));
             }
@@ -126,7 +128,7 @@ namespace kk {
             virtual kk::DispatchQueue * queue();
             virtual duk_context * jsContext();
             virtual kk::String absolutePath(kk::CString path);
-            virtual kk::String getContent(kk::CString path);
+            virtual kk::String getTextContent(kk::CString path);
             virtual void set(kk::Object * object);
             virtual kk::Object * get(kk::Object * object);
             virtual void remove(kk::Object * object);

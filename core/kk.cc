@@ -320,6 +320,12 @@ namespace kk {
         setLString(v.c_str(), v.size());
     }
     
+    Any::Any(String v):Any() {
+        type = TypeString;
+        setLString(v.c_str(), v.size());
+    }
+    
+    
     Any::Any(CString v):Any() {
         if(v != nullptr) {
             type = TypeString;

@@ -9,9 +9,8 @@
 #ifndef ui_app_h
 #define ui_app_h
 
-
 #include <ui/ui.h>
-
+#include <ui/view.h>
 
 namespace kk {
     
@@ -24,6 +23,7 @@ namespace kk {
             virtual DispatchQueue * queue(kk::CString name);
             virtual Context * getContext(kk::CString path,kk::CString queue);
             virtual void open(kk::CString uri,kk::Boolean animated);
+            virtual kk::Strong<View> createView(kk::CString name,ViewConfiguration * configuration);
             
             static void Openlib();
             

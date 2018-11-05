@@ -83,11 +83,37 @@ namespace kk {
             return _view;
         }
         
+        void Page::setSize(Size & size) {
+            if(_size.width != size.width || _size.height != size.height) {
+                Strong<Event> e = new Event();
+                emit("resize", e);
+            }
+            _size = size;
+        }
+        
+        Size Page::size() {
+            return _size;
+        }
+        
+        Float Page::width() {
+            return _size.width;
+        }
+        
+        Float Page::height() {
+            return _size.height;
+        }
+        
+        void Page::setOptions(kk::Object * data) {
+            Strong<Event> e = new Event();
+            e->setData(data);
+            emit("options", e);
+        }
+        
         void Page::run(kk::CString path , kk::TObject<kk::String,kk::String> * query) {
             
             kk::String code("(function(path,query){");
         
-            code.append(_app->getContent(path));
+            code.append(_app->getTextContent(path));
             
             code.append("})");
             
@@ -121,7 +147,7 @@ namespace kk {
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
                 
-                kk::PushInterface<Page, App *, View *>(ctx, [](duk_context * ctx)->void{
+                kk::PushInterface<Page>(ctx, [](duk_context * ctx)->void{
                     
                     kk::PutProperty<Page,App *>(ctx, -1, "app", &Page::app);
                     
@@ -130,6 +156,12 @@ namespace kk {
                     kk::PutMethod<Page,void,Object *>(ctx, -1, "set", &Page::set);
                     
                     kk::PutMethod<Page,void,Object *>(ctx, -1, "remove", &Page::remove);
+                    
+                    kk::PutProperty<Page,Float>(ctx, -1, "width", &Page::width);
+                    
+                    kk::PutProperty<Page,Float>(ctx, -1, "height", &Page::height);
+                    
+                    kk::PutMethod<Page,void,Object *>(ctx, -1, "setOptions", &Page::setOptions);
                     
                 });
                 

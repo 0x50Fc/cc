@@ -422,6 +422,70 @@ namespace kk {
         }
     }
     
+    JSObject::operator kk::Strong<TObject<kk::String,kk::Any>>() {
+        kk::Strong<TObject<kk::String,kk::Any>> v = new TObject<kk::String,kk::Any>();
+        
+        if(_ctx && _heapptr) {
+            
+            duk_push_heapptr(_ctx, _heapptr);
+            
+            if(duk_is_object(_ctx, -1)) {
+                
+                duk_enum(_ctx, -1, DUK_ENUM_INCLUDE_SYMBOLS);
+                
+                kk::Any key;
+                kk::Any value;
+                
+                while(duk_next(_ctx, -1, 1)) {
+                    
+                    GetAny(_ctx, -2, key);
+                    GetAny(_ctx, -1, value);
+                    
+                    (*v)[key] = value;
+                    
+                }
+                
+                duk_pop(_ctx);
+                
+            }
+            
+            duk_pop(_ctx);
+        }
+        
+        return v;
+    }
+    
+    JSObject::operator kk::Strong<Array<kk::Any>>() {
+        kk::Strong<Array<kk::Any>> v = new Array<kk::Any>();
+        
+        if(_ctx && _heapptr) {
+            
+            duk_push_heapptr(_ctx, _heapptr);
+            
+            if(duk_is_array(_ctx, -1)) {
+                
+                duk_enum(_ctx, -1, DUK_ENUM_ARRAY_INDICES_ONLY);
+                
+                kk::Any value;
+                
+                while(duk_next(_ctx, -1, 1)) {
+                    
+                    GetAny(_ctx, -1, value);
+                    
+                    v->push(value);
+                    
+                }
+                
+                duk_pop(_ctx);
+                
+            }
+            
+            duk_pop(_ctx);
+        }
+        
+        return v;
+    }
+    
     void PushAny(duk_context * ctx, Any & any) {
         switch (any.type) {
             case TypeInt8:
@@ -519,6 +583,77 @@ namespace kk {
                 break;
         }
         
+    }
+    
+    void OpenBaselib(){
+        
+        kk::Openlib<>::add([](duk_context * ctx)->void{
+            
+            duk_push_c_function(ctx, [](duk_context * ctx)->duk_ret_t{
+                
+                duk_idx_t top = duk_get_top(ctx);
+                
+                Any v;
+                
+                for(duk_idx_t i = - top ;i < 0; i++) {
+                    switch (duk_get_type(ctx, i)) {
+                        case DUK_TYPE_NULL:
+                        kk::Log("null");
+                        break;
+                        case DUK_TYPE_UNDEFINED:
+                        kk::Log("undefined");
+                        break;
+                        case DUK_TYPE_BOOLEAN:
+                        kk::Log("%s",duk_to_boolean(ctx, i) ? "true":"false");
+                        break;
+                        case DUK_TYPE_NUMBER:
+                        kk::Log("%g",duk_to_number(ctx, i));
+                        break;
+                        case DUK_TYPE_STRING:
+                        kk::Log("%s",duk_to_string(ctx, i));
+                        break;
+                        case DUK_TYPE_BUFFER:
+                        {
+                            size_t n;
+                            void * data = duk_is_buffer_data(ctx, i) ?  duk_get_buffer_data(ctx, i, &n) : duk_get_buffer(ctx, i, &n);
+                            kk::Log("<0x%x:%d>",data,n);
+                        }
+                        break;
+                        case DUK_TYPE_LIGHTFUNC:
+                        kk::Log("[function]");
+                        break;
+                        default:
+                        kk::Log("[object]");
+                        break;
+                    }
+                }
+                
+                return 0;
+                
+            }, DUK_VARARGS);
+            
+            duk_put_global_string(ctx, "print");
+            
+            duk_push_c_function(ctx, [](duk_context * ctx)->duk_ret_t{
+                
+                if(duk_is_string(ctx, -1) && duk_is_string(ctx, -2)) {
+                    
+                    kk::CString code = duk_to_string(ctx, -2);
+                    kk::CString path = duk_to_string(ctx, -1);
+                    
+                    duk_push_string(ctx, path);
+                    duk_compile_string_filename(ctx, 0, code);
+                    return 1;
+                    
+                }
+                
+                return 0;
+                
+            }, 2);
+            
+            duk_put_global_string(ctx, "compile");
+            
+        });
     }
     
     

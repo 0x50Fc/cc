@@ -14,6 +14,15 @@ namespace kk {
     
     namespace ui {
     
+        Size::Size():width(0),height(0) {
+            
+        }
+        
+        Size::Size(Float width,Float height):width(width),height(height) {
+            
+        }
+        
+        
         Palette::Palette(std::initializer_list<std::pair<const kk::String,Color>> &&v):_values(v){
             
         }
@@ -164,7 +173,7 @@ namespace kk {
             return _jsContext;
         }
         
-        kk::String Context::getContent(kk::CString path) {
+        kk::String Context::getTextContent(kk::CString path) {
 
             kk::String v;
             kk::String p = absolutePath(path);
@@ -216,7 +225,7 @@ namespace kk {
             
             code.append("){");
             
-            code.append(getContent(path));
+            code.append(getTextContent(path));
             
             code.append("})");
             
@@ -293,7 +302,7 @@ namespace kk {
             
             code.append("){");
             
-            code.append(getContent(path));
+            code.append(getTextContent(path));
             
             code.append("})");
             
@@ -332,52 +341,7 @@ namespace kk {
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
                 
-                duk_push_c_function(ctx, [](duk_context * ctx)->duk_ret_t{
-                    
-                    duk_idx_t top = duk_get_top(ctx);
-                    
-                    Any v;
-                    
-                    for(duk_idx_t i = - top ;i < 0; i++) {
-                        switch (duk_get_type(ctx, i)) {
-                            case DUK_TYPE_NULL:
-                                kk::Log("null");
-                                break;
-                            case DUK_TYPE_UNDEFINED:
-                                kk::Log("undefined");
-                                break;
-                            case DUK_TYPE_BOOLEAN:
-                                kk::Log("%s",duk_to_boolean(ctx, i) ? "true":"false");
-                                break;
-                            case DUK_TYPE_NUMBER:
-                                kk::Log("%g",duk_to_number(ctx, i));
-                                break;
-                            case DUK_TYPE_STRING:
-                                kk::Log("%s",duk_to_string(ctx, i));
-                                break;
-                            case DUK_TYPE_BUFFER:
-                            {
-                                size_t n;
-                                void * data = duk_is_buffer_data(ctx, i) ?  duk_get_buffer_data(ctx, i, &n) : duk_get_buffer(ctx, i, &n);
-                                kk::Log("<0x%x:%d>",data,n);
-                            }
-                                break;
-                            case DUK_TYPE_LIGHTFUNC:
-                                kk::Log("[function]");
-                                break;
-                            default:
-                                kk::Log("[object]");
-                                break;
-                        }
-                    }
-                    
-                    return 0;
-                    
-                }, DUK_VARARGS);
-                
-                duk_put_global_string(ctx, "print");
-                
-                kk::PushClass<Context, kk::CString,kk::DispatchQueue *>(ctx, [](duk_context * ctx)->void{
+                kk::PushInterface<Context>(ctx, [](duk_context * ctx)->void{
                     
                     kk::PutProperty<Context,kk::CString>(ctx, -1, "basePath", &Context::basePath);
                     
@@ -388,6 +352,11 @@ namespace kk {
                     kk::PutMethod<Context,void,Object *>(ctx, -1, "set", &Context::set);
                     
                     kk::PutMethod<Context,void,Object *>(ctx, -1, "remove", &Context::remove);
+                    
+                    kk::PutMethod<Context,kk::String,kk::CString>(ctx, -1, "getTextContent", &Context::getTextContent);
+                    
+                    kk::PutMethod<Context,kk::String,kk::CString>(ctx, -1, "absolutePath", &Context::absolutePath);
+                    
                 });
                 
             });

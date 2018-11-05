@@ -10,7 +10,7 @@
 #import <KK/KKPage.h>
 #import <KK/KKApp.h>
 
-@interface KKPageViewController : UIViewController
+@interface KKPageViewController : UIViewController<KKPageDelegate>
 
 @property(nonatomic,strong) KKApp * app;
 @property(nonatomic,strong) NSString * path;

@@ -7,8 +7,11 @@
 //
 
 #import "KKPageViewController.h"
+#import "KKObject.h"
 
-@interface KKPageViewController ()
+@interface KKPageViewController () {
+    CGSize _layoutSize;
+}
 
 @end
 
@@ -19,19 +22,24 @@
 
     if(_app != nil && _path != nil) {
         _page = [[KKPage alloc] initWithView:self.view app:_app];
+        _page.delegate = self;
         [_page run:_path query:_query];
     }
     
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void) viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    if(CGSizeEqualToSize(_layoutSize, self.view.bounds.size)) {
+        _layoutSize = self.view.bounds.size;
+        [_page setSize:_layoutSize];
+    }
 }
-*/
+
+-(void) KKPage:(KKPage *) page setOptions:(id) options {
+    self.title = [options kk_getString:@"title"];
+}
+    
 
 @end

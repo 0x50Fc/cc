@@ -38,8 +38,13 @@ namespace kk {
             SubviewPositionFront,SubviewPositionBack
         };
         
+        class ViewConfiguration : public kk::Object {
+            
+        };
+        
         class View : public EventEmitter {
         public:
+            View(ViewConfiguration * configuration,Context * context);
             virtual void set(kk::CString name,kk::CString value) = 0;
             virtual void setFrame(Rect & frame) = 0;
             virtual void setFrame(Float x,Float y,Float width,Float height);
@@ -48,12 +53,16 @@ namespace kk {
             virtual void setContentOffset(Point & offset) = 0;
             virtual Point contentOffset() = 0;
             virtual void createCanvas(std::function<void(Canvas *)> && func,DispatchQueue * queue) = 0;
-            virtual void evaluateJavaScript(kk::CString code) = 0;
             virtual void addSubview(View * view,SubviewPosition position);
             virtual void removeView();
             virtual kk::Strong<View> obtainView(kk::CString reuse);
             virtual void recycleView(View * view,kk::CString reuse);
             virtual void removeRecycleViews();
+            
+            virtual void evaluateJavaScript(kk::CString code) = 0;
+            virtual ViewConfiguration * configuration();
+            
+            virtual Context * context();
             
             KK_CLASS(View, EventEmitter, "UIView");
             
@@ -62,10 +71,51 @@ namespace kk {
             std::map<kk::String,std::list<kk::Strong<View>>> _obtainViews;
             std::map<View *,Strong<View>> _subviews;
             Weak<View> _parent;
+            Strong<ViewConfiguration> _configuration;
+            Weak<Context> _context;
         };
         
+        kk::Strong<View> createView(kk::CString name,ViewConfiguration * configuration,Context * context);
         
-        kk::Strong<View> createView(kk::CString name);
+        typedef kk::Uint WebViewActionPolicy;
+        
+        enum {
+            WebViewActionPolicyCancel,WebViewActionPolicyAllow
+        };
+        
+        typedef kk::Uint WebViewUserScriptInjectionTime;
+    
+        enum {
+            WebViewUserScriptInjectionTimeAtDocumentStart,
+            WebViewUserScriptInjectionTimeAtDocumentEnd
+        };
+        
+        struct WebViewUserScript {
+            kk::String code;
+            WebViewUserScriptInjectionTime injectionTime;
+        };
+        
+        struct WebViewUserAction {
+            kk::String pattern;
+            kk::String name;
+            WebViewActionPolicy policy;
+        };
+        
+        class WebViewConfiguration : public ViewConfiguration {
+        public:
+            virtual void addUserScript(kk::CString code,WebViewUserScriptInjectionTime injectionTime);
+            virtual void addUserAction(kk::CString pattern,kk::CString name,WebViewActionPolicy policy);
+            virtual std::vector<WebViewUserScript> & userScripts();
+            virtual std::vector<WebViewUserAction> & userActions();
+            
+            KK_CLASS(WebViewConfiguration, Object, "UIWebViewConfiguration");
+            
+            static void Openlib();
+        protected:
+            std::vector<WebViewUserScript> _userScripts;
+            std::vector<WebViewUserAction> _userActions;
+        };
+
         
     }
     

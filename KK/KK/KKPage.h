@@ -11,8 +11,19 @@
 
 typedef void * KKPageCPointer;
 
+@class KKPage;
+
+@protocol KKPageDelegate
+
+@optional
+
+-(void) KKPage:(KKPage *) page setOptions:(id) options;
+
+@end
+
 @interface KKPage : NSObject
 
+@property(nonatomic,weak) id<KKPageDelegate> delegate;
 @property(nonatomic,readonly,strong) KKApp  * app;
 @property(nonatomic,readonly,strong) UIView * view;
 @property(nonatomic,assign,readonly) KKPageCPointer CPointer;
@@ -20,6 +31,8 @@ typedef void * KKPageCPointer;
 -(instancetype) initWithView:(UIView *) view app:(KKApp *) app;
 
 -(void) run:(NSString *) path query:(NSDictionary<NSString *,NSString *> *) query;
+
+-(void) setSize:(CGSize) size;
 
 @end
 

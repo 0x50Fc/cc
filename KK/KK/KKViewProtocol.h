@@ -6,11 +6,12 @@
 //  Copyright © 2018年 kkmofang.cn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <WebKit/WebKit.h>
 
 @protocol KKViewProtocol <NSObject>
 
-+(instancetype) KKViewCreate;
++(instancetype) KKViewCreateWithConfiguration:(void *) configuration;
 
 -(void) KKViewObtain:(void *) view;
 
@@ -22,9 +23,6 @@
 
 @end
 
-@protocol KKImageViewProtocol <KKViewProtocol>
 
--(void) KKViewDisplayImage:(UIImage *) image;
 
-@end
 

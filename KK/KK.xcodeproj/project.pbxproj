@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A3571EE21900472001BAE76 /* KK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4502ED2186E4EA00F7F0E4 /* KK.framework */; };
+		1A3571F0219004EF001BAE76 /* main in Resources */ = {isa = PBXBuildFile; fileRef = 1A3571EF219004EF001BAE76 /* main */; };
 		1A4502F22186E4EA00F7F0E4 /* KK.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A4502F02186E4EA00F7F0E4 /* KK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A4503122186E50700F7F0E4 /* archiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A4502F92186E50600F7F0E4 /* archiver.h */; };
 		1A4503132186E50700F7F0E4 /* document.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A4502FA2186E50600F7F0E4 /* document.cc */; };
@@ -33,6 +35,8 @@
 		1A4503302186E54D00F7F0E4 /* duktape.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A45032B2186E54D00F7F0E4 /* duktape.h */; };
 		1A4503322186E54D00F7F0E4 /* duktape.c in Sources */ = {isa = PBXBuildFile; fileRef = 1A45032D2186E54D00F7F0E4 /* duktape.c */; };
 		1A4503352186E67200F7F0E4 /* CGContext.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A4503342186E67200F7F0E4 /* CGContext.mm */; };
+		1AB081F3218BF424003835D4 /* KKObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB081F1218BF424003835D4 /* KKObject.h */; };
+		1AB081F4218BF424003835D4 /* KKObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1AB081F2218BF424003835D4 /* KKObject.mm */; };
 		1AB8D9D02186FE0C00909DFF /* KKViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB8D9CF2186FE0C00909DFF /* KKViewProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1AB8D9F02187194000909DFF /* app.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8D9EF2187194000909DFF /* app.cc */; };
 		1AB8DA1521897B6200909DFF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8DA1421897B6200909DFF /* AppDelegate.m */; };
@@ -47,7 +51,6 @@
 		1AB8DA342189857E00909DFF /* page.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8DA332189857E00909DFF /* page.cc */; };
 		1AB8DA3721898DF500909DFF /* KKPage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB8DA3521898DF500909DFF /* KKPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1AB8DA3821898DF500909DFF /* KKPage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8DA3621898DF500909DFF /* KKPage.mm */; };
-		1AB8DA3A218991CD00909DFF /* main in Resources */ = {isa = PBXBuildFile; fileRef = 1AB8DA39218991CD00909DFF /* main */; };
 		1AB8DA3D218992E200909DFF /* KKPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB8DA3B218992E200909DFF /* KKPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1AB8DA3E218992E200909DFF /* KKPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8DA3C218992E200909DFF /* KKPageViewController.m */; };
 		1AB8DA412189C58D00909DFF /* timer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1AB8DA402189C58D00909DFF /* timer.cc */; };
@@ -86,6 +89,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A3571EF219004EF001BAE76 /* main */ = {isa = PBXFileReference; lastKnownFileType = folder; name = main; path = ../wx/main; sourceTree = SOURCE_ROOT; };
 		1A4502ED2186E4EA00F7F0E4 /* KK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A4502F02186E4EA00F7F0E4 /* KK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KK.h; sourceTree = "<group>"; };
 		1A4502F12186E4EA00F7F0E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 		1A45032B2186E54D00F7F0E4 /* duktape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = duktape.h; sourceTree = "<group>"; };
 		1A45032D2186E54D00F7F0E4 /* duktape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = duktape.c; sourceTree = "<group>"; };
 		1A4503342186E67200F7F0E4 /* CGContext.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CGContext.mm; sourceTree = "<group>"; };
+		1AB081F1218BF424003835D4 /* KKObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKObject.h; sourceTree = "<group>"; };
+		1AB081F2218BF424003835D4 /* KKObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = KKObject.mm; sourceTree = "<group>"; };
 		1AB8D9CF2186FE0C00909DFF /* KKViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKViewProtocol.h; sourceTree = "<group>"; };
 		1AB8D9ED21870CEA00909DFF /* UI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UI.h; sourceTree = "<group>"; };
 		1AB8D9EE2187193600909DFF /* app.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = app.h; sourceTree = "<group>"; };
@@ -135,7 +141,6 @@
 		1AB8DA332189857E00909DFF /* page.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = page.cc; sourceTree = "<group>"; };
 		1AB8DA3521898DF500909DFF /* KKPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKPage.h; sourceTree = "<group>"; };
 		1AB8DA3621898DF500909DFF /* KKPage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = KKPage.mm; sourceTree = "<group>"; };
-		1AB8DA39218991CD00909DFF /* main */ = {isa = PBXFileReference; lastKnownFileType = folder; path = main; sourceTree = "<group>"; };
 		1AB8DA3B218992E200909DFF /* KKPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKPageViewController.h; sourceTree = "<group>"; };
 		1AB8DA3C218992E200909DFF /* KKPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KKPageViewController.m; sourceTree = "<group>"; };
 		1AB8DA3F2189C41900909DFF /* timer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = timer.h; sourceTree = "<group>"; };
@@ -165,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AC3A1F7218AAF65003563DF /* libc++.tbd in Frameworks */,
+				1A3571EE21900472001BAE76 /* KK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +210,8 @@
 				1AC10E8C2186EE0E006C5D5C /* Image.mm */,
 				1AF639882186FC1800557AD3 /* View.mm */,
 				1A4502F12186E4EA00F7F0E4 /* Info.plist */,
+				1AB081F1218BF424003835D4 /* KKObject.h */,
+				1AB081F2218BF424003835D4 /* KKObject.mm */,
 				1AB8DA2921897BC200909DFF /* KKApp.h */,
 				1AB8DA2A21897BC200909DFF /* KKApp.mm */,
 				1AB8DA3521898DF500909DFF /* KKPage.h */,
@@ -283,7 +291,7 @@
 		1AB8DA1221897B6200909DFF /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				1AB8DA39218991CD00909DFF /* main */,
+				1A3571EF219004EF001BAE76 /* main */,
 				1AB8DA1321897B6200909DFF /* AppDelegate.h */,
 				1AB8DA1421897B6200909DFF /* AppDelegate.m */,
 				1AB8DA1921897B6200909DFF /* Main.storyboard */,
@@ -330,6 +338,7 @@
 				1A4503192186E50700F7F0E4 /* event.h in Headers */,
 				1A45032E2186E54D00F7F0E4 /* duk_config.h in Headers */,
 				1A4503162186E50700F7F0E4 /* document.h in Headers */,
+				1AB081F3218BF424003835D4 /* KKObject.h in Headers */,
 				1AB8DA3D218992E200909DFF /* KKPageViewController.h in Headers */,
 				1A4503182186E50700F7F0E4 /* bio.h in Headers */,
 			);
@@ -424,7 +433,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AB8DA2021897B6400909DFF /* LaunchScreen.storyboard in Resources */,
-				1AB8DA3A218991CD00909DFF /* main in Resources */,
+				1A3571F0219004EF001BAE76 /* main in Resources */,
 				1AB8DA1D21897B6400909DFF /* Assets.xcassets in Resources */,
 				1AB8DA1B21897B6200909DFF /* Main.storyboard in Resources */,
 			);
@@ -452,6 +461,7 @@
 				1A4503232186E50700F7F0E4 /* view.cc in Sources */,
 				1AF639892186FC1800557AD3 /* View.mm in Sources */,
 				1AB8D9F02187194000909DFF /* app.cc in Sources */,
+				1AB081F4218BF424003835D4 /* KKObject.mm in Sources */,
 				1AB8DA342189857E00909DFF /* page.cc in Sources */,
 				1A4503152186E50700F7F0E4 /* archiver.cc in Sources */,
 				1AB8DA3E218992E200909DFF /* KKPageViewController.m in Sources */,

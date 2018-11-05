@@ -58,6 +58,7 @@ namespace kk {
         }
     };
     
+    void OpenBaselib();
     
     void SetPrototype(duk_context * ctx, duk_idx_t idx, const Class * isa);
     
@@ -440,6 +441,46 @@ namespace kk {
         
     }
     
+    template<class TObject,class T,typename ... TArgs>
+    void PutStrongMethod(duk_context * ctx, duk_idx_t idx, CString name, kk::Strong<T> (TObject::*method)(TArgs ...)) {
+        
+        auto fn = [](duk_context * ctx) -> duk_ret_t {
+            duk_push_this(ctx);
+            TObject * object = (TObject *) GetObject(ctx, -1);
+            duk_pop(ctx);
+            
+            Method<TObject,kk::Strong<T>,TArgs...> * METHOD = nullptr;
+            
+            duk_push_current_function(ctx);
+            duk_get_prop_string(ctx, -1, "__func");
+            METHOD = (Method<TObject,kk::Strong<T>,TArgs...> *) duk_get_buffer(ctx, -1, nullptr);
+            duk_pop_2(ctx);
+            
+            if(object && METHOD && METHOD->method != nullptr) {
+                std::function<kk::Any(TArgs...)> fn = [object,METHOD](TArgs ... args) -> kk::Any {
+                    kk::Strong<T> v = (object->*METHOD->method)(args...);
+                    return kk::Any(v.get());
+                };
+                return Call(std::move(fn), ctx);
+            }
+            return 0;
+        };
+        
+        Method<TObject,kk::Strong<T>,TArgs...> METHOD;
+        
+        METHOD.method = method;
+        
+        duk_push_string(ctx, name);
+        duk_push_c_function(ctx, fn, sizeof...(TArgs));
+        {
+            void * v = duk_push_fixed_buffer(ctx, sizeof(METHOD));
+            memcpy(v,&METHOD,sizeof(METHOD));
+            duk_put_prop_string(ctx, -2, "__func");
+        }
+        duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_WRITABLE);
+        
+    }
+    
     template<class TObject,typename TReturn,typename ... TArgs>
     void PutMethod(duk_context * ctx, duk_idx_t idx, CString name, TReturn (*func)(TObject * object,TArgs ...),typename std::enable_if<std::is_void<TReturn>::value>::type* = 0) {
         
@@ -558,7 +599,7 @@ namespace kk {
     
     
     
-    template<class T,typename ... TArgs>
+    template<class T>
     void PushInterface(duk_context * ctx, std::function<void(duk_context *)> && func) {
         
         const Class * isa = T::Class();
@@ -718,6 +759,10 @@ namespace kk {
                 return (T) r;
             };
         }
+        
+        operator kk::Strong<TObject<kk::String,kk::Any>>();
+        operator kk::Strong<Array<kk::Any>>();
+        
     protected:
         duk_context * _ctx;
         void * _heapptr;

@@ -16,6 +16,9 @@
 #include <ui/CGContext.h>
 #include <kk/dispatch.h>
 
+
+
+
 namespace kk {
     
     namespace ui {
@@ -122,7 +125,7 @@ namespace kk {
         class OSView : public View {
         public:
             
-            OSView(CFTypeRef view) {
+            OSView(CFTypeRef view,ViewConfiguration * configuration,Context * context):View(configuration,context) {
                 @autoreleasepool {
                     _view = view;
                     CFRetain(view);
@@ -253,7 +256,7 @@ namespace kk {
             CFTypeRef _view;
         };
         
-        kk::Strong<View> createView(kk::CString name) {
+        kk::Strong<View> createView(kk::CString name,ViewConfiguration * configuration,Context * context) {
             
             if(name == nullptr) {
                 return nullptr;
@@ -267,16 +270,16 @@ namespace kk {
                     isa = [UIView class];
                 }
                 
-                UIView * view = [isa KKViewCreate];
+                UIView * view = [isa KKViewCreateWithConfiguration:configuration];
                 
-                return new OSView((__bridge CFTypeRef) view);
+                return new OSView((__bridge CFTypeRef) view,configuration,context);
                 
             }
             
         }
         
-        kk::Strong<View> createView(CFTypeRef view) {
-            return new OSView(view);
+        kk::Strong<View> createView(CFTypeRef view,ViewConfiguration * configuration,Context * context) {
+            return new OSView(view,configuration,context);
         }
         
         kk::Strong<Canvas> createCanvas() {

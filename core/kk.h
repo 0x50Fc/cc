@@ -277,6 +277,7 @@ static const kk::Class * Class() { \
         Any(Float32 v);
         Any(Float64 v);
         Any(String & v);
+        Any(String v);
         Any(CString v);
         Any(const Any & v);
         virtual ~Any();
@@ -393,6 +394,9 @@ static const kk::Class * Class() { \
                 func(item);
                 i ++;
             }
+        }
+        virtual void push(T & v) {
+            _items.push_back(v);
         }
     private:
         std::vector<T> _items;
