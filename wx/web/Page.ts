@@ -1,5 +1,6 @@
 import { Data, DataFunction, Evaluate } from './Data';
 import { Element, AttributeMap } from './Element';
+import { Document} from './Document';
 
 export interface PageElement {
     element?:Element;
@@ -25,10 +26,19 @@ export class PageViewScope {
 }
 
 export class PageViewContext {
-    private _scopes:PageViewScope[];
-    constructor() {
+    public _page:Page;
+    
+    constructor(page:Page) {
+        this._page = page;
         this._scopes = [new PageViewScope()];
     }
+
+    public get page():Page {
+        return this._page;
+    }
+
+    private _scopes:PageViewScope[];
+
     begin():void {
         this._scopes.push(new PageViewScope());
     }
@@ -59,16 +69,16 @@ export interface PageData {
 
 export class Page {
 
-    private _element:Element;
+    private _document:Document;
     private _data:Data;
 
     constructor() {
-        this._element = new Element();
+        this._document = new Document();
         this._data = new Data();
     }
 
-    public get element():Element {
-        return this._element;
+    public get document():Document {
+        return this._document;
     }
 
     public get data():Data {

@@ -11,12 +11,24 @@ class ElementEvent extends Event_1.Event {
 }
 exports.ElementEvent = ElementEvent;
 class Element extends EventEmitter_1.EventEmitter {
-    constructor() {
-        super(...arguments);
+    constructor(document, name, id) {
+        super();
         this._attributes = {};
         this._levelId = 0;
         this._depth = 0;
         this._autoLevelId = 0;
+        this._name = name;
+        this._id = id;
+        this._document = document;
+    }
+    get document() {
+        return this._document;
+    }
+    get id() {
+        return this._id;
+    }
+    get name() {
+        return this._name;
     }
     get levelId() {
         return this._levelId;
@@ -189,6 +201,7 @@ class Element extends EventEmitter_1.EventEmitter {
         return false;
     }
     recycle() {
+        this._document.removeElement(this._id);
         var p = this._firstChild;
         while (p !== undefined) {
             let n = p._nextSibling;
@@ -200,7 +213,8 @@ class Element extends EventEmitter_1.EventEmitter {
         this._lastChild = undefined;
         this._prevSibling = undefined;
         this._nextSibling = undefined;
-        this._parent = undefined;
+    }
+    onEvent(name, data) {
     }
 }
 exports.Element = Element;

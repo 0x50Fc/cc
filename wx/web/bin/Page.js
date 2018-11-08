@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Data_1 = require("./Data");
-const Element_1 = require("./Element");
+const Document_1 = require("./Document");
 class IfBlock {
     constructor(element, func) {
         this.elements = [element];
@@ -13,8 +13,12 @@ class PageViewScope {
 }
 exports.PageViewScope = PageViewScope;
 class PageViewContext {
-    constructor() {
+    constructor(page) {
+        this._page = page;
         this._scopes = [new PageViewScope()];
+    }
+    get page() {
+        return this._page;
     }
     begin() {
         this._scopes.push(new PageViewScope());
@@ -29,11 +33,11 @@ class PageViewContext {
 exports.PageViewContext = PageViewContext;
 class Page {
     constructor() {
-        this._element = new Element_1.Element();
+        this._document = new Document_1.Document();
         this._data = new Data_1.Data();
     }
-    get element() {
-        return this._element;
+    get document() {
+        return this._document;
     }
     get data() {
         return this._data;

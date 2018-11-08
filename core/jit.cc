@@ -21,11 +21,11 @@ namespace kk {
     
     void JITContext::strong(duk_context * ctx, void * heapptr, Object * object) {
         
-        auto i = _objectsWithHeapptr.find(heapptr);
+        auto i = _strongObjects.find(heapptr);
         
-        if(i == _objectsWithHeapptr.end()) {
+        if(i == _strongObjects.end()) {
             
-            _objectsWithHeapptr[heapptr] = object;
+            _strongObjects[heapptr] = object;
             
             auto n = _objectsWithObject.find(object);
             
@@ -36,23 +36,17 @@ namespace kk {
             
             n->second[ctx] = heapptr;
             
-        }
-        
-        auto n = _strongObjects.find(object);
-        
-        if(n == _strongObjects.end()) {
-            _strongObjects[object] = object;
         }
         
     }
     
     void JITContext::weak(duk_context * ctx, void * heapptr, Object * object) {
         
-        auto i = _objectsWithHeapptr.find(heapptr);
+        auto i = _weakObjects.find(heapptr);
         
-        if(i == _objectsWithHeapptr.end()) {
+        if(i == _weakObjects.end()) {
             
-            _objectsWithHeapptr[heapptr] = object;
+            _weakObjects[heapptr] = object;
             
             auto n = _objectsWithObject.find(object);
             
@@ -65,36 +59,35 @@ namespace kk {
             
         }
         
-        auto n = _weakObjects.find(object);
-        
-        if(n == _weakObjects.end()) {
-            _weakObjects[object] = object;
-        }
-        
     }
     
-    void JITContext::remove(duk_context * ctx,void * heapptr) {
+    void JITContext::remove(void * heapptr) {
         
-        auto i = _objectsWithHeapptr.find(heapptr);
-        
-        if(i != _objectsWithHeapptr.end()) {
-            Object * v = i->second;
-            auto n = _objectsWithObject.find(v);
-            if(n != _objectsWithObject.end()) {
-                auto m = n->second;
-                auto j = m.find(ctx);
-                if(j != m.end()) {
-                    m.erase(j);
-                    if(m.empty()) {
-                        _objectsWithObject.erase(n);
-                    }
+        {
+            auto i = _weakObjects.find(heapptr);
+            
+            if(i != _weakObjects.end()) {
+                Object * v = i->second;
+                auto n = _objectsWithObject.find(v);
+                if(n != _objectsWithObject.end()) {
+                    _objectsWithObject.erase(n);
                 }
+                _weakObjects.erase(i);
             }
-            _objectsWithHeapptr.erase(i);
-            _weakObjects.erase(v);
-            _strongObjects.erase(v);
         }
         
+        {
+            auto i = _strongObjects.find(heapptr);
+            
+            if(i != _strongObjects.end()) {
+                Object * v = i->second;
+                auto n = _objectsWithObject.find(v);
+                if(n != _objectsWithObject.end()) {
+                    _objectsWithObject.erase(n);
+                }
+                _strongObjects.erase(i);
+            }
+        }
     }
     
     void JITContext::remove(Object * object) {
@@ -107,37 +100,42 @@ namespace kk {
             auto n = m.begin();
             while (n != m.end()) {
                 void * v = n->second;
-                auto j = _objectsWithHeapptr.find(v);
-                if(j != _objectsWithHeapptr.end()) {
-                    _objectsWithHeapptr.erase(j);
+                {
+                    auto j = _weakObjects.find(v);
+                    if(j != _weakObjects.end()) {
+                        _weakObjects.erase(j);
+                    }
                 }
+                {
+                    auto j = _strongObjects.find(v);
+                    if(j != _strongObjects.end()) {
+                        _strongObjects.erase(j);
+                    }
+                }
+                
                 n ++;
             }
             
             _objectsWithObject.erase(i);
-            _weakObjects.erase(object);
-            _strongObjects.erase(object);
         }
         
     }
     
     Object * JITContext::get(void * heapptr) {
-        auto i = _objectsWithHeapptr.find(heapptr);
-        if(i != _objectsWithHeapptr.end()) {
-            Object * v = i->second;
-            if(_strongObjects.find(v) != _strongObjects.end()) {
-                return v;
-            }
-            std::map<Object *,Weak<Object>>::iterator i = _weakObjects.find(v);
-            if(i != _weakObjects.end()) {
-                v = i->second;
-                if(v == nullptr) {
-                    remove(v);
-                } else {
-                    return v;
-                }
+        
+        {
+            auto j = _weakObjects.find(heapptr);
+            if(j != _weakObjects.end()) {
+                return j->second;
             }
         }
+        {
+            auto j = _strongObjects.find(heapptr);
+            if(j != _strongObjects.end()) {
+                return j->second;
+            }
+        }
+        
         return nullptr;
     }
     
@@ -156,16 +154,25 @@ namespace kk {
         return nullptr;
     }
     
-    std::map<Object *, std::map<duk_context *,void *>>::iterator JITContext::find(Object * object) {
-        return _objectsWithObject.find(object);
+    void JITContext::forEach(Object * object,std::function<void(duk_context * ,void *)> && func) {
+        auto i = _objectsWithObject.find(object);
+        if(i != _objectsWithObject.end()) {
+            auto m = i->second;
+            auto j = m.begin();
+            while(j != m.end()) {
+                func(j->first,j->second);
+                j ++;
+            }
+        }
     }
     
+    
     JITContext * JITContext::current(){
-        thread_local std::shared_ptr<JITContext> v;
-        if(v.get() == nullptr) {
-            v = std::shared_ptr<JITContext>(new JITContext());
+        thread_local kk::Strong<JITContext> v;
+        if(v == nullptr) {
+            v = new JITContext();
         }
-        return v.get();
+        return v;
     }
     
     static std::list<std::function<void(duk_context *)>> _Openlibs;
@@ -186,7 +193,7 @@ namespace kk {
         
         void * heapptr = duk_get_heapptr(ctx, -1);
         
-        JITContext::current()->remove(ctx,heapptr);
+        JITContext::current()->remove(heapptr);
         
         return 0;
     }
@@ -250,13 +257,6 @@ namespace kk {
     
     void PushObject(duk_context * ctx, Object * object) {
         
-        void * heapptr = JITContext::current()->get(object, ctx);
-        
-        if(heapptr != nullptr) {
-            duk_push_heapptr(ctx, heapptr);
-            return;
-        }
-        
         {
             _Array * v = dynamic_cast<_Array *>(object);
             if(v != nullptr) {
@@ -286,6 +286,24 @@ namespace kk {
             }
         }
         
+        {
+            ArrayBuffer * v = dynamic_cast<ArrayBuffer *>(object);
+            if(v != nullptr) {
+                void * data = duk_push_fixed_buffer(ctx, v->byteLength());
+                memcpy(data, v->data(), v->byteLength());
+                duk_push_buffer_object(ctx, -1, 0, v->byteLength(), DUK_BUFOBJ_ARRAYBUFFER);
+                duk_remove(ctx, -2);
+                return;
+            }
+        }
+        
+        void * heapptr = JITContext::current()->get(object, ctx);
+        
+        if(heapptr != nullptr) {
+            duk_push_heapptr(ctx, heapptr);
+            return;
+        }
+        
         duk_push_object(ctx);
         SetObject(ctx, -1, object);
         
@@ -299,6 +317,35 @@ namespace kk {
     }
     
     void PushWeakObject(duk_context * ctx, Object * object) {
+        
+        {
+            _Array * v = dynamic_cast<_Array *>(object);
+            if(v != nullptr) {
+                duk_push_array(ctx);
+                duk_uarridx_t i = 0;
+                v->forEach([&i,ctx](Any & item) -> void {
+                    PushAny(ctx, item);
+                    duk_put_prop_index(ctx, -2, i);
+                    i ++;
+                });
+                return;
+            }
+        }
+        
+        {
+            _TObject * v = dynamic_cast<_TObject *>(object);
+            if(v != nullptr) {
+                duk_push_object(ctx);
+                v->forEach([ctx](Any & value,Any & key) -> void {
+                    CString sKey = key;
+                    if(sKey) {
+                        PushAny(ctx, value);
+                        duk_put_prop_string(ctx, -2, sKey);
+                    }
+                });
+                return;
+            }
+        }
         
         void * heapptr = JITContext::current()->get(object, ctx);
         
@@ -577,6 +624,19 @@ namespace kk {
                     a = new JSObject(ctx,duk_get_heapptr(ctx, idx));
                 }
                 v = a;
+            }
+                break;
+            case DUK_TYPE_BUFFER:
+            {
+                if(duk_is_buffer_data(ctx, idx)) {
+                    size_t n;
+                    void * data = duk_get_buffer_data(ctx, idx, &n);
+                    v = new ArrayBuffer(data,(kk::Uint) n);
+                } else {
+                    size_t n;
+                    void * data = duk_get_buffer(ctx, idx, &n);
+                    v = new ArrayBuffer(data,(kk::Uint) n);
+                }
             }
                 break;
             default:

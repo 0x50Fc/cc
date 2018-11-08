@@ -69,6 +69,17 @@ class Evaluate {
         this.keys = keys;
         this.evaluateScript = evaluateScript;
     }
+    exec(object) {
+        var vs = [];
+        for (let key of this.keys) {
+            let v = object[key[0]];
+            if (v === undefined) {
+                v = window[key[0]];
+            }
+            vs.push(v);
+        }
+        return this.evaluateScript.apply(undefined, vs);
+    }
 }
 exports.Evaluate = Evaluate;
 class KeyCallback {
@@ -79,8 +90,8 @@ class KeyCallback {
     }
     run(object, changedKeys) {
         var v;
-        if (this.evaluateScript !== undefined) {
-            v = this.evaluateScript(object);
+        if (this.evaluate !== undefined) {
+            v = this.evaluate.exec(object);
         }
         else if (this.keys !== undefined) {
             v = get(object, this.keys);
@@ -173,7 +184,7 @@ class KeyObserver {
         cb.priority = priority;
         if (keys instanceof Evaluate) {
             onKeys = keys.keys;
-            cb.evaluateScript = keys.evaluateScript;
+            cb.evaluate = keys;
         }
         else {
             cb.keys = keys;
@@ -181,9 +192,9 @@ class KeyObserver {
         }
         if (onKeys.length == 0) {
             var vv;
-            if (cb.evaluateScript !== undefined) {
+            if (cb.evaluate !== undefined) {
                 try {
-                    vv = cb.evaluateScript(object);
+                    vv = cb.evaluate.exec(object);
                 }
                 catch (e) {
                     console.info("[ERROR] " + e);
@@ -211,7 +222,7 @@ class Data {
     get(keys) {
         return get(this.object, keys);
     }
-    set(keys, value, changed = false) {
+    set(keys, value, changed = true) {
         set(this.object, keys, value);
         if (changed === true) {
             this.changedKeys(keys);
@@ -240,7 +251,6 @@ class Data {
             for (var key in parent.object) {
                 this.object[key] = parent.object[key];
             }
-            this.changedKeys([]);
         }
     }
     recycle() {
@@ -255,7 +265,7 @@ class Data {
         v = v.replace(/(\'.*?\')|(\".*?\")/g, '');
         v = v.replace(/\".*?\"/g, '');
         v.replace(/[a-zA-Z_][0-9a-zA-Z\\._]*/g, (name) => {
-            if (name && !name.startsWith("_")) {
+            if (!/(true)|(false)|(null)|(undefined)|(NaN)/i.test(name)) {
                 keys.push(name.split("."));
             }
             return '';
@@ -263,7 +273,7 @@ class Data {
     }
     static evaluateScript(evaluateScript) {
         let keys = [];
-        let code = ['(function(object){ var _G = {}; try { with(object) { _G.ret = '];
+        let code = [];
         var idx = 0;
         var count = 0;
         evaluateScript.replace(/\{\{(.*?)\}\}/g, (text, exaluate, index) => {
@@ -282,18 +292,21 @@ class Data {
             code.push(exaluate);
             code.push(")");
             count++;
-            idx = index;
+            idx = index + text.length;
             return '';
         });
         if (evaluateScript.length > idx && count != 0) {
             code.push("+");
             code.push(JSON.stringify(evaluateScript.substr(idx)));
         }
-        code.push('; } } catch(e) {  } return _G.ret; } )');
         if (count == 0) {
             return undefined;
         }
-        return new Evaluate(keys, eval(code.join('')));
+        let args = [];
+        for (let key of keys) {
+            args.push(key[0]);
+        }
+        return new Evaluate(keys, eval('(function(' + args.join(',') + '){ return ' + code.join('') + '; })'));
     }
 }
 exports.Data = Data;

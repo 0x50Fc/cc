@@ -12,45 +12,22 @@ namespace kk {
     
     namespace ui {
     
-        App::App(kk::CString basePath):Context(basePath,kk::mainDispatchQueue()) {
+        App::App(kk::CString basePath,kk::CString platform):Context(basePath,kk::mainDispatchQueue()) {
 
             duk_context * ctx = jsContext();
             
             PushWeakObject(ctx, this);
             duk_put_global_string(ctx, "app");
             
+            duk_push_string(ctx, platform);
+            duk_put_global_string(ctx, "platform");
+            
         }
         
         App::~App() {
-            
             kk::Log("[App] [dealloc]");
         }
-        
-        Context * App::getContext(kk::CString path,kk::CString queue) {
-            auto i = _contexts.find(path);
-            if(i != _contexts.end()) {
-                return i->second;
-            }
-            kk::String basePath = this->basePath();
-            if(!basePath.endsWith("/")) {
-                basePath.append("/");
-            }
-            basePath.append(path);
-            Context * v = new Context(basePath.c_str(),this->queue(queue));
-            _contexts[path] = v;
-            return v;
-        }
-        
-        DispatchQueue * App::queue(kk::CString name) {
-            auto i = _queues.find(name);
-            if(i != _queues.end()) {
-                return i->second;
-            }
-            DispatchQueue * v = createDispatchQueue(name, DispatchQueueTypeSerial);
-            _queues[name] = v;
-            return v;
-        }
-
+       
         void App::open(kk::CString uri,kk::Boolean animated) {
             if(uri == nullptr) {
                 return;
@@ -70,10 +47,6 @@ namespace kk {
             kk::Openlib<>::add([](duk_context * ctx)->void{
                 
                 kk::PushInterface<App>(ctx, [](duk_context * ctx)->void{
-                    
-                    kk::PutMethod<App,Context *,kk::CString,kk::CString>(ctx, -1, "getContext", &App::getContext);
-                    
-                    kk::PutMethod<App,DispatchQueue *,kk::CString>(ctx, -1, "queue", &App::queue);
                     
                     kk::PutMethod<App,void,kk::CString,kk::Boolean>(ctx, -1, "open", &App::open);
                 

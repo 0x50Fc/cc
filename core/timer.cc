@@ -2,7 +2,7 @@
 //  timer.cc
 //  KK
 //
-//  Created by hailong11 on 2018/10/31.
+//  Created by zhanghailong on 2018/10/31.
 //  Copyright © 2018年 kkmofang.cn. All rights reserved.
 //
 
@@ -45,25 +45,25 @@ namespace kk {
     
     void Timer::Openlib() {
         
-        kk::Openlib<TimerSource *>::add([](duk_context * ctx, TimerSource * source)->void {
+        kk::Openlib<Container *>::add([](duk_context * ctx, Container * container)->void {
             
-            Weak<Object> s = dynamic_cast<Object *>(source);
+            Weak<Object> s = dynamic_cast<Object *>(container);
             
             PushFunction(ctx, new TFunction<kk::Uint64, JSObject *,kk::Int>([s](JSObject * func,kk::Int tv)->kk::Uint64{
                 
                 kk::Strong<Object> o = s.operator->();
                 
-                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
+                Container * container = dynamic_cast<Container *>(o.get());
                 
-                if(source != nullptr) {
+                if(container != nullptr) {
                     kk::Strong<JSObject> fn = func;
-                    Timer * v = new Timer(source->queue(),tv,0);
-                    v->setEvent([fn,source,v]()->void{
+                    Timer * v = new Timer(container->queue(),tv,0);
+                    v->setEvent([fn,container,v]()->void{
                         fn->invoke<void>(nullptr);
                         v->cancel();
-                        source->remove(v);
+                        container->remove(v);
                     });
-                    source->set(v);
+                    container->set(v);
                     v->resume();
                     return (kk::Uint64) v;
                 }
@@ -77,15 +77,15 @@ namespace kk {
                 
                 kk::Strong<Object> o = s.operator->();
                 
-                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
+                Container * container = dynamic_cast<Container *>(o.get());
                 
-                if(source != nullptr && id != 0) {
+                if(container != nullptr && id != 0) {
                     
-                    Timer * v = dynamic_cast<Timer *>(source->get((kk::Object *) id));
+                    Timer * v = dynamic_cast<Timer *>(container->get((kk::Object *) id));
                     
                     if(v != nullptr) {
                         v->cancel();
-                        source->remove(v);
+                        container->remove(v);
                     }
                     
                 }
@@ -98,17 +98,17 @@ namespace kk {
                 
                 kk::Strong<Object> o = s.operator->();
                 
-                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
+                Container * container = dynamic_cast<Container *>(o.get());
                 
-                if(source != nullptr) {
+                if(container != nullptr) {
                     kk::Strong<JSObject> fn = func;
-                    Timer * v = new Timer(source->queue(),tv,tv);
+                    Timer * v = new Timer(container->queue(),tv,tv);
                     v->setEvent([fn]()->void{
                         kk::Strong<JSObject> & func = (kk::Strong<JSObject> &) fn;
                         func->invoke<void>(nullptr);
                     });
-                    source->set(v);
-                                v->resume();
+                    container->set(v);
+                    v->resume();
                     return (kk::Uint64) v;
                 }
                 
@@ -121,15 +121,15 @@ namespace kk {
                 
                 kk::Strong<Object> o = s.operator->();
                 
-                TimerSource * source = dynamic_cast<TimerSource *>(o.get());
+                Container * container = dynamic_cast<Container *>(o.get());
                 
-                if(source != nullptr && id != 0) {
+                if(container != nullptr && id != 0) {
                     
-                    Timer * v = dynamic_cast<Timer *>(source->get((kk::Object *) id));
+                    Timer * v = dynamic_cast<Timer *>(container->get((kk::Object *) id));
                     
                     if(v != nullptr) {
                         v->cancel();
-                        source->remove(v);
+                        container->remove(v);
                     }
                     
                 }

@@ -2,14 +2,14 @@ import { int } from "./declare";
 
 export class IObject {
 
-    [key:string]:any;
+    [key: string]: any;
 
-    get(key:string):any {
+    get(key: string): any {
         return this[key];
     }
-    
-    set(key:string,value:any):void {
-        if(value === undefined) {
+
+    set(key: string, value: any): void {
+        if (value === undefined) {
             delete this[key];
         } else {
             this[key] = value;
@@ -17,7 +17,7 @@ export class IObject {
     }
 }
 
-export function get(object:any,keys:string[],index:number = 0):any {
+export function get(object: any, keys: string[], index: number = 0): any {
 
     if (index < keys.length) {
 
@@ -35,8 +35,8 @@ export function get(object:any,keys:string[],index:number = 0):any {
     }
 }
 
-export function set(object:any,keys:string[],value:any,index:number = 0):void {
-    
+export function set(object: any, keys: string[], value: any, index: number = 0): void {
+
     if (typeof object != 'object') {
         return;
     }
@@ -74,79 +74,95 @@ export function set(object:any,keys:string[],value:any,index:number = 0):void {
     }
 }
 
-export type DataFunction = (value:any,changedKeys:string[])=>void;
+export type DataFunction = (value: any, changedKeys: string[]) => void;
 
-type EvaluateScript = (object:any) => any;
+type EvaluateScript = any;
+
+
+interface TObject {
+    [key:string]:any
+}
 
 export class Evaluate {
-    evaluateScript:EvaluateScript;
-    keys:string[][];
-    constructor(keys:string[][],evaluateScript:EvaluateScript) {
+    evaluateScript: EvaluateScript;
+    keys: string[][];
+    constructor(keys: string[][], evaluateScript: EvaluateScript) {
         this.keys = keys;
         this.evaluateScript = evaluateScript;
+    }
+    exec(object: any): any {
+        var vs = [];
+        for (let key of this.keys) {
+            let v = object[key[0]];
+            if(v === undefined) {
+                v = (window as TObject)[key[0]];
+            }
+            vs.push(v);
+        }
+        return this.evaluateScript.apply(undefined, vs);
     }
 }
 
 
 class KeyCallback {
 
-    hasChildren:boolean = false;
-    keys:string[] | undefined;
-    priority:number = 0;
-    evaluateScript:EvaluateScript | undefined;
-    func:DataFunction;
+    hasChildren: boolean = false;
+    keys: string[] | undefined;
+    priority: number = 0;
+    evaluate: Evaluate | undefined;
+    func: DataFunction;
 
-    constructor(func:DataFunction) {
+    constructor(func: DataFunction) {
         this.func = func;
     }
 
-    run(object:any,changedKeys:string[]):void {
+    run(object: any, changedKeys: string[]): void {
 
-        var v:any;
+        var v: any;
 
-        if(this.evaluateScript !== undefined) {
-            v = this.evaluateScript(object);
-        } else if(this.keys !== undefined){
-            v = get(object,this.keys);
+        if (this.evaluate !== undefined) {
+            v = this.evaluate.exec(object);
+        } else if (this.keys !== undefined) {
+            v = get(object, this.keys);
         }
 
-        this.func(v,changedKeys);
+        this.func(v, changedKeys);
     }
 
 }
 
 interface KeyObserverMap {
-    [key:string]:KeyObserver
+    [key: string]: KeyObserver
 }
 
 class KeyObserver {
-    children:KeyObserverMap = {};
-    callbacks:KeyCallback[] = [];
-    add(keys:string[],callback:KeyCallback,index:int):void {
-        if(index < keys.length) {
+    children: KeyObserverMap = {};
+    callbacks: KeyCallback[] = [];
+    add(keys: string[], callback: KeyCallback, index: int): void {
+        if (index < keys.length) {
             let key = keys[index];
             var ch = this.children[key];
-            if(ch === undefined) {
+            if (ch === undefined) {
                 ch = new KeyObserver();
                 this.children[key] = ch;
             }
-            ch.add(keys,callback,index + 1);
+            ch.add(keys, callback, index + 1);
         } else {
             this.callbacks.push(callback);
         }
     }
-    remove(keys:string[],func:DataFunction|undefined,index:int):void {
-        if(func === undefined) {
+    remove(keys: string[], func: DataFunction | undefined, index: int): void {
+        if (func === undefined) {
             this.children = {};
             this.callbacks = [];
-        } else if(index < keys.length) {
+        } else if (index < keys.length) {
             let key = keys[index];
             let ch = this.children[key];
-            if(ch !== undefined) {
-                ch.remove(keys,func,index + 1);
+            if (ch !== undefined) {
+                ch.remove(keys, func, index + 1);
             }
         } else {
-            let cbs:KeyCallback[] = [];
+            let cbs: KeyCallback[] = [];
             for (let cb of this.callbacks) {
                 if (cb.func != func) {
                     cbs.push(cb);
@@ -159,21 +175,21 @@ class KeyObserver {
             }
         }
     }
-    change(keys:string[],callbacks:KeyCallback[],index:int):void {
-        if(index < keys.length) {
+    change(keys: string[], callbacks: KeyCallback[], index: int): void {
+        if (index < keys.length) {
             let key = keys[index];
             let ch = this.children[key];
-            if(ch !== undefined) {
-                ch.change(keys,callbacks,index + 1);
+            if (ch !== undefined) {
+                ch.change(keys, callbacks, index + 1);
             }
 
-            for(let cb of this.callbacks) {
-                if(cb.hasChildren) {
+            for (let cb of this.callbacks) {
+                if (cb.hasChildren) {
                     callbacks.push(cb);
                 }
             }
         } else {
-            for(let cb of this.callbacks) {
+            for (let cb of this.callbacks) {
                 callbacks.push(cb);
             }
             for (let key in this.children) {
@@ -182,94 +198,94 @@ class KeyObserver {
             }
         }
     }
-    changedKeys(object:any,keys:string[]):void {
+    changedKeys(object: any, keys: string[]): void {
 
-        let callbacks:KeyCallback[] = [];
-        this.change(keys,callbacks,0);
-        callbacks.sort((a:KeyCallback,b:KeyCallback):number=>{
+        let callbacks: KeyCallback[] = [];
+        this.change(keys, callbacks, 0);
+        callbacks.sort((a: KeyCallback, b: KeyCallback): number => {
             return a.priority - b.priority;
         });
-        for(let cb of callbacks) {
-            cb.run(object,keys);
+        for (let cb of callbacks) {
+            cb.run(object, keys);
         }
     }
-    on(object:any,keys:string[]|Evaluate,func:DataFunction,hasChildren:boolean = false,priority:number = 0):void {
-        let onKeys:string[][] = [];
+    on(object: any, keys: string[] | Evaluate, func: DataFunction, hasChildren: boolean = false, priority: number = 0): void {
+        let onKeys: string[][] = [];
         let cb = new KeyCallback(func);
         cb.hasChildren = hasChildren;
         cb.priority = priority;
 
-        if(keys instanceof Evaluate) {
+        if (keys instanceof Evaluate) {
             onKeys = keys.keys;
-            cb.evaluateScript = keys.evaluateScript;
+            cb.evaluate = keys;
         } else {
             cb.keys = keys;
             onKeys.push(keys);
         }
 
-        if(onKeys.length == 0) {
-            
-            var vv:any;
+        if (onKeys.length == 0) {
 
-            if(cb.evaluateScript !== undefined) {
+            var vv: any;
+
+            if (cb.evaluate !== undefined) {
                 try {
-                    vv = cb.evaluateScript(object);
+                    vv = cb.evaluate.exec(object);
                 } catch (e) {
                     console.info("[ERROR] " + e);
                 }
             }
-            
+
             if (vv !== undefined) {
-                func(vv,[]);
+                func(vv, []);
             }
         } else {
-            for(let ks of onKeys) {
-                this.add(ks,cb,0);
+            for (let ks of onKeys) {
+                this.add(ks, cb, 0);
             }
         }
     }
-    off(keys:string[],func:DataFunction|undefined):void {
-        this.remove(keys,func,0);
+    off(keys: string[], func: DataFunction | undefined): void {
+        this.remove(keys, func, 0);
     }
 }
 
 export class Data {
 
-    private _parent:Data|undefined;
-    private _parentFunc:DataFunction|undefined;
-    private _keyObserver:KeyObserver = new KeyObserver();
+    private _parent: Data | undefined;
+    private _parentFunc: DataFunction | undefined;
+    private _keyObserver: KeyObserver = new KeyObserver();
 
-    public object:any = {};
+    public object: any = {};
 
-    public get(keys:string[]):any {
-        return get(this.object,keys);
+    public get(keys: string[]): any {
+        return get(this.object, keys);
     }
 
-    public set(keys:string[],value:any,changed:boolean=false):void {
-        set(this.object,keys,value);
-        if(changed === true) {
+    public set(keys: string[], value: any, changed: boolean = true): void {
+        set(this.object, keys, value);
+        if (changed === true) {
             this.changedKeys(keys);
         }
     }
 
-    public changedKeys(keys:string[]):void {
+    public changedKeys(keys: string[]): void {
         this._keyObserver.changedKeys(this.object, keys);
     }
-    
-    public on(keys:string[]|Evaluate, func:DataFunction,hasChildren:boolean = false,priority:number = 0):void {
+
+    public on(keys: string[] | Evaluate, func: DataFunction, hasChildren: boolean = false, priority: number = 0): void {
         this._keyObserver.on(this.object, keys, func, hasChildren, priority);
     }
 
-    public off(keys:string[],func:((value:any,changedKeys:string[])=>void) | undefined):void {
-        this._keyObserver.off(keys,func);
+    public off(keys: string[], func: ((value: any, changedKeys: string[]) => void) | undefined): void {
+        this._keyObserver.off(keys, func);
     }
 
-    public setParent(parent:Data|undefined) {
+    public setParent(parent: Data | undefined) {
         this.recycle();
-        if(parent !== undefined) {
+        if (parent !== undefined) {
             this._parent = parent;
             let data = this;
-            this._parentFunc = function (value:any, keys:string[]) {
+            this._parentFunc = function (value: any, keys: string[]) {
                 if (value !== undefined) {
                     data.set(keys, get(value, keys));
                 }
@@ -278,19 +294,18 @@ export class Data {
             for (var key in parent.object) {
                 this.object[key] = parent.object[key];
             }
-            this.changedKeys([]);
         }
     }
 
-    public recycle():void {
-        if(this._parent !== undefined) {
-            this._parent.off([],this._parentFunc);
+    public recycle(): void {
+        if (this._parent !== undefined) {
+            this._parent.off([], this._parentFunc);
             this._parent = undefined;
             this._parentFunc = undefined;
         }
     }
 
-    public static evaluateKeys(evaluate:string,keys:string[][]):void {
+    public static evaluateKeys(evaluate: string, keys: string[][]): void {
 
         var v = evaluate.replace(/(\\\')|(\\\")/g, '');
 
@@ -298,9 +313,9 @@ export class Data {
 
         v = v.replace(/\".*?\"/g, '');
 
-        v.replace(/[a-zA-Z_][0-9a-zA-Z\\._]*/g, (name:string):string => {
+        v.replace(/[a-zA-Z_][0-9a-zA-Z\\._]*/g, (name: string): string => {
 
-            if (name && !name.startsWith("_")) {
+            if (!/(true)|(false)|(null)|(undefined)|(NaN)/i.test(name)) {
                 keys.push(name.split("."));
             }
 
@@ -309,51 +324,55 @@ export class Data {
 
     }
 
-    public static evaluateScript(evaluateScript:string):Evaluate|undefined {
-        
-        let keys:string[][] = [];
-        let code:string[] = ['(function(object){ var _G = {}; try { with(object) { _G.ret = '];
-        
+    public static evaluateScript(evaluateScript: string): Evaluate | undefined {
+
+        let keys: string[][] = [];
+        let code: string[] = [];
+
         var idx = 0;
         var count = 0;
 
-        evaluateScript.replace(/\{\{(.*?)\}\}/g,(text,exaluate,index):string=>{
+        evaluateScript.replace(/\{\{(.*?)\}\}/g, (text, exaluate, index): string => {
 
-            if(index > idx) {
-                if(count != 0) {
+            if (index > idx) {
+                if (count != 0) {
                     code.push("+");
                 }
-                code.push(JSON.stringify(evaluateScript.substr(idx,index - idx)));
-                count ++;
+                code.push(JSON.stringify(evaluateScript.substr(idx, index - idx)));
+                count++;
             }
 
-            Data.evaluateKeys(exaluate,keys);
+            Data.evaluateKeys(exaluate, keys);
 
-            if(count != 0) {
+            if (count != 0) {
                 code.push("+");
             }
 
             code.push("(");
             code.push(exaluate);
             code.push(")");
-            count ++;
+            count++;
 
-            idx = index;
+            idx = index + text.length;
 
             return '';
         });
 
-        if(evaluateScript.length > idx && count != 0) {
+        if (evaluateScript.length > idx && count != 0) {
             code.push("+");
             code.push(JSON.stringify(evaluateScript.substr(idx)));
         }
 
-        code.push('; } } catch(e) {  } return _G.ret; } )');
-
-        if(count == 0) {
+        if (count == 0) {
             return undefined;
         }
 
-        return new Evaluate(keys,eval(code.join('')));
+        let args: string[] = [];
+
+        for (let key of keys) {
+            args.push(key[0]);
+        }
+
+        return new Evaluate(keys, eval('(function(' + args.join(',') + '){ return ' + code.join('') + '; })'));
     }
 }

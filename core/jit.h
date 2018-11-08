@@ -24,16 +24,15 @@ namespace kk {
         virtual ~JITContext();
         virtual void strong(duk_context * ctx, void * heapptr, Object * object);
         virtual void weak(duk_context * ctx, void * heapptr, Object * object);
-        virtual void remove(duk_context * ctx,void * heapptr);
+        virtual void remove(void * heapptr);
         virtual void remove(Object * object);
         virtual Object * get(void * heapptr);
         virtual void * get(Object * object,duk_context * ctx);
-        virtual std::map<Object *, std::map<duk_context *,void *>>::iterator find(Object * object);
+        virtual void forEach(Object * object,std::function<void(duk_context * ,void *)> && func);
         static JITContext * current();
     protected:
-        std::map<Object *,Weak<Object>> _weakObjects;
-        std::map<Object *,Strong<Object>> _strongObjects;
-        std::map<void *,Object *> _objectsWithHeapptr;
+        std::map<void *,Weak<Object>> _weakObjects;
+        std::map<void *,Strong<Object>> _strongObjects;
         std::map<Object *, std::map<duk_context *,void *>> _objectsWithObject;
     };
     
@@ -241,6 +240,30 @@ namespace kk {
             
             if(func) {
                 std::function<TReturn(TArgs...)> v(func);
+                return Call(std::move(v),ctx);
+            }
+            return 0;
+        };
+        duk_push_c_function(ctx, fn, sizeof...(TArgs));
+        {
+            duk_push_pointer(ctx, (void *) func);
+            duk_put_prop_string(ctx, -2, "__func");
+        }
+    }
+    
+    template<typename T,typename ... TArgs>
+    void PushStrongFunction(duk_context * ctx, kk::Strong<T> (*func) (TArgs ...)) {
+        auto fn = [](duk_context * ctx) -> duk_ret_t {
+            duk_push_current_function(ctx);
+            duk_get_prop_string(ctx, -1, "__func");
+            kk::Strong<T>(*func)(TArgs ...) = (kk::Strong<T>(*)(TArgs ...)) duk_to_pointer(ctx, -1);
+            duk_pop_2(ctx);
+            
+            if(func) {
+                std::function<kk::Any(TArgs...)> v([func](TArgs ... args) -> kk::Any{
+                    kk::Strong<T> v = (*func)(args...);
+                    return Any(v.get());
+                });
                 return Call(std::move(v),ctx);
             }
             return 0;

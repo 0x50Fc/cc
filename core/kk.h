@@ -56,16 +56,7 @@ namespace kk {
         TypeString,
     };
     
-    class String : public std::string {
-    public:
-        using std::string::string;
-        virtual kk::Boolean startsWith(kk::CString v);
-        virtual kk::Boolean endsWith(kk::CString v);
-        virtual String substr(kk::Int i,size_t length);
-        virtual String substr(kk::Int i);
-        static kk::Boolean startsWith(kk::CString a,kk::CString v);
-        static kk::Boolean endsWith(kk::CString a,kk::CString v);
-    };
+    typedef std::string String;
     
     struct Class {
         const Class * isa;
@@ -126,10 +117,23 @@ static const kk::Class * Class() { \
         std::queue<Object *> _objects;
     };
     
+    class ArrayBuffer : public Object {
+    public:
+        ArrayBuffer(void * data,kk::Uint size);
+        ArrayBuffer(kk::Uint size);
+        virtual ~ArrayBuffer();
+        virtual kk::Uint byteLength();
+        virtual void * data();
+    protected:
+        void * _data;
+        kk::Uint _size;
+    };
+    
     class Ref {
     public:
         Ref();
         virtual Object * get();
+    protected:
         virtual void set(Object * object) = 0;
     protected:
         Object * _object;
@@ -150,15 +154,6 @@ static const kk::Class * Class() { \
                 _object->release();
             }
         }
-        virtual void set(Object * object) {
-            if(object) {
-                object->retain();
-            }
-            if(_object) {
-                _object->release();
-            }
-            _object = object;
-        }
         bool operator==(std::nullptr_t v) {
             return _object == v;
         }
@@ -174,17 +169,27 @@ static const kk::Class * Class() { \
             return *this;
         }
         operator T*() {
-            return (T *) _object;
+            return dynamic_cast<T *>(_object);
         }
         T * operator->() const {
-            return (T *) _object;
+            return dynamic_cast<T *>(_object);
         }
         T & operator * () const {
-            return * (T *) _object;
+            return * dynamic_cast<T *>(_object);
         }
         template<class TT>
         operator TT*() {
             return dynamic_cast<TT *>(_object);
+        }
+    protected:
+        virtual void set(Object * object) {
+            if(object) {
+                object->retain();
+            }
+            if(_object) {
+                _object->release();
+            }
+            _object = object;
         }
     };
     
@@ -203,15 +208,6 @@ static const kk::Class * Class() { \
                 _object->unWeak(&_object);
             }
         }
-        virtual void set(Object * object) {
-            if(_object != nullptr) {
-                _object->unWeak(&_object);
-            }
-            if(object != nullptr) {
-                object->weak(&_object);
-            }
-            _object = object;
-        }
         bool operator==(std::nullptr_t v) {
             return _object == v;
         }
@@ -227,17 +223,27 @@ static const kk::Class * Class() { \
             return *this;
         }
         operator T*() {
-            return (T *) _object;
+            return dynamic_cast<T *>(_object);
         }
         T * operator->() const {
-            return (T *) _object;
+            return dynamic_cast<T *>(_object);
         }
         T & operator * () const {
-            return * (T *) _object;
+            return * dynamic_cast<T *>(_object);
         }
         template<class TT>
         operator TT*() {
             return dynamic_cast<TT *>(_object);
+        }
+    protected:
+        virtual void set(Object * object) {
+            if(_object != nullptr) {
+                _object->unWeak(&_object);
+            }
+            if(object != nullptr) {
+                object->weak(&_object);
+            }
+            _object = object;
         }
     };
     
@@ -258,6 +264,11 @@ static const kk::Class * Class() { \
         }
     private:
         std::function<T(TArgs ...)> _func;
+    };
+    
+    class Copying {
+    public:
+        virtual kk::Strong<Object> copy() = 0;
     };
     
     class Any {
@@ -355,6 +366,8 @@ static const kk::Class * Class() { \
             return dynamic_cast<T *>(objectValue.get());
         }
         
+        Any copy();
+        
     protected:
         virtual void reset();
         virtual CString sprintf(CString format,...);
@@ -446,6 +459,20 @@ static const kk::Class * Class() { \
     void LogV(const char * format, va_list va);
     
     void Log(const char * format, ...);
+    
+    
+    Boolean CStringHasPrefix(CString string,CString prefix);
+    Boolean CStringHasSuffix(CString string,CString suffix);
+    Boolean CStringEqual(CString string,CString value);
+    size_t CStringLength(CString string);
+    void CStringSplit(CString string,CString delim, std::vector<String>& items);
+    void CStringSplit(CString string,CString delim, std::set<String>& items);
+    String CStringJoin(std::vector<String>& items,CString delim);
+    String CStringJoin(std::set<String>& items,CString delim);
+    String& CStringTrim(String& string);
+    String CStringPathAppend(CString basePath,CString path);
+    String CStringPathDeleteLast(CString path);
+    String CStringPathDeleteExtension(CString path);
     
 }
 

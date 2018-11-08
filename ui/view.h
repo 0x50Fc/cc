@@ -22,12 +22,22 @@ namespace kk {
         
         class Canvas : public EventEmitter {
         public:
+            Canvas(DispatchQueue * queue);
             virtual Strong<Object> getContext(kk::CString name) = 0;
-            virtual Uint width() = 0;
-            virtual void setWidth(Uint v) = 0;
-            virtual Uint height() = 0;
-            virtual void setHeight(Uint v) = 0;
+            virtual Uint width();
+            virtual void setWidth(Uint v);
+            virtual Uint height();
+            virtual void setHeight(Uint v);
             virtual Strong<Image> toImage() = 0;
+            virtual DispatchQueue * queue();
+            
+            KK_CLASS(Canvas, EventEmitter, "UICanvas");
+            
+            static void Openlib();
+        protected:
+            kk::Strong<DispatchQueue> _queue;
+            kk::Uint _width;
+            kk::Uint _height;
         };
         
         kk::Strong<Canvas> createCanvas();
@@ -52,7 +62,7 @@ namespace kk {
             virtual void setContentSize(Float width,Float height);
             virtual void setContentOffset(Point & offset) = 0;
             virtual Point contentOffset() = 0;
-            virtual void createCanvas(std::function<void(Canvas *)> && func,DispatchQueue * queue) = 0;
+            virtual kk::Strong<Canvas> createCanvas(Worker * worker) = 0;
             virtual void addSubview(View * view,SubviewPosition position);
             virtual void removeView();
             virtual kk::Strong<View> obtainView(kk::CString reuse);

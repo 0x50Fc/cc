@@ -2,7 +2,7 @@
 //  KKObject.h
 //  KK
 //
-//  Created by hailong11 on 2018/11/2.
+//  Created by zhanghailong on 2018/11/2.
 //  Copyright © 2018 kkmofang.cn. All rights reserved.
 //
 

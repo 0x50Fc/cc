@@ -62,7 +62,7 @@ namespace kk {
             
             if(string != nullptr) {
                 
-                if(kk::String::startsWith(string, "rgba(")) {
+                if(kk::CStringHasPrefix(string, "rgba(")) {
 #ifdef KK_UI_FLOAT64
                     sscanf(string, "rgba(%lf,%lf,%lf,%lf)",&r,&g,&b,&a);
 #else
@@ -72,7 +72,7 @@ namespace kk {
                     g = g / 255.0f;
                     b = b / 255.0f;
                     
-                } else if(kk::String::startsWith(string, "rgb(")) {
+                } else if(kk::CStringHasPrefix(string, "rgb(")) {
                     
 #ifdef KK_UI_FLOAT64
                     sscanf(string, "rgba(%lf,%lf,%lf)",&r,&g,&b);
@@ -84,7 +84,7 @@ namespace kk {
                     b = b / 255.0f;
                     a = 1.0f;
                     
-                } else if(kk::String::startsWith(string, "#")) {
+                } else if(kk::CStringHasPrefix(string, "#")) {
                     
                     size_t n = strlen(string);
                     
@@ -122,11 +122,115 @@ namespace kk {
             
         }
         
+        Font::Font(kk::CString v):Font() {
+            std::vector<kk::String> items;
+            kk::CStringSplit(v, " ", items);
+            auto i = items.begin();
+            while(i != items.end()) {
+                kk::String & v = * i;
+                if(CStringHasSuffix(v.c_str(), "px")) {
+                    size = atof(v.c_str());
+                } else if(v == "bold") {
+                    weight = FontWeightBold;
+                } else if(v == "italic") {
+                    style = FontStyleItalic;
+                } else {
+                    family = v;
+                }
+                i ++;
+            }
+        }
+        
         Color::Color(kk::Uint v):Color() {
             r = (0x0ff & (v >> 24)) / 255.0;
             g = (0x0ff & (v >> 16)) / 255.0;
             b = (0x0ff & (v >> 8)) / 255.0;
             a = (0x0ff & (v )) / 255.0;
+        }
+        
+        TextAlign TextAlignFromString(kk::CString v) {
+            TextAlign r = TextAlignLeft;
+            if(kk::CStringEqual(v, "start")) {
+                r = TextAlignStart;
+            } else if(kk::CStringEqual(v, "end")) {
+                r = TextAlignEnd;
+            } else if(kk::CStringEqual(v, "center")) {
+                r = TextAlignCenter;
+            } else if(kk::CStringEqual(v, "right")) {
+                r = TextAlignRight;
+            }
+            return r;
+        }
+
+        TextBaseline TextBaselineFromString(kk::CString v) {
+            TextBaseline r = TextBaselineAlphabetic;
+            if(kk::CStringEqual(v, "top")) {
+                r = TextBaselineTop;
+            } else if(kk::CStringEqual(v, "hanging")) {
+                r = TextBaselineHanging;
+            } else if(kk::CStringEqual(v, "middle")) {
+                r = TextBaselineMiddle;
+            } else if(kk::CStringEqual(v, "ideographic")) {
+                r = TextBaselineIdeographic;
+            } else if(kk::CStringEqual(v, "bottom")) {
+                r = TextBaselineBottom;
+            }
+            return r;
+        }
+
+        Transform TransformIdentity = {
+            1,0,
+            0,1,
+            0,0
+        };
+        
+        Transform TransformTranslate(Transform t, Float tx, Float ty) {
+            return {
+                t.a,t.b,
+                t.c,t.d,
+                t.tx + tx,t.ty + ty
+            };
+        }
+        
+        Transform TransformScale(Transform t, Float sx, Float sy) {
+            return {
+                t.a * sx,t.b,
+                t.c,t.d * sy,
+                t.tx,t.ty
+            };
+        }
+        
+        Transform TransformRotate(Transform t, Float a) {
+            Float ca = cos(a);
+            Float sa = sin(a);
+            return {
+                t.a + ca,t.b + sa,
+                t.c - sa,t.d + ca,
+                t.tx,t.ty
+            };
+        }
+        
+        Transform TransformFromString(kk::CString v) {
+            Transform r = TransformIdentity;
+            std::vector<kk::String> items;
+            kk::CStringSplit(v, " ", items);
+            char x[64],y[64];
+            auto i = items.begin();
+            while(i != items.end()) {
+                kk::String & v = * i;
+                if(kk::CStringHasPrefix(v.c_str(), "translate(")) {
+                    sscanf(v.c_str(), "translate(%[^\\,\\)]63s,%[^\\,\\)]63s)",x,y);
+                    r = TransformTranslate(r, atof(x), atof(y));
+                } else if(kk::CStringHasPrefix(v.c_str(), "scale(")) {
+                    sscanf(v.c_str(), "scale(%[^\\,\\)]63s,%[^\\,\\)]63s)",x,y);
+                    r = TransformScale(r, atof(x), atof(y));
+                } else if(kk::CStringHasPrefix(v.c_str(), "rotate(")) {
+                    sscanf(v.c_str(), "rotate(%[^\\,\\)]63s)",x);
+                    r = TransformRotate(r, atof(x) * M_PI / 180.0 );
+                }
+                i ++;
+            }
+            return r;
         }
         
         static void Context_duk_fatal_function(void *udata, const char *msg) {
@@ -136,7 +240,7 @@ namespace kk {
         Context::Context(kk::CString basePath,kk::DispatchQueue * queue):EventEmitter(), _basePath(basePath),_queue(queue) {
             _jsContext = duk_create_heap(nullptr, nullptr, nullptr, nullptr, Context_duk_fatal_function);
             kk::Openlib<>::openlib(_jsContext);
-            kk::Openlib<kk::TimerSource *>::openlib(_jsContext, this);
+            kk::Openlib<kk::Container *>::openlib(_jsContext, this);
         }
         
         void Context::set(kk::Object * object) {
@@ -198,7 +302,7 @@ namespace kk {
             
             kk::String v = _basePath;
             
-            if(!v.endsWith("/")) {
+            if(!kk::CStringHasSuffix(v.c_str(),"/")) {
                 v.append("/");
             }
             
@@ -337,6 +441,145 @@ namespace kk {
             
         }
         
+        Worker::Worker(Context * main,kk::CString path):_main(main),_context(nullptr),_queue(nullptr) {
+            
+            _queue = createDispatchQueue("kk::ui::Worker", DispatchQueueTypeSerial);
+            _queue->retain();
+            
+            kk::String p = path;
+            
+            kk::Weak<Worker> weak = this;
+            
+            _queue->sync([this,p,main,weak]()->void{
+                
+                Context * v = this->_context = new Context(main->basePath(),this->_queue);
+                
+                v->retain();
+                
+                duk_context * ctx = v->jsContext();
+                PushObject(ctx, v);
+                duk_put_global_string(ctx, "app");
+                
+                kk::PushFunction<void,Any>(ctx, new TFunction<void,Any>([weak](Any object)->void{
+                    
+                    kk::Strong<Worker> v = weak.operator->();
+                    
+                    if(v != nullptr) {
+                        v->onMessage(object);
+                    }
+                    
+                }));
+                
+                duk_put_global_string(ctx, "postMessage");
+                
+                if(!p.empty()) {
+                    v->exec(p.c_str(), (TObject<String, Any> *) nullptr);
+                }
+                
+            });
+            
+            main->set(this);
+            
+        }
+        
+        Context * Worker::context() {
+            return _context;
+        }
+        
+        void Worker::onMessage(Any & data) {
+            
+            JITContext::current()->forEach(this, [data](duk_context * ctx,void * heapptr)->void{
+                
+                duk_push_heapptr(ctx, heapptr);
+                
+                duk_get_prop_string(ctx, -1, "onmessage");
+                
+                if(duk_is_function(ctx, -1)) {
+                    
+                    PushAny(ctx, (Any &) data);
+                    
+                    if(duk_pcall(ctx, 1) != DUK_EXEC_SUCCESS) {
+                        kk::Error(ctx, -1, "[kk::ui::Worker::onMessage] ");
+                    }
+                }
+                
+                duk_pop_2(ctx);
+                
+            });
+        }
+        
+        void Worker::onBackgroundMessage(Any & data) {
+            Any v = data.copy();
+            kk::Weak<Worker> weak = this;
+            _main->queue()->async([v,weak]()->void{
+                kk::Strong<Worker> w = weak.operator->();
+                if(w != nullptr) {
+                    w->onMessage((Any &) v);
+                }
+            });
+        }
+        
+        Worker::~Worker() {
+            if(_context != nullptr) {
+                _context->release();
+                _context = nullptr;
+            }
+            if(_queue != nullptr) {
+                _queue->release();
+                _queue = nullptr;
+            }
+        }
+        
+        void Worker::postMessage(Any data) {
+            
+            if(_context != nullptr) {
+                
+                Any v = data.copy();
+                Context * ctx = _context;
+                
+                _context->queue()->async([v,ctx]()->void{
+                    
+                    kk::Strong<Context> c = ctx;
+                    
+                    duk_context * jsContext = ctx->jsContext();
+                    
+                    duk_get_global_string(jsContext, "onmessage");
+                    
+                    if(duk_is_function(jsContext, -1)) {
+                        
+                        PushAny(jsContext, (Any &) v);
+                        
+                        if(duk_pcall(jsContext, 1) != DUK_EXEC_SUCCESS) {
+                            kk::Error(jsContext, -1, "[kk::ui::Worker::postMessage] ");
+                        }
+                    }
+                    
+                    duk_pop(jsContext);
+
+                });
+            }
+            
+        }
+        
+        void Worker::terminate() {
+            if(_context != nullptr) {
+                _context->release();
+                _context = nullptr;
+            }
+            if(_queue != nullptr) {
+                _queue->release();
+                _queue = nullptr;
+            }
+            if(_main != nullptr) {
+                _main->remove(this);
+                _main = nullptr;
+            }
+        }
+        
+        Worker * Context::createWorker(kk::CString cpath) {
+            return new Worker(this,cpath);
+        }
+        
         void Context::Openlib(){
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
@@ -356,6 +599,8 @@ namespace kk {
                     kk::PutMethod<Context,kk::String,kk::CString>(ctx, -1, "getTextContent", &Context::getTextContent);
                     
                     kk::PutMethod<Context,kk::String,kk::CString>(ctx, -1, "absolutePath", &Context::absolutePath);
+                    
+                    kk::PutMethod<Context,Worker *,kk::CString>(ctx, -1, "createWorker", &Context::createWorker);
                     
                 });
                 

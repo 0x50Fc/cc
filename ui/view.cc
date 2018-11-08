@@ -12,6 +12,54 @@ namespace kk {
     
     namespace ui {
     
+        
+        Canvas::Canvas(DispatchQueue * queue):_queue(queue),_width(0),_height(0) {
+            
+        }
+        
+        Uint Canvas::width() {
+            return _width;
+        }
+        
+        void Canvas::setWidth(Uint v) {
+            _width = v;
+        }
+        
+        Uint Canvas::height() {
+            return _height;
+        }
+        
+        void Canvas::setHeight(Uint v) {
+            _height = v;
+        }
+        
+        DispatchQueue * Canvas::queue() {
+            return _queue;
+        }
+        
+        void Canvas::Openlib() {
+            
+            kk::Openlib<>::add([](duk_context * ctx)->void{
+                
+                kk::PushInterface<Canvas>(ctx, [](duk_context * ctx)->void{
+                    
+                    kk::PutStrongMethod<Canvas,Object,kk::CString>(ctx, -1, "set", &Canvas::getContext);
+                    kk::PutStrongMethod<Canvas,Image>(ctx, -1, "toImage", &Canvas::toImage);
+                    kk::PutProperty<Canvas,Uint>(ctx, -1, "width", &Canvas::width,&Canvas::setWidth);
+                    kk::PutProperty<Canvas,Uint>(ctx, -1, "height", &Canvas::height,&Canvas::setHeight);
+                    
+                    duk_push_string(ctx, "create");
+                    kk::PushStrongFunction<Canvas>(ctx, createCanvas);
+                    
+                    duk_def_prop(ctx, -4, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+                    
+                });
+                
+            });
+            
+        }
+        
+        
         View::View(ViewConfiguration * configuration,Context * context):_configuration(configuration),_context(context) {
             
         }
@@ -112,14 +160,7 @@ namespace kk {
                     kk::PutMethod<View,void>(ctx, -1, "removeView", &View::removeView);
                     kk::PutMethod<View,void,CString>(ctx, -1, "evaluateJavaScript", &View::evaluateJavaScript);
                     kk::PutProperty<View,Point>(ctx, -1, "contentOffset", &View::contentOffset);
-                    
-                    duk_push_string(ctx, "create");
-                    kk::PushFunction(ctx, (Any (*)(CString,ViewConfiguration *,Context *))([](CString name,ViewConfiguration * configuration,Context * context)->Any{
-                        Strong<View> v = createView(name,configuration,context);
-                        return Any(v.get());
-                    }));
-                    
-                    duk_def_prop(ctx, -4, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+                    kk::PutStrongMethod<View,Canvas,Worker *>(ctx, -1, "createCanvas", &View::createCanvas);
                     
                 });
                 

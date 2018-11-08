@@ -1,6 +1,7 @@
 import { Event } from './Event';
 import { EventEmitter } from './EventEmitter';
 import { int } from './declare';
+import { Document } from './Document';
 
 export class ElementEvent extends Event {
     constructor(element?: Element) {
@@ -18,6 +19,10 @@ export interface AttributeMap {
 
 export class Element extends EventEmitter {
 
+    protected _name:string;
+    protected _id:number;
+    protected _document:Document;
+
     private _firstChild: Element | undefined;
     private _lastChild: Element | undefined;
     private _nextSibling: Element | undefined;
@@ -28,6 +33,24 @@ export class Element extends EventEmitter {
     private _depth: int = 0;
     private _autoLevelId: int = 0;
 
+    constructor(document:Document,name:string,id:number) {
+        super();
+        this._name = name;
+        this._id = id;
+        this._document = document;
+    }
+    
+    public get document():Document {
+        return this._document;
+    }
+
+    public get id():number {
+        return this._id;
+    }
+    
+    public get name():string {
+        return this._name;
+    }
     public get levelId(): int {
         return this._levelId;
     }
@@ -240,6 +263,8 @@ export class Element extends EventEmitter {
 
     public recycle(): void {
 
+        this._document.removeElement(this._id);
+
         var p = this._firstChild;
 
         while (p !== undefined) {
@@ -253,7 +278,11 @@ export class Element extends EventEmitter {
         this._lastChild = undefined;
         this._prevSibling = undefined;
         this._nextSibling = undefined;
-        this._parent = undefined;
+ 
+    }
+
+    public onEvent(name: string, data: any):void {
+        
     }
 
 }

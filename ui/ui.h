@@ -76,7 +76,8 @@ namespace kk {
         public:
             Font():size(14),style(FontStyleNormal),weight(FontWeightNormal){}
             Font(Float size):size(size),style(FontStyleNormal),weight(FontWeightNormal){}
-            Font(kk::String family,Float size,FontStyle style,FontWeight weight):family(family),size(size),style(style),weight(weight){}
+            Font(kk::CString family,Float size,FontStyle style,FontWeight weight):family(family),size(size),style(style),weight(weight){}
+            Font(kk::CString v);
             kk::String family;
             Float size;
             FontStyle style;
@@ -90,6 +91,8 @@ namespace kk {
             TextAlignLeft,
             TextAlignRight
         };
+        
+        TextAlign TextAlignFromString(kk::CString v);
     
         enum TextBaseline {
             TextBaselineAlphabetic,
@@ -100,10 +103,23 @@ namespace kk {
             TextBaselineBottom,
         };
         
+        TextBaseline TextBaselineFromString(kk::CString v);
+        
         struct Transform {
-            Float a, b, c, d;
+            Float a, b;
+            Float c, d;
             Float tx, ty;
         };
+        
+        extern Transform TransformIdentity;
+        
+        Transform TransformTranslate(Transform t, Float tx, Float ty);
+        
+        Transform TransformScale(Transform t, Float sx, Float sy);
+        
+        Transform TransformRotate(Transform t, Float angle);
+        
+        Transform TransformFromString(kk::CString v);
         
         enum ImageState {
             ImageStateNone,ImageStateLoading,ImageStateError,ImageStateLoaded
@@ -120,8 +136,31 @@ namespace kk {
             virtual Boolean isCopyPixels() = 0;
         };
         
-
-        class Context : public EventEmitter, public TimerSource {
+        class Context;
+        
+        class Worker : public Object {
+        public:
+            Worker(Context * main,kk::CString path);
+            virtual ~Worker();
+            virtual void postMessage(Any data);
+            virtual void terminate();
+            virtual Context * context();
+           
+            KK_CLASS(Worker,Object,"Worker")
+            
+            static void Openlib();
+            
+        protected:
+            
+            virtual void onBackgroundMessage(Any & data);
+            virtual void onMessage(Any & data);
+            
+            kk::Weak<Context> _main;
+            kk::DispatchQueue * _queue;
+            Context * _context;
+        };
+        
+        class Context : public EventEmitter, public Container {
         public:
             Context(kk::CString basePath,kk::DispatchQueue * queue);
             virtual kk::CString basePath();
@@ -134,6 +173,8 @@ namespace kk {
             virtual void remove(kk::Object * object);
             virtual void exec(kk::CString path,TObject<String, Any> * librarys);
             virtual void exec(kk::CString path,JSObject * librarys);
+            virtual Worker * createWorker(kk::CString path);
+            
             static void Openlib();
             
             KK_CLASS(Context, EventEmitter, "UIContext");

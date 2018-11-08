@@ -1,30 +1,71 @@
 import { Data, Evaluate } from './Data';
-import { Element, AttributeMap } from './Element';
+import { Element, AttributeMap, ElementEvent } from './Element';
+import { Event } from './Event';
 import { StyleSheet } from "./Style";
 import { PageOptions, PageData, PageView, PageViewContext, IfBlock, PageElement, Page as PageObject } from "./Page";
 import { ViewElement } from './ViewElement';
+import { ImageElement } from './ImageElement';
+import { postMessage } from './IPC';
+import { InputElement } from './InputElement';
+import { ScrollViewElement } from './ScrollViewElement';
+import { SwiperElement } from './SwiperElement';
+import { MovableViewElement } from './MovableViewElement';
+import { IconElement } from './IconElement';
+import { TextElement } from './TextElement';
+import { RichTextElement } from './RichTextElement';
+import { ProgressElement } from './ProgressElement';
+import { ButtonElement } from './ButtonElement';
+import { CheckboxElement } from './CheckboxElement';
+import { FormElement } from './FormElement';
+import { LabelElement } from './LabelElement';
+import { PickerElement } from './PickerElement';
+import { PickerViewElement } from './PickerViewElement';
+import { RadioElement } from './RadioElement';
+import { SliderElement } from './SliderElement';
+import { SwitchElement } from './SwitchElement';
+import { TextareaElement } from './TextareaElement';
+import { NavigatorElement } from './NavigatorElement';
 
-interface ElemnetClassMap {
-    [keys: string]: any
-}
+function ElementOnEvent(element: Element, prefix: string, name: string, value: string): void {
 
-let elementClass: ElemnetClassMap = {
-    "view":ViewElement
-};
+    element.on(name, (event: Event): void => {
 
-function CreateElementWithName(name: string): Element {
-    let fn = elementClass[name];
-    if (fn === undefined) {
-        return new Element();
-    }
-    return new fn();
+        if (event instanceof ElementEvent) {
+
+            postMessage({
+                event: value,
+                data: event.data
+            });
+
+            if (prefix.endsWith("catch")) {
+                event.cancelBubble = true;
+            }
+        }
+
+    });
+
 }
 
 function ElementSetAttributes(element: Element, data: Data, attributes: AttributeMap): void {
 
     for (let key in attributes) {
         if (key.startsWith("wx:")) {
-
+        } else if (key.startsWith("bind:")) {
+            ElementOnEvent(element, key.substr(0, 4), key.substr(5), attributes[key]);
+        } else if (key.startsWith("bind")) {
+            ElementOnEvent(element, key.substr(0, 4), key.substr(4), attributes[key]);
+        } else if (key.startsWith("catch:")) {
+            ElementOnEvent(element, key.substr(0, 5), key.substr(6), attributes[key]);
+        } else if (key.startsWith("catch")) {
+            ElementOnEvent(element, key.substr(0, 5), key.substr(6), attributes[key]);
+        } else if (key.startsWith("capture-bind:")) {
+            ElementOnEvent(element, key.substr(0, 12), key.substr(13), attributes[key]);
+        } else if (key.startsWith("capture-bind")) {
+            ElementOnEvent(element, key.substr(0, 12), key.substr(12), attributes[key]);
+        } else if (key.startsWith("capture-catch:")) {
+            ElementOnEvent(element, key.substr(0, 13), key.substr(14), attributes[key]);
+        } else if (key.startsWith("capture-catch")) {
+            ElementOnEvent(element, key.substr(0, 13), key.substr(13), attributes[key]);
         } else {
             let v = attributes[key];
             let evaluate = Data.evaluateScript(v);
@@ -57,7 +98,7 @@ function CreateForElement(element: Element, data: Data, name: string, attributes
 
     delete attributes["wx:for"];
 
-    let before = new Element();
+    let before = context.page.document.createElement("element");
     before.appendTo(element);
 
     let index = attributes["wx:for-index"] || "index";
@@ -78,14 +119,19 @@ function CreateForElement(element: Element, data: Data, name: string, attributes
                 } else {
                     v = {
                         data: new Data(),
-                        element: CreateElementWithName(name)
+                        element: context.page.document.createElement(name)
                     };
-                    v.data.setParent(data);
-                    ElementSetAttributes(element, v.data, attributes);
+                    ElementSetAttributes(v.element, v.data, attributes);
                     before.before(v.element);
+                    context.begin();
+                    children(v.element, v.data, context);
+                    context.end();
+                    v.data.setParent(data);
+                    items.push(v);
                 }
-                v.data.set([index], i);
-                v.data.set([item], d);
+                v.data.set([index], i, false);
+                v.data.set([item], d, false);
+                v.data.changedKeys([]);
                 i++;
             }
         }
@@ -111,7 +157,7 @@ function CreateIfElement(element: Element, data: Data, name: string, attributes:
         return;
     }
 
-    let before = new Element();
+    let before = context.page.document.createElement("element");
     before.appendTo(element);
 
     let scope = context.scope();
@@ -146,7 +192,7 @@ function CreateIfElement(element: Element, data: Data, name: string, attributes:
             if (e == item) {
 
                 if (item.element === undefined) {
-                    item.element = CreateElementWithName(item.name);
+                    item.element = context.page.document.createElement(item.name);
                     item.elementData = new Data();
                     ElementSetAttributes(item.element, item.data, item.attributes);
                     context.begin();
@@ -234,7 +280,7 @@ export function CreateElement(element: Element, data: Data, name: string, attrib
     } else if (attributes["wx:else"] !== undefined) {
         CreateElseElement(element, data, name, attributes, context, children);
     } else {
-        let e = CreateElementWithName(name);
+        let e = context.page.document.createElement(name);
         ElementSetAttributes(e, data, attributes);
         element.append(e);
         context.begin();
@@ -246,19 +292,47 @@ export function CreateElement(element: Element, data: Data, name: string, attrib
 
 var page = new PageObject();
 
+page.document.addElementClass("view",ViewElement);
+page.document.addElementClass("input",InputElement);
+page.document.addElementClass("image",ImageElement);
+page.document.addElementClass("scroll-view",ScrollViewElement);
+page.document.addElementClass("swiper",SwiperElement);
+page.document.addElementClass("movable-view",MovableViewElement);
+page.document.addElementClass("icon",IconElement);
+page.document.addElementClass("text",TextElement);
+page.document.addElementClass("rich-text",RichTextElement);
+page.document.addElementClass("progress",ProgressElement);
+page.document.addElementClass("button",ButtonElement);
+page.document.addElementClass("checkbox",CheckboxElement);
+page.document.addElementClass("form",FormElement);
+page.document.addElementClass("label",LabelElement);
+page.document.addElementClass("picker",PickerElement);
+page.document.addElementClass("picker-view",PickerViewElement);
+page.document.addElementClass("radio",RadioElement);
+page.document.addElementClass("slider",SliderElement);
+page.document.addElementClass("switch",SwitchElement);
+page.document.addElementClass("textarea",TextareaElement);
+page.document.addElementClass("navigator",NavigatorElement);
+
 export function Page(view: PageView, styleSheet: StyleSheet, options: PageOptions): void {
-    view(page.element,page.data,new PageViewContext());
+    postMessage({ page: 'readying' });
+    view(page.document.documentElement, page.data, new PageViewContext(page));
+    postMessage({ page: 'ready' });
 }
 
 export function setData(data: PageData): void {
 
-    for(var key in data) {
-        page.data.set([key],data[key]);
+    for (var key in data) {
+        page.data.set([key], data[key]);
     }
 
-}
-
-export function setContentOffset(x: number, y: number): void {
+    console.info("[DATA]", data);
 
 }
 
+export function sendEvent(id: number, name: string, data: any): void {
+    let element = page.document.element(id);
+    if(element != undefined) {
+        element.onEvent(name,data);
+    }
+}

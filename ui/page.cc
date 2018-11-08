@@ -26,7 +26,7 @@ namespace kk {
             PushWeakObject(_jsContext, this);
             duk_put_global_string(_jsContext, "page");
             
-            kk::Openlib<kk::TimerSource *>::openlib(_jsContext, this);
+            kk::Openlib<kk::Container *>::openlib(_jsContext, this);
         }
         
         Page::~Page() {

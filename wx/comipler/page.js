@@ -5,6 +5,9 @@ var xml = require('xml-js');
 
 function Page(p, basePath) {
 
+    this.basePath = basePath;
+    this.dirname = path.dirname(p);
+
     var ext = path.extname(p);
     var base = p.substr(0, p.length - ext.length);
 
@@ -21,8 +24,10 @@ Page.prototype = Object.create(Object.prototype, {
     compile: {
         value: function () {
             var vs = [];
-            vs.push('<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" /><style type="text/css">\n');
-            vs.push('body{ padding: 0px; margin: 0px; }\n');
+            vs.push('<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,minimum-scale=1,maximum-scale=1" /><style type="text/css">\n');
+            vs.push((fs.readFileSync("app.css") + '').replace(/([0-9\.\-]+)rpx/g,function(text,v){
+                return (v * 0.05) + 'rem';
+            }));
             this.compilePageCSS(vs);
             vs.push('</style></head><body><script type="text/javascript">\n');
             vs.push("(function(){\n");
@@ -32,7 +37,7 @@ Page.prototype = Object.create(Object.prototype, {
             this.compilePageView(vs);
 
             vs.push(");})();\n");
-            vs.push('</script></body></html>');
+            vs.push('</script></body>');
 
             fs.writeFileSync(this.path.html, vs.join(''));
         },
@@ -69,10 +74,12 @@ Page.prototype = Object.create(Object.prototype, {
 
                 var attrs = element.attributes;
 
-                for (var e of element.elements) {
-                    if (e.type == 'text') {
-                        attrs['#text'] = e.text;
-                        break;
+                if (element.elements) {
+                    for (var e of element.elements) {
+                        if (e.type == 'text') {
+                            attrs['#text'] = e.text;
+                            break;
+                        }
                     }
                 }
 
@@ -82,8 +89,10 @@ Page.prototype = Object.create(Object.prototype, {
 
                 level++;
 
-                for (let e of element.elements) {
-                    View(e);
+                if (element.elements) {
+                    for (let e of element.elements) {
+                        View(e);
+                    }
                 }
 
                 level--;
@@ -101,11 +110,14 @@ Page.prototype = Object.create(Object.prototype, {
             vs.push(Parse(this.path.wxss));
 
             function Parse(p) {
-                if(fs.existsSync(p)) {
+                if (fs.existsSync(p)) {
                     var v = fs.readFileSync(p) + '';
                     var basedir = path.dirname(p);
-                    v = v.replace(/\@import +\"([^\"]*?)\";/g,function(text,v){
-                        return Parse(path.join(basedir,v));
+                    v = v.replace(/([0-9\.\-]+)rpx/g,function(text,v){
+                        return (v * 0.05) + 'rem';
+                    });
+                    v = v.replace(/\@import +\"([^\"]*?)\";/g, function (text, v) {
+                        return Parse(path.join(basedir, v));
                     });
                     return v;
                 }

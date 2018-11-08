@@ -441,7 +441,7 @@ namespace kk {
             
             while(i != m.end()) {
                 String key = i->first;
-                if(!key.startsWith("#")) {
+                if(!kk::CStringHasPrefix(key.c_str(),"#")) {
                     v.append(" ").append(i->first).append("=\"").append(i->second).append("\"");
                 }
                 

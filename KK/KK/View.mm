@@ -2,7 +2,7 @@
 //  Canvas.m
 //  KK
 //
-//  Created by hailong11 on 2018/10/29.
+//  Created by zhanghailong on 2018/10/29.
 //  Copyright © 2018年 kkmofang.cn. All rights reserved.
 //
 
@@ -30,11 +30,11 @@ namespace kk {
         class OSCanvas : public Canvas {
         public:
             
-            OSCanvas():OSCanvas(nullptr) {
+            OSCanvas():OSCanvas(mainDispatchQueue(), nullptr) {
                 
             }
             
-            OSCanvas(CFTypeRef view):_width(0),_height(0),_resize(false) {
+            OSCanvas(DispatchQueue * queue, CFTypeRef view):Canvas(queue),_width(0),_height(0),_resize(false) {
                 @autoreleasepool {
                     _view = view;
                     CFRetain(view);
@@ -166,6 +166,11 @@ namespace kk {
             virtual void setContentSize(Size & size) {
                 @autoreleasepool {
                     UIView * v = (__bridge UIView *) _view;
+                    
+                    if([v respondsToSelector:@selector(KKViewContentView)]) {
+                        v = [(id<KKViewProtocol>) v KKViewContentView];
+                    }
+                    
                     if([v isKindOfClass:[UIScrollView class]]) {
                         [(UIScrollView *) v setContentSize:CGSizeMake(size.width, size.height)];
                     }
@@ -174,7 +179,13 @@ namespace kk {
             
             virtual void setContentOffset(Point & offset) {
                 @autoreleasepool {
+                    
                     UIView * v = (__bridge UIView *) _view;
+                    
+                    if([v respondsToSelector:@selector(KKViewContentView)]) {
+                        v = [(id<KKViewProtocol>) v KKViewContentView];
+                    }
+                    
                     if([v isKindOfClass:[UIScrollView class]]) {
                         [(UIScrollView *) v setContentOffset:CGPointMake(offset.x, offset.y)];
                     }
@@ -186,6 +197,10 @@ namespace kk {
                     
                     UIView * v = (__bridge UIView *) _view;
                     
+                    if([v respondsToSelector:@selector(KKViewContentView)]) {
+                        v = [(id<KKViewProtocol>) v KKViewContentView];
+                    }
+                    
                     if([v isKindOfClass:[UIScrollView class]]) {
                         CGPoint p = [(UIScrollView *) v contentOffset];
                         return { (Float) p.x, (Float)  p.y};
@@ -195,20 +210,48 @@ namespace kk {
                 }
             }
             
-            virtual void createCanvas(std::function<void(Canvas *)> && func,DispatchQueue * queue) {
+            virtual kk::Strong<Canvas> createCanvas(Worker * worker) {
                 
-                kk::Weak<OSView> v = this;
+                if(worker == nullptr || worker->context() == nullptr) {
+                    return new OSCanvas(mainDispatchQueue(),_view);
+                }
                 
-                queue->async([func,v]()->void{
+                kk::Strong<Worker> w = worker;
+                kk::Weak<OSView> view = this;
+                
+                worker->context()->queue()->async([w,view]()->void{
                     
-                    kk::Strong<OSView> view = v.operator->();
+                    kk::Strong<OSView> vw = view.operator->();
+                    kk::Strong<Worker> v = w.operator->();
                     
-                    if(view != nullptr) {
-                        kk::Strong<Canvas> c = new OSCanvas(view->_view);
-                        func(c);
+                    if(v != nullptr && v->context() != nullptr && vw != nullptr) {
+                        
+                        kk::Any c = new OSCanvas(v->context()->queue(),vw->_view);
+                        
+                        JITContext::current()->forEach(v.get(), [&c](duk_context * ctx,void * heapptr)->void{
+                            
+                            duk_push_heapptr(ctx, heapptr);
+                            
+                            duk_get_prop_string(ctx, -1 ,"oncanvas");
+                            
+                            if(duk_is_function(ctx, -1)) {
+                                
+                                PushAny(ctx, c);
+                                
+                                if(duk_pcall(ctx, 1) != DUK_EXEC_SUCCESS) {
+                                    
+                                    kk::Error(ctx, -1, "[kk::ui::OSView::createCanvas] ");
+                                }
+                            }
+                            
+                            duk_pop_2(ctx);
+                            
+                        });
+                        
                     }
-                    
                 });
+        
+                return nullptr;
                 
             }
             

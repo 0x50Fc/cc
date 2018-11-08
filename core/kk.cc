@@ -154,71 +154,34 @@ namespace kk {
         return a;
     }
     
-    kk::Boolean String::startsWith(kk::CString v) {
-        if(v == nullptr) {
-            return true;
+    ArrayBuffer::ArrayBuffer(void * data,kk::Uint size):_data(nullptr),_size(0) {
+        if(size > 0) {
+            _size = size;
+            _data = malloc(size);
+            memcpy(_data, data, size);
         }
-        char * p = (char *) c_str();
-        char * a = (char *) v;
-        while(a) {
-            if(*a == 0) {
-                return true;
-            }
-            if(*p != *a) {
-                return false;
-            }
-            if(*p == 0) {
-                return false;
-            }
-            p ++;
-            a ++;
-        }
-        return false;
     }
     
-    kk::Boolean String::endsWith(kk::CString v) {
-        
-        if(v == nullptr) {
-            return true;
+    ArrayBuffer::ArrayBuffer(kk::Uint size):_data(nullptr),_size(0) {
+        if(size > 0) {
+            _size = size;
+            _data = malloc(size);
+            memset(_data, 0, size);
         }
-        
-        size_t n = length();
-        size_t l = strlen(v);
-
-        if(l == 0) {
-            return true;
-        }
-        
-        if(n < l) {
-            return false;
-        }
-        
-        char * p = (char *) c_str() + n - 1;
-        char * a = (char *) v + l -1;
-        
-        while(*p == *a) {
-            n --;
-            l --;
-            p --;
-            a --;
-            
-            if(l == 0) {
-                return true;
-            }
-            if(n == 0) {
-                return false;
-            }
-        }
-        
-        return false;
     }
     
-    String String::substr(kk::Int i,size_t length) {
-        return String(this->c_str(),i,length);
+    ArrayBuffer::~ArrayBuffer() {
+        if(_data) {
+            free(_data);
+        }
     }
     
-    String String::substr(kk::Int i) {
-        return String(this->c_str(),i);
+    kk::Uint ArrayBuffer::byteLength() {
+        return _size;
+    }
+    
+    void * ArrayBuffer::data() {
+        return _data;
     }
     
     Ref::Ref():_object(nullptr) {
@@ -437,11 +400,13 @@ namespace kk {
     
     Any & Any::operator=(String & v) {
         reset();
+        type = TypeString;
         setLString(v.c_str(), v.length());
         return * this;
     }
     Any & Any::operator=(const String & v) {
         reset();
+        type = TypeString;
         setLString(v.c_str(), v.length());
         return * this;
     }
@@ -932,69 +897,14 @@ namespace kk {
         }
     }
     
-    kk::Boolean String::startsWith(kk::CString s,kk::CString v) {
-        if(s == nullptr) {
-            return false;
+    Any Any::copy() {
+        Any v(*this);
+        Copying * object = dynamic_cast<Copying *>( v.objectValue.get() );
+        if(object != nullptr) {
+            kk::Strong<Object> o = object->copy();
+            v = o.get();
         }
-        if(v == nullptr) {
-            return true;
-        }
-        char * p = (char *) s;
-        char * a = (char *) v;
-        for(;;) {
-            if(*a == 0) {
-                return true;
-            }
-            if(*p == 0) {
-                return false;
-            }
-            if(*p != *a) {
-                return false;
-            }
-            a ++;
-            p ++;
-        }
-        return false;
-    }
-
-    
-    kk::Boolean String::endsWith(kk::CString s,kk::CString v) {
-        if(s == nullptr) {
-            return false;
-        }
-        if(v == nullptr) {
-            return true;
-        }
-        size_t n = strlen(s);
-        size_t l = strlen(v);
-        
-        if(l == 0) {
-            return true;
-        }
-        
-        if(n < l) {
-            return false;
-        }
-        
-        char * p = (char *) s + n -1;
-        char * a = (char *) v + l - 1;
-        
-        for(;;) {
-            n --;
-            l --;
-            a --;
-            p --;
-            if(l == 0) {
-                return true;
-            }
-            if(n == 0) {
-                return false;
-            }
-            if(*p != *a) {
-                return false;
-            }
-        }
-        return false;
+        return v;
     }
     
     void LogV(const char * format, va_list va) {
@@ -1018,6 +928,215 @@ namespace kk {
         va_start(va, format);
         LogV(format, va);
         va_end(va);
+    }
+    
+    Boolean CStringHasPrefix(CString string,CString prefix) {
+        
+        if(string == prefix) {
+            return true;
+        }
+        
+        if(prefix == NULL) {
+            return true;
+        }
+        
+        if(string == NULL) {
+            return false;
+        }
+        
+        size_t n1 = strlen(string);
+        size_t n2 = strlen(prefix);
+        
+        return n1 >= n2 && strncmp(string, prefix, n2) == 0;
+    }
+    
+    Boolean CStringHasSuffix(CString string,CString suffix) {
+        
+        if(string == suffix) {
+            return true;
+        }
+        
+        if(suffix == NULL) {
+            return true;
+        }
+        
+        if(string == NULL) {
+            return false;
+        }
+        
+        size_t n1 = strlen(string);
+        size_t n2 = strlen(suffix);
+        
+        return n1 >= n2 && strncmp(string + n1 - n2, suffix, n2) == 0;
+    }
+    
+    size_t CStringLength(CString string){
+        if(string == NULL) {
+            return 0;
+        }
+        return strlen(string);
+    }
+    
+    Boolean CStringEqual(CString string,CString value) {
+        
+        if(string == value) {
+            return true;
+        }
+        
+        if(value == NULL || string == NULL ) {
+            return false;
+        }
+        
+        return strcmp(string, value) == 0;
+    }
+    
+    void CStringSplit(CString string,CString delim, std::vector<String>& items) {
+        
+        if(string == NULL || delim == NULL) {
+            return ;
+        }
+        
+        char * p = (char *) string;
+        char * b = p;
+        size_t n= strlen(delim);
+        
+        while(*b != 0) {
+            if(strncmp(b, delim, n) == 0) {
+                items.push_back(String(p,b-p));
+                b += n;
+                p = b;
+            } else {
+                b ++;
+            }
+        }
+        
+        if(b != p) {
+            items.push_back(String(p,b-p));
+        }
+        
+    }
+    
+    void CStringSplit(CString string,CString delim, std::set<String>& items) {
+        
+        if(string == NULL || delim == NULL) {
+            return ;
+        }
+        
+        char * p = (char *) string;
+        char * b = p;
+        size_t n= strlen(delim);
+        
+        while(*b != 0) {
+            if(strncmp(b, delim, n) == 0) {
+                items.insert(String(p,b-p));
+                b += n;
+                p = b;
+            } else {
+                b ++;
+            }
+        }
+        
+        if(b != p) {
+            items.insert(String(p,b-p));
+        }
+        
+    }
+    
+    
+    String CStringJoin(std::vector<String>& items,CString delim){
+        String ss;
+        std::vector<String>::iterator i = items.begin();
+        
+        while(i !=items.end()){
+            if(i !=items.begin()){
+                ss.append(delim);
+            }
+            ss.append(*i);
+            i ++;
+        }
+        
+        return ss;
+    }
+    
+    String CStringJoin(std::set<String>& items,CString delim){
+        String ss;
+        std::set<String>::iterator i = items.begin();
+        
+        while(i !=items.end()){
+            if(i !=items.begin()){
+                ss.append(delim);
+            }
+            ss.append(*i);
+            i ++;
+        }
+        
+        return ss;
+    }
+    
+    
+    String& CStringTrim(String& s){
+        
+        if (s.empty())
+        {
+            return s;
+        }
+        
+        s.erase(0,s.find_first_not_of(" "));
+        s.erase(s.find_last_not_of(" ") + 1);
+        return s;
+    }
+    
+    String CStringPathAppend(CString basePath,CString path) {
+        
+        if(basePath == nullptr) {
+            return path;
+        }
+        
+        size_t n = strlen(basePath);
+        
+        if(n == 0) {
+            return path;
+        }
+        
+        if(basePath[n - 1] == '/') {
+            return String(basePath) + path;
+        }
+        
+        return String(basePath) + "/" + path;
+    }
+    
+    String CStringPathDeleteLast(CString path) {
+        
+        if(path == nullptr) {
+            return "";
+        }
+        kk::String v = path;
+        
+        size_t n = v.find_last_of("/");
+        
+        if(n == kk::String::npos) {
+            return v;
+        }
+        
+        return v.substr(0,n + 1);
+        
+    }
+    
+    String CStringPathDeleteExtension(CString path) {
+        
+        if(path == nullptr) {
+            return "";
+        }
+        
+        kk::String v = path;
+        
+        size_t n = v.find_last_of(".");
+        
+        if(n == kk::String::npos) {
+            return v;
+        }
+        
+        return v.substr(0,n);
     }
 }
 

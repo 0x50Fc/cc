@@ -18,11 +18,11 @@ namespace kk {
         
         class App : public Context {
         public:
-            App(kk::CString basePath);
+            App(kk::CString basePath,kk::CString platform);
             virtual ~App();
-            virtual DispatchQueue * queue(kk::CString name);
-            virtual Context * getContext(kk::CString path,kk::CString queue);
+            
             virtual void open(kk::CString uri,kk::Boolean animated);
+            
             virtual kk::Strong<View> createView(kk::CString name,ViewConfiguration * configuration);
             
             static void Openlib();
@@ -30,8 +30,7 @@ namespace kk {
             KK_CLASS(App,Context,"UIApp")
     
         protected:
-            std::map<kk::String,kk::Strong<DispatchQueue>> _queues;
-            std::map<kk::String,kk::Strong<Context>> _contexts;
+
         };
         
     }

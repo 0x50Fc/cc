@@ -34,7 +34,7 @@ namespace kk {
         String n = name;
         std::map<String,std::list<Strong<Object>>>::iterator i;
         
-        if(n.endsWith("*")) {
+        if(kk::CStringHasSuffix(n.c_str(),"*")) {
             n = n.substr(0,n.length()-1);
             i = _prefixs.find(n);
             if(i == _prefixs.end()) {
@@ -71,7 +71,7 @@ namespace kk {
         String n = name;
         std::map<String,std::list<Strong<Object>>>::iterator i;
         
-        if(n.endsWith("*")) {
+        if(kk::CStringHasSuffix(n.c_str(),"*")) {
             n = n.substr(0,n.length()-1);
             i = _prefixs.find(n);
             if(i != _prefixs.end()) {
@@ -135,7 +135,7 @@ namespace kk {
         String n(name);
         auto i = _prefixs.begin();
         while(i != _prefixs.end()) {
-            if(n.startsWith(i->first.c_str())) {
+            if(kk::CStringHasPrefix(n.c_str(),i->first.c_str())) {
                 return true;
             }
             i ++;
@@ -157,7 +157,7 @@ namespace kk {
         
         i = _prefixs.begin();
         while(i != _prefixs.end()) {
-            if(n.startsWith(i->first.c_str())) {
+            if(kk::CStringHasPrefix(n.c_str(),i->first.c_str())) {
                 auto vs = i->second;
                 auto k = vs.begin();
                 while(k != vs.end()) {

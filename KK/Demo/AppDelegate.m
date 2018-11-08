@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  Demo
 //
-//  Created by hailong11 on 2018/10/31.
+//  Created by zhanghailong on 2018/10/31.
 //  Copyright © 2018年 kkmofang.cn. All rights reserved.
 //
 
@@ -29,9 +29,7 @@
     
     [self.window makeKeyAndVisible];
     
-    KKApp * app = [[KKApp alloc] initWithBasePath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"main"]];
-   
-    [app run:@{}];
+    
     
     return YES;
 }

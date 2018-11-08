@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		1A3571EE21900472001BAE76 /* KK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4502ED2186E4EA00F7F0E4 /* KK.framework */; };
 		1A3571F0219004EF001BAE76 /* main in Resources */ = {isa = PBXBuildFile; fileRef = 1A3571EF219004EF001BAE76 /* main */; };
+		1A35720F21916F62001BAE76 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A35720E21916F62001BAE76 /* ViewController.m */; };
+		1A35722F21942514001BAE76 /* WKWebView+KKViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A35722D21942514001BAE76 /* WKWebView+KKViewProtocol.h */; };
+		1A35723021942514001BAE76 /* WKWebView+KKViewProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A35722E21942514001BAE76 /* WKWebView+KKViewProtocol.mm */; };
+		1A3572332194258D001BAE76 /* UIScrollView+KKViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A3572312194258D001BAE76 /* UIScrollView+KKViewProtocol.h */; };
+		1A3572342194258D001BAE76 /* UIScrollView+KKViewProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A3572322194258D001BAE76 /* UIScrollView+KKViewProtocol.mm */; };
+		1A357237219425D6001BAE76 /* UITextField+KKViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A357235219425D6001BAE76 /* UITextField+KKViewProtocol.h */; };
+		1A357238219425D6001BAE76 /* UITextField+KKViewProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A357236219425D6001BAE76 /* UITextField+KKViewProtocol.mm */; };
+		1A35723B21942634001BAE76 /* UITextView+KKViewProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A35723921942634001BAE76 /* UITextView+KKViewProtocol.h */; };
+		1A35723C21942634001BAE76 /* UITextView+KKViewProtocol.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1A35723A21942634001BAE76 /* UITextView+KKViewProtocol.mm */; };
+		1A35723F2194340D001BAE76 /* KKCanvas.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A35723D2194340D001BAE76 /* KKCanvas.h */; };
+		1A3572402194340D001BAE76 /* KKCanvas.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A35723E2194340D001BAE76 /* KKCanvas.m */; };
 		1A4502F22186E4EA00F7F0E4 /* KK.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A4502F02186E4EA00F7F0E4 /* KK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A4503122186E50700F7F0E4 /* archiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A4502F92186E50600F7F0E4 /* archiver.h */; };
 		1A4503132186E50700F7F0E4 /* document.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A4502FA2186E50600F7F0E4 /* document.cc */; };
@@ -90,6 +101,19 @@
 
 /* Begin PBXFileReference section */
 		1A3571EF219004EF001BAE76 /* main */ = {isa = PBXFileReference; lastKnownFileType = folder; name = main; path = ../wx/main; sourceTree = SOURCE_ROOT; };
+		1A35720D21916F62001BAE76 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		1A35720E21916F62001BAE76 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		1A35722D21942514001BAE76 /* WKWebView+KKViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebView+KKViewProtocol.h"; sourceTree = "<group>"; };
+		1A35722E21942514001BAE76 /* WKWebView+KKViewProtocol.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "WKWebView+KKViewProtocol.mm"; sourceTree = "<group>"; };
+		1A3572312194258D001BAE76 /* UIScrollView+KKViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+KKViewProtocol.h"; sourceTree = "<group>"; };
+		1A3572322194258D001BAE76 /* UIScrollView+KKViewProtocol.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIScrollView+KKViewProtocol.mm"; sourceTree = "<group>"; };
+		1A357235219425D6001BAE76 /* UITextField+KKViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+KKViewProtocol.h"; sourceTree = "<group>"; };
+		1A357236219425D6001BAE76 /* UITextField+KKViewProtocol.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UITextField+KKViewProtocol.mm"; sourceTree = "<group>"; };
+		1A35723921942634001BAE76 /* UITextView+KKViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+KKViewProtocol.h"; sourceTree = "<group>"; };
+		1A35723A21942634001BAE76 /* UITextView+KKViewProtocol.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "UITextView+KKViewProtocol.mm"; sourceTree = "<group>"; };
+		1A35723D2194340D001BAE76 /* KKCanvas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKCanvas.h; sourceTree = "<group>"; };
+		1A35723E2194340D001BAE76 /* KKCanvas.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KKCanvas.m; sourceTree = "<group>"; };
+		1A357241219439D5001BAE76 /* container.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = container.h; sourceTree = "<group>"; };
 		1A4502ED2186E4EA00F7F0E4 /* KK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A4502F02186E4EA00F7F0E4 /* KK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KK.h; sourceTree = "<group>"; };
 		1A4502F12186E4EA00F7F0E4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,6 +244,16 @@
 				1AB8DA3C218992E200909DFF /* KKPageViewController.m */,
 				1AB8DA2E2189839300909DFF /* UIView+KKViewProtocol.h */,
 				1AB8DA2F2189839300909DFF /* UIView+KKViewProtocol.mm */,
+				1A35722D21942514001BAE76 /* WKWebView+KKViewProtocol.h */,
+				1A35722E21942514001BAE76 /* WKWebView+KKViewProtocol.mm */,
+				1A3572312194258D001BAE76 /* UIScrollView+KKViewProtocol.h */,
+				1A3572322194258D001BAE76 /* UIScrollView+KKViewProtocol.mm */,
+				1A357235219425D6001BAE76 /* UITextField+KKViewProtocol.h */,
+				1A357236219425D6001BAE76 /* UITextField+KKViewProtocol.mm */,
+				1A35723921942634001BAE76 /* UITextView+KKViewProtocol.h */,
+				1A35723A21942634001BAE76 /* UITextView+KKViewProtocol.mm */,
+				1A35723D2194340D001BAE76 /* KKCanvas.h */,
+				1A35723E2194340D001BAE76 /* KKCanvas.m */,
 			);
 			path = KK;
 			sourceTree = "<group>";
@@ -251,6 +285,7 @@
 				1A4503082186E50700F7F0E4 /* event.cc */,
 				1A4503052186E50700F7F0E4 /* jit.h */,
 				1A4503092186E50700F7F0E4 /* jit.cc */,
+				1A357241219439D5001BAE76 /* container.h */,
 				1AB8DA3F2189C41900909DFF /* timer.h */,
 				1AB8DA402189C58D00909DFF /* timer.cc */,
 			);
@@ -294,6 +329,8 @@
 				1A3571EF219004EF001BAE76 /* main */,
 				1AB8DA1321897B6200909DFF /* AppDelegate.h */,
 				1AB8DA1421897B6200909DFF /* AppDelegate.m */,
+				1A35720D21916F62001BAE76 /* ViewController.h */,
+				1A35720E21916F62001BAE76 /* ViewController.m */,
 				1AB8DA1921897B6200909DFF /* Main.storyboard */,
 				1AB8DA1C21897B6400909DFF /* Assets.xcassets */,
 				1AB8DA1E21897B6400909DFF /* LaunchScreen.storyboard */,
@@ -326,6 +363,7 @@
 				1A4502F22186E4EA00F7F0E4 /* KK.h in Headers */,
 				1AB8DA3721898DF500909DFF /* KKPage.h in Headers */,
 				1A4503302186E54D00F7F0E4 /* duktape.h in Headers */,
+				1A35723B21942634001BAE76 /* UITextView+KKViewProtocol.h in Headers */,
 				1AB8DA2B21897BC200909DFF /* KKApp.h in Headers */,
 				1AB8D9D02186FE0C00909DFF /* KKViewProtocol.h in Headers */,
 				1A45031D2186E50700F7F0E4 /* jit.h in Headers */,
@@ -333,6 +371,7 @@
 				1A4503242186E50700F7F0E4 /* view.h in Headers */,
 				1A45031A2186E50700F7F0E4 /* kk.h in Headers */,
 				1A4503142186E50700F7F0E4 /* element.h in Headers */,
+				1A35723F2194340D001BAE76 /* KKCanvas.h in Headers */,
 				1A4503272186E50700F7F0E4 /* CGContext.h in Headers */,
 				1AB8DA302189839300909DFF /* UIView+KKViewProtocol.h in Headers */,
 				1A4503192186E50700F7F0E4 /* event.h in Headers */,
@@ -340,7 +379,10 @@
 				1A4503162186E50700F7F0E4 /* document.h in Headers */,
 				1AB081F3218BF424003835D4 /* KKObject.h in Headers */,
 				1AB8DA3D218992E200909DFF /* KKPageViewController.h in Headers */,
+				1A3572332194258D001BAE76 /* UIScrollView+KKViewProtocol.h in Headers */,
+				1A357237219425D6001BAE76 /* UITextField+KKViewProtocol.h in Headers */,
 				1A4503182186E50700F7F0E4 /* bio.h in Headers */,
+				1A35722F21942514001BAE76 /* WKWebView+KKViewProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,17 +490,21 @@
 			files = (
 				1AB8DA2C21897BC200909DFF /* KKApp.mm in Sources */,
 				1A45031B2186E50700F7F0E4 /* bio.cc in Sources */,
+				1A35723C21942634001BAE76 /* UITextView+KKViewProtocol.mm in Sources */,
 				1AB8DA3821898DF500909DFF /* KKPage.mm in Sources */,
 				1AB8DA412189C58D00909DFF /* timer.cc in Sources */,
 				1A4503212186E50700F7F0E4 /* jit.cc in Sources */,
 				1A4503132186E50700F7F0E4 /* document.cc in Sources */,
+				1A35723021942514001BAE76 /* WKWebView+KKViewProtocol.mm in Sources */,
 				1A45031C2186E50700F7F0E4 /* kk.cc in Sources */,
 				1A4503322186E54D00F7F0E4 /* duktape.c in Sources */,
 				1A4503172186E50700F7F0E4 /* element.cc in Sources */,
+				1A3572402194340D001BAE76 /* KKCanvas.m in Sources */,
 				ACB9EF662187D198002FFAA0 /* dispatch-GCD.cc in Sources */,
 				1A4503202186E50700F7F0E4 /* event.cc in Sources */,
 				1AB8DA312189839300909DFF /* UIView+KKViewProtocol.mm in Sources */,
 				1A4503232186E50700F7F0E4 /* view.cc in Sources */,
+				1A357238219425D6001BAE76 /* UITextField+KKViewProtocol.mm in Sources */,
 				1AF639892186FC1800557AD3 /* View.mm in Sources */,
 				1AB8D9F02187194000909DFF /* app.cc in Sources */,
 				1AB081F4218BF424003835D4 /* KKObject.mm in Sources */,
@@ -467,6 +513,7 @@
 				1AB8DA3E218992E200909DFF /* KKPageViewController.m in Sources */,
 				1A4503352186E67200F7F0E4 /* CGContext.mm in Sources */,
 				1A4503262186E50700F7F0E4 /* CGContext.cc in Sources */,
+				1A3572342194258D001BAE76 /* UIScrollView+KKViewProtocol.mm in Sources */,
 				1A4503252186E50700F7F0E4 /* ui.cc in Sources */,
 				1AC10E8D2186EE0E006C5D5C /* Image.mm in Sources */,
 			);
@@ -476,6 +523,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A35720F21916F62001BAE76 /* ViewController.m in Sources */,
 				1AB8DA2321897B6500909DFF /* main.m in Sources */,
 				1AB8DA1521897B6200909DFF /* AppDelegate.m in Sources */,
 			);
