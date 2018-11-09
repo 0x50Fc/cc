@@ -17,9 +17,9 @@ export class NViewElement extends ViewElement {
         return v;
     }
 
-    protected _displaying:boolean = false;
+    protected _displaying: boolean = false;
 
-    public display():void {
+    public display(): void {
 
         var p: HTMLElement | undefined = this._view as HTMLElement;
         var x: number = 0;
@@ -45,26 +45,32 @@ export class NViewElement extends ViewElement {
         this._displaying = false;
     }
 
-    public setNeedsDisplay():void {
-        if(this._displaying) {
+    public setNeedsDisplay(): void {
+        if (this._displaying) {
             return;
         }
         this._displaying = true;
         var v = this;
-        once(function(){
+        once(function () {
             v.display();
         });
     }
 
     public set(key: string, value: string | undefined) {
         super.set(key, value);
+        postMessage({
+            view: 'set',
+            id: this._id,
+            name: key,
+            value: value
+        });
         this.setNeedsDisplay();
     }
 
     protected onDidAddToParent(element: KKElement): void {
         super.onDidAddToParent(element);
 
-        var pid: number|undefined = undefined;
+        var pid: number | undefined = undefined;
 
         if (element instanceof NViewElement) {
             pid = element._id;
@@ -96,7 +102,7 @@ export class NViewElement extends ViewElement {
         });
 
         super.recycle();
- 
+
     }
 
 

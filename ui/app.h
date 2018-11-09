@@ -18,7 +18,9 @@ namespace kk {
         
         class App : public Context {
         public:
+            
             App(kk::CString basePath,kk::CString platform);
+            
             virtual ~App();
             
             virtual void open(kk::CString uri,kk::Boolean animated);

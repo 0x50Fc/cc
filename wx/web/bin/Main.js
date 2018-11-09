@@ -25,6 +25,8 @@ const SliderElement_1 = require("./SliderElement");
 const SwitchElement_1 = require("./SwitchElement");
 const TextareaElement_1 = require("./TextareaElement");
 const NavigatorElement_1 = require("./NavigatorElement");
+const CanvasElement_1 = require("./CanvasElement");
+const once_1 = require("./once");
 function ElementOnEvent(element, prefix, name, value) {
     element.on(name, (event) => {
         if (event instanceof Element_1.ElementEvent) {
@@ -268,10 +270,11 @@ page.document.addElementClass("slider", SliderElement_1.SliderElement);
 page.document.addElementClass("switch", SwitchElement_1.SwitchElement);
 page.document.addElementClass("textarea", TextareaElement_1.TextareaElement);
 page.document.addElementClass("navigator", NavigatorElement_1.NavigatorElement);
+page.document.addElementClass("canvas", CanvasElement_1.CanvasElement);
 function Page(view, styleSheet, options) {
     IPC_1.postMessage({ page: 'readying' });
     view(page.document.documentElement, page.data, new Page_1.PageViewContext(page));
-    IPC_1.postMessage({ page: 'ready' });
+    once_1.once(() => { IPC_1.postMessage({ page: 'ready' }); });
 }
 exports.Page = Page;
 function setData(data) {

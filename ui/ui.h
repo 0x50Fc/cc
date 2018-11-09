@@ -51,7 +51,25 @@ namespace kk {
             Color(Float r,Float g,Float b,Float a);
             Color(kk::CString v);
             Color(kk::Uint v);
+            Color(Any &v):Color((kk::CString) v){};
             Float r,g,b,a;
+            operator kk::Any() {
+                char data[64];
+                if(a == 1.0) {
+                    snprintf(data, sizeof(data), "#%02x%02x%02x",(kk::Uint)(r * 255),(kk::Uint)(g * 255),(kk::Uint)(b * 255));
+                } else {
+                    snprintf(data, sizeof(data), "rgba(%g,%g,%g,%g)",(r * 255),(g * 255),(b * 255),a);
+                }
+                return kk::Any((CString)data);
+            }
+            Color & operator=(Any &v) {
+                Color c((kk::CString)v);
+                r = c.r;
+                g = c.g;
+                b = c.b;
+                a = c.a;
+                return * this;
+            }
         };
         
         class Palette {
@@ -78,10 +96,34 @@ namespace kk {
             Font(Float size):size(size),style(FontStyleNormal),weight(FontWeightNormal){}
             Font(kk::CString family,Float size,FontStyle style,FontWeight weight):family(family),size(size),style(style),weight(weight){}
             Font(kk::CString v);
+            Font(kk::Any &v):Font((kk::CString) v){};
             kk::String family;
             Float size;
             FontStyle style;
             FontWeight weight;
+            operator kk::Any(){
+                std::vector<kk::String> items;
+                
+                if(family != "") {
+                    items.push_back(family);
+                }
+                
+                if(weight == FontWeightBold) {
+                    items.push_back("bold");
+                }
+                
+                if(style == FontStyleItalic) {
+                    items.push_back("italic");
+                }
+                
+                char fmt[32];
+                
+                snprintf(fmt, sizeof(fmt), "%gpx",size);
+                
+                items.push_back(fmt);
+                
+                return kk::Any(CStringJoin(items, " "));
+            }
         };
         
         enum TextAlign {
@@ -92,8 +134,9 @@ namespace kk {
             TextAlignRight
         };
         
-        TextAlign TextAlignFromString(kk::CString v);
-    
+        TextAlign TextAlignFromString(kk::CString string);
+        kk::CString StringFromTextAlign(TextAlign v);
+        
         enum TextBaseline {
             TextBaselineAlphabetic,
             TextBaselineTop,
@@ -103,7 +146,8 @@ namespace kk {
             TextBaselineBottom,
         };
         
-        TextBaseline TextBaselineFromString(kk::CString v);
+        TextBaseline TextBaselineFromString(kk::CString string);
+        kk::CString StringFromTextBaseline(TextBaseline v);
         
         struct Transform {
             Float a, b;
@@ -160,6 +204,8 @@ namespace kk {
             Context * _context;
         };
         
+        class Canvas;
+        
         class Context : public EventEmitter, public Container {
         public:
             Context(kk::CString basePath,kk::DispatchQueue * queue);
@@ -173,7 +219,8 @@ namespace kk {
             virtual void remove(kk::Object * object);
             virtual void exec(kk::CString path,TObject<String, Any> * librarys);
             virtual void exec(kk::CString path,JSObject * librarys);
-            virtual Worker * createWorker(kk::CString path);
+            virtual kk::Strong<Worker> createWorker(kk::CString path);
+            virtual kk::Strong<Canvas> createCanvas();
             
             static void Openlib();
             

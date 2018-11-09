@@ -49,6 +49,12 @@ class NViewElement extends ViewElement_1.ViewElement {
     }
     set(key, value) {
         super.set(key, value);
+        IPC_1.postMessage({
+            view: 'set',
+            id: this._id,
+            name: key,
+            value: value
+        });
         this.setNeedsDisplay();
     }
     onDidAddToParent(element) {

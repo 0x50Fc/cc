@@ -30,7 +30,7 @@ namespace kk {
         class OSCanvas : public Canvas {
         public:
             
-            OSCanvas():OSCanvas(mainDispatchQueue(), nullptr) {
+            OSCanvas(DispatchQueue * queue):OSCanvas(queue, nullptr) {
                 
             }
             
@@ -40,8 +40,19 @@ namespace kk {
                     CFRetain(view);
                     if(_view != nil) {
                         UIView * v = (__bridge UIView *) _view;
-                        setWidth((kk::Uint) ceil( v.frame.size.width * v.layer.contentsScale));
-                        setHeight((kk::Uint) ceil( v.frame.size.height * v.layer.contentsScale));
+                        __block CGRect bounds;
+                        __block CGFloat scale;
+                        if(queue == mainDispatchQueue()) {
+                            bounds = v.bounds;
+                            scale = v.layer.contentsScale;
+                        } else {
+                            dispatch_sync(dispatch_get_main_queue(), ^{
+                                bounds = v.bounds;
+                                scale = v.layer.contentsScale;
+                            });
+                        }
+                        setWidth((kk::Uint) ceil( bounds.size.width * scale));
+                        setHeight((kk::Uint) ceil( bounds.size.height * scale));
                     }
                 }
             }
@@ -63,23 +74,31 @@ namespace kk {
                 }
                 
                 if(strcmp(name, "2d") == 0) {
-                    kk::Weak<OSCanvas> canvas = this;
-                    kk::Strong<kk::ui::CG::Context> v = createCGContext(_width,_height);
-                    _context = v;
+                    
+                    kk::Strong<kk::ui::CG::Context> v = (kk::ui::CG::Context *) _context;
+                    
+                    if(v == nullptr || _resize) {
+                        v = createCGContext(_width,_height);
+                        _context = v;
+                    } else {
+                        v->clearRect(0, 0, _width, _height);
+                    }
+                    
                     if(_view != nil) {
-                        DispatchQueue * queue = nullptr; //;
-                        queue->async([v,canvas]()->void{
+                        kk::Weak<OSCanvas> canvas = this;
+                        _queue->async([v,canvas]()->void{
                             kk::Strong<OSCanvas> c = canvas.operator->();
                             if(c != nullptr) {
                                 displayCGContext(v.operator->(),c->_view);
                             }
                         });
                     }
+                    
                 }
                 
                 _resize = false;
                 
-                return nullptr;
+                return _context;
             }
             
             virtual Uint width() {
@@ -325,8 +344,8 @@ namespace kk {
             return new OSView(view,configuration,context);
         }
         
-        kk::Strong<Canvas> createCanvas() {
-            return new OSCanvas();
+        kk::Strong<Canvas> createCanvas(DispatchQueue * queue) {
+            return new OSCanvas(queue);
         }
         
     }

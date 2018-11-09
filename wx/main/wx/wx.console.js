@@ -7,7 +7,7 @@ function parseArguments(vs,args) {
             vs.push(JSON.stringify(v, undefined, 4));
             break;
             default:
-            vs.push(v);
+            vs.push(v + '');
             break;
         }
     }

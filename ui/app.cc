@@ -7,6 +7,8 @@
 //
 
 #include <ui/app.h>
+#include <ui/page.h>
+#include <ui/CGContext.h>
 
 namespace kk {
     
@@ -43,6 +45,18 @@ namespace kk {
         }
         
         void App::Openlib() {
+            
+            kk::OpenBaselib();
+            kk::Event::Openlib();
+            kk::EventEmitter::Openlib();
+            kk::Timer::Openlib();
+            kk::ui::Context::Openlib();
+            kk::ui::View::Openlib();
+            kk::ui::Canvas::Openlib();
+            kk::ui::WebViewConfiguration::Openlib();
+            kk::ui::Context::Openlib();
+            kk::ui::Page::Openlib();
+            kk::ui::CG::Context::Openlib();
             
             kk::Openlib<>::add([](duk_context * ctx)->void{
                 

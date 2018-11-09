@@ -429,9 +429,9 @@ namespace kk {
             duk_get_prop_string(ctx, idx, "fileName");
             const char * fileName = duk_to_string(ctx, -1);
             duk_pop(ctx);
-            kk::Log("%s%s(%d): %s",prefix,fileName,lineNumber,error);
+            kk::Log("%s %s(%d): %s",prefix,fileName,lineNumber,error);
         } else {
-            kk::Log("%s%s",prefix,duk_to_string(ctx, idx));
+            kk::Log("%s %s",prefix,duk_to_string(ctx, idx));
         }
     }
     

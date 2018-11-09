@@ -7,13 +7,81 @@
 //
 
 #include <ui/ui.h>
-
+#include <ui/view.h>
 #include <core/jit.h>
 
 namespace kk {
     
     namespace ui {
     
+        TextAlign TextAlignFromString(kk::CString string) {
+            if(CStringEqual(string, "end")) {
+                return TextAlignEnd;
+            }
+            if(CStringEqual(string, "center")) {
+                return TextAlignCenter;
+            }
+            if(CStringEqual(string, "left")) {
+                return TextAlignLeft;
+            }
+            if(CStringEqual(string, "right")) {
+                return TextAlignRight;
+            }
+            return TextAlignStart;
+        }
+        
+        kk::CString StringFromTextAlign(TextAlign v) {
+            switch (v) {
+                case TextAlignEnd:
+                    return "end";
+                case TextAlignCenter:
+                    return "center";
+                case TextAlignLeft:
+                    return "left";
+                case TextAlignRight:
+                    return "right";
+                default:
+                    return "start";
+            }
+        }
+        
+        TextBaseline TextBaselineFromString(kk::CString string) {
+            if(CStringEqual(string, "top")) {
+                return TextBaselineTop;
+            }
+            if(CStringEqual(string, "hanging")) {
+                return TextBaselineHanging;
+            }
+            if(CStringEqual(string, "middle")) {
+                return TextBaselineMiddle;
+            }
+            if(CStringEqual(string, "ideographic")) {
+                return TextBaselineIdeographic;
+            }
+            if(CStringEqual(string, "bottom")) {
+                return TextBaselineBottom;
+            }
+            return TextBaselineAlphabetic;
+        }
+        
+        kk::CString StringFromTextBaseline(TextBaseline v) {
+            
+            switch (v) {
+                case TextBaselineTop:
+                    return "top";
+                case TextBaselineHanging:
+                    return "hanging";
+                case TextBaselineMiddle:
+                    return "middle";
+                case TextBaselineIdeographic:
+                    return "ideographic";
+                case TextBaselineBottom:
+                    return "bottom";
+                default:
+                    return "alphabetic";
+            }
+        }
+        
         Size::Size():width(0),height(0) {
             
         }
@@ -148,35 +216,6 @@ namespace kk {
             a = (0x0ff & (v )) / 255.0;
         }
         
-        TextAlign TextAlignFromString(kk::CString v) {
-            TextAlign r = TextAlignLeft;
-            if(kk::CStringEqual(v, "start")) {
-                r = TextAlignStart;
-            } else if(kk::CStringEqual(v, "end")) {
-                r = TextAlignEnd;
-            } else if(kk::CStringEqual(v, "center")) {
-                r = TextAlignCenter;
-            } else if(kk::CStringEqual(v, "right")) {
-                r = TextAlignRight;
-            }
-            return r;
-        }
-
-        TextBaseline TextBaselineFromString(kk::CString v) {
-            TextBaseline r = TextBaselineAlphabetic;
-            if(kk::CStringEqual(v, "top")) {
-                r = TextBaselineTop;
-            } else if(kk::CStringEqual(v, "hanging")) {
-                r = TextBaselineHanging;
-            } else if(kk::CStringEqual(v, "middle")) {
-                r = TextBaselineMiddle;
-            } else if(kk::CStringEqual(v, "ideographic")) {
-                r = TextBaselineIdeographic;
-            } else if(kk::CStringEqual(v, "bottom")) {
-                r = TextBaselineBottom;
-            }
-            return r;
-        }
 
         Transform TransformIdentity = {
             1,0,
@@ -576,8 +615,12 @@ namespace kk {
             }
         }
         
-        Worker * Context::createWorker(kk::CString cpath) {
+        kk::Strong<Worker> Context::createWorker(kk::CString cpath) {
             return new Worker(this,cpath);
+        }
+        
+        kk::Strong<Canvas> Context::createCanvas() {
+            return kk::ui::createCanvas((DispatchQueue *) _queue);
         }
         
         void Context::Openlib(){
@@ -600,7 +643,9 @@ namespace kk {
                     
                     kk::PutMethod<Context,kk::String,kk::CString>(ctx, -1, "absolutePath", &Context::absolutePath);
                     
-                    kk::PutMethod<Context,Worker *,kk::CString>(ctx, -1, "createWorker", &Context::createWorker);
+                    kk::PutStrongMethod<Context,Worker,kk::CString>(ctx, -1, "createWorker", &Context::createWorker);
+                    
+                    kk::PutStrongMethod<Context,Canvas>(ctx, -1, "createCanvas", &Context::createCanvas);
                     
                 });
                 

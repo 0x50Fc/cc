@@ -28,9 +28,9 @@ namespace kk {
                 PatternTypeRepeatY,
                 PatternTypeNoRepeat
             };
-            
+           
             PatternType PatternTypeFromString(kk::CString string);
-            kk::String StringFromPatternType(PatternType v);
+            kk::CString StringFromPatternType(PatternType v);
             
             class Pattern : public Style {
             public:
@@ -70,7 +70,7 @@ namespace kk {
             };
             
             LineCapType LineCapTypeFromString(kk::CString string);
-            kk::String StringFromLineCapType(LineCapType v);
+            kk::CString StringFromLineCapType(LineCapType v);
             
             enum LineJoinType {
                 LineJoinTypeMiter,
@@ -79,7 +79,7 @@ namespace kk {
             };
             
             LineJoinType LineJoinTypeFromString(kk::CString string);
-            kk::String StringFromLineJoinType(LineJoinType v);
+            kk::CString StringFromLineJoinType(LineJoinType v);
             
             
             enum GlobalCompositeOperation {
@@ -97,7 +97,7 @@ namespace kk {
             };
             
             GlobalCompositeOperation GlobalCompositeOperationFromString(kk::CString string);
-            kk::String StringFromGlobalCompositeOperation(GlobalCompositeOperation v);
+            kk::CString StringFromGlobalCompositeOperation(GlobalCompositeOperation v);
             
             class ImageData : public kk::Object, public Image {
             public:
@@ -126,6 +126,8 @@ namespace kk {
                 virtual kk::Strong<RadialGradient> createRadialGradient(Float x0,Float y0,Float r0, Float x1, Float y1, Float r1) = 0;
                 
                 virtual kk::Strong<Pattern> createPattern(Image * image,PatternType type) = 0;
+                
+                virtual kk::Strong<Pattern> createPattern(Image * image,kk::CString type);
                 
                 virtual kk::Strong<ImageData> createImageData(Uint width,Uint height) = 0;
                 
@@ -188,11 +190,17 @@ namespace kk {
                 virtual void drawImage(Image * image,Float sx,Float sy,Float swidth,Float sheight,Float x,Float y,Float width,Float height) = 0;
                 
                 
+                virtual void setFillStyleAny(Any v);
+                virtual Any fillStyleAny();
+                
                 virtual void setFillStyle(Style * style) = 0;
                 virtual Style * fillStyle() = 0;
                 
                 virtual void setFillColor(Color color) = 0;
                 virtual Color fillColor() = 0;
+                
+                virtual void setStrokeStyleAny(Any v);
+                virtual Any strokeStyleAny();
                 
                 virtual void setStrokeStyle(Style * style) = 0;
                 virtual Style * strokeStyle() = 0;
@@ -215,8 +223,14 @@ namespace kk {
                 virtual void setLineCap(LineCapType v) = 0;
                 virtual LineCapType lineCap() = 0;
                 
+                virtual void setLineCapString(kk::CString v);
+                virtual kk::CString lineCapString();
+                
                 virtual void setLineJoin(LineJoinType v) = 0;
                 virtual LineJoinType lineJoin() = 0;
+                
+                virtual void setLineJoinString(kk::CString v);
+                virtual kk::CString lineJoinString();
                 
                 virtual void setLineWidth(Float v) = 0;
                 virtual Float lineWidth() = 0;
@@ -230,14 +244,27 @@ namespace kk {
                 virtual void setTextAlign(TextAlign v) = 0;
                 virtual TextAlign textAlign() = 0;
                 
+                virtual void setTextAlignString(kk::CString v);
+                virtual kk::CString textAlignString();
+                
                 virtual void setTextBaseline(TextBaseline v) = 0;
                 virtual TextBaseline textBaseline() = 0;
+                
+                virtual void setTextBaselineString(kk::CString v);
+                virtual kk::CString textBaselineString();
                 
                 virtual void setGlobalAlpha(Float v) = 0;
                 virtual Float globalAlpha() = 0;
                 
                 virtual void setGlobalCompositeOperation(GlobalCompositeOperation v) = 0;
                 virtual GlobalCompositeOperation globalCompositeOperation() = 0;
+                
+                virtual void setGlobalCompositeOperationString(kk::CString v);
+                virtual kk::CString globalCompositeOperationString();
+                
+                KK_CLASS(Context, Object, "UICGContext");
+                
+                static void Openlib();
                 
             };
         }

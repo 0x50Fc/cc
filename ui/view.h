@@ -40,7 +40,7 @@ namespace kk {
             kk::Uint _height;
         };
         
-        kk::Strong<Canvas> createCanvas();
+        kk::Strong<Canvas> createCanvas(DispatchQueue * queue);
         
         typedef kk::Uint SubviewPosition;
         

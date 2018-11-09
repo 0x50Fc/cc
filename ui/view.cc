@@ -43,16 +43,10 @@ namespace kk {
                 
                 kk::PushInterface<Canvas>(ctx, [](duk_context * ctx)->void{
                     
-                    kk::PutStrongMethod<Canvas,Object,kk::CString>(ctx, -1, "set", &Canvas::getContext);
+                    kk::PutStrongMethod<Canvas,Object,kk::CString>(ctx, -1, "getContext", &Canvas::getContext);
                     kk::PutStrongMethod<Canvas,Image>(ctx, -1, "toImage", &Canvas::toImage);
                     kk::PutProperty<Canvas,Uint>(ctx, -1, "width", &Canvas::width,&Canvas::setWidth);
                     kk::PutProperty<Canvas,Uint>(ctx, -1, "height", &Canvas::height,&Canvas::setHeight);
-                    
-                    duk_push_string(ctx, "create");
-                    kk::PushStrongFunction<Canvas>(ctx, createCanvas);
-                    
-                    duk_def_prop(ctx, -4, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_SET_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
-                    
                 });
                 
             });

@@ -23,18 +23,7 @@
 @implementation KKApp
 
 +(void) initialize {
-    
-    kk::OpenBaselib();
-    kk::Event::Openlib();
-    kk::EventEmitter::Openlib();
-    kk::Timer::Openlib();
-    kk::ui::Context::Openlib();
-    kk::ui::View::Openlib();
-    kk::ui::WebViewConfiguration::Openlib();
-    kk::ui::Context::Openlib();
-    kk::ui::Page::Openlib();
     kk::ui::App::Openlib();
-    
 }
 
 -(instancetype) initWithBasePath:(NSString *) basePath {

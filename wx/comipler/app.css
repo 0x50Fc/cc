@@ -33,3 +33,10 @@ wx-input > span {
     color: #999999;
 }
 
+wx-canvas {
+    width:300px;
+    height:150px;
+    display:block;
+    position:relative;
+}
+    

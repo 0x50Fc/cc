@@ -88,15 +88,19 @@ namespace kk {
                 _shadowBlur(0),_shadowOffsetX(0),_shadowOffsetY(0),
                 _baseline(TextBaselineAlphabetic),_lineCap(LineCapTypeButt),_lineJoin(LineJoinTypeMiter),_miterLimit(0),
                 _globalAlpha(1),_globalCompositeOperation(GlobalCompositeOperationSourceOver){
-                    CGColorSpaceRef rgbSpace = CGColorSpaceCreateDeviceRGB();
-                    _ctx = CGBitmapContextCreate(NULL, width, height, 8, width * 4, rgbSpace, kCGImageAlphaPremultipliedLast);
-                    CGContextTranslateCTM(_ctx, 0, height);
-                    CGContextScaleCTM(_ctx, 1, -1);
-                    CGColorSpaceRelease(rgbSpace);
+                    @autoreleasepool {
+                        CGColorSpaceRef rgbSpace = CGColorSpaceCreateDeviceRGB();
+                        _ctx = CGBitmapContextCreate(NULL, width, height, 8, width * 4, rgbSpace, kCGImageAlphaPremultipliedLast);
+                        CGContextTranslateCTM(_ctx, 0, height);
+                        CGContextScaleCTM(_ctx, 1, -1);
+                        CGColorSpaceRelease(rgbSpace);
+                    }
                 }
                 
                 virtual ~OSContext() {
-                    CGContextRelease(_ctx);
+                    @autoreleasepool {
+                        CGContextRelease(_ctx);
+                    }
                 }
                 
                 virtual kk::Strong<LinearGradient> createLinearGradient(Float x0,Float y0, Float x1, Float y1) {
@@ -1129,7 +1133,7 @@ namespace kk {
                 virtual CGImageRef createCGImage() {
                     return CGBitmapContextCreateImage(_ctx);
                 }
-                
+     
             protected:
                 CGContextRef _ctx;
                 Strong<Style> _fillStyle;
@@ -1167,8 +1171,10 @@ namespace kk {
                     CGImageRef image = v->createCGImage();
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        vv.layer.contents = (__bridge id) image;
-                        CGImageRelease(image);
+                        @autoreleasepool {
+                            vv.layer.contents = (__bridge id) image;
+                            CGImageRelease(image);
+                        }
                     });
                     
                 }

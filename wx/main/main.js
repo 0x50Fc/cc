@@ -8,4 +8,4 @@ require("wx/wx.console.js");
 
 require("wx/wx.app.js")({});
 
-app.open("input/index.js");
+app.open("canvas/index.js");

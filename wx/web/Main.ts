@@ -25,6 +25,8 @@ import { SliderElement } from './SliderElement';
 import { SwitchElement } from './SwitchElement';
 import { TextareaElement } from './TextareaElement';
 import { NavigatorElement } from './NavigatorElement';
+import { CanvasElement } from './CanvasElement';
+import { once } from './once';
 
 function ElementOnEvent(element: Element, prefix: string, name: string, value: string): void {
 
@@ -292,32 +294,33 @@ export function CreateElement(element: Element, data: Data, name: string, attrib
 
 var page = new PageObject();
 
-page.document.addElementClass("view",ViewElement);
-page.document.addElementClass("input",InputElement);
-page.document.addElementClass("image",ImageElement);
-page.document.addElementClass("scroll-view",ScrollViewElement);
-page.document.addElementClass("swiper",SwiperElement);
-page.document.addElementClass("movable-view",MovableViewElement);
-page.document.addElementClass("icon",IconElement);
-page.document.addElementClass("text",TextElement);
-page.document.addElementClass("rich-text",RichTextElement);
-page.document.addElementClass("progress",ProgressElement);
-page.document.addElementClass("button",ButtonElement);
-page.document.addElementClass("checkbox",CheckboxElement);
-page.document.addElementClass("form",FormElement);
-page.document.addElementClass("label",LabelElement);
-page.document.addElementClass("picker",PickerElement);
-page.document.addElementClass("picker-view",PickerViewElement);
-page.document.addElementClass("radio",RadioElement);
-page.document.addElementClass("slider",SliderElement);
-page.document.addElementClass("switch",SwitchElement);
-page.document.addElementClass("textarea",TextareaElement);
-page.document.addElementClass("navigator",NavigatorElement);
+page.document.addElementClass("view", ViewElement);
+page.document.addElementClass("input", InputElement);
+page.document.addElementClass("image", ImageElement);
+page.document.addElementClass("scroll-view", ScrollViewElement);
+page.document.addElementClass("swiper", SwiperElement);
+page.document.addElementClass("movable-view", MovableViewElement);
+page.document.addElementClass("icon", IconElement);
+page.document.addElementClass("text", TextElement);
+page.document.addElementClass("rich-text", RichTextElement);
+page.document.addElementClass("progress", ProgressElement);
+page.document.addElementClass("button", ButtonElement);
+page.document.addElementClass("checkbox", CheckboxElement);
+page.document.addElementClass("form", FormElement);
+page.document.addElementClass("label", LabelElement);
+page.document.addElementClass("picker", PickerElement);
+page.document.addElementClass("picker-view", PickerViewElement);
+page.document.addElementClass("radio", RadioElement);
+page.document.addElementClass("slider", SliderElement);
+page.document.addElementClass("switch", SwitchElement);
+page.document.addElementClass("textarea", TextareaElement);
+page.document.addElementClass("navigator", NavigatorElement);
+page.document.addElementClass("canvas", CanvasElement);
 
 export function Page(view: PageView, styleSheet: StyleSheet, options: PageOptions): void {
     postMessage({ page: 'readying' });
     view(page.document.documentElement, page.data, new PageViewContext(page));
-    postMessage({ page: 'ready' });
+    once((): void => { postMessage({ page: 'ready' }); });
 }
 
 export function setData(data: PageData): void {
@@ -332,7 +335,7 @@ export function setData(data: PageData): void {
 
 export function sendEvent(id: number, name: string, data: any): void {
     let element = page.document.element(id);
-    if(element != undefined) {
-        element.onEvent(name,data);
+    if (element != undefined) {
+        element.onEvent(name, data);
     }
 }

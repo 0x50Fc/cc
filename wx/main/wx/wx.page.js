@@ -8,6 +8,7 @@ function diranme(path) {
 }
 
 var V = require("wx/wx.view.js");
+var wx = require("wx/wx.js");
 
 module.exports = function (options, path, page) {
 
@@ -30,6 +31,8 @@ module.exports = function (options, path, page) {
 
     var context = new V.Context(webview);
 
+    wx.setContext(context);
+
     view.addSubview(webview);
 
     webview.setFrame(0, 64, page.width, page.height - 64);
@@ -40,10 +43,10 @@ module.exports = function (options, path, page) {
         page.object = {};
 
         var readying = function () {
-            (function (__CODE__, Page, getApp, app, page) {
-                eval(__CODE__);
-            })(
-                app.getTextContent(path + ".wx.js"),
+
+            var fn = compile("(function(Page, getApp, app, page, wx){" + app.getTextContent(path + ".wx.js") + "})", path + ".wx.js")();
+
+            fn(
                 function (object) {
                     page.object = object;
                 },
@@ -51,7 +54,8 @@ module.exports = function (options, path, page) {
                     return app.object;
                 },
                 undefined,
-                undefined
+                undefined,
+                wx
             );
             Object.defineProperty(page.object, "setData", {
                 value: function (data) {

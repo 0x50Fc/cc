@@ -29,6 +29,7 @@ require('./bin/SliderElement.js');
 require('./bin/SwitchElement.js');
 require('./bin/TextareaElement.js');
 require('./bin/NavigatorElement.js');
+require('./bin/CanvasElement.js');
 
 require('./bin/Document.js');
 require('./bin/Page.js');
