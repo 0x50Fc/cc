@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <CoreLocation/CoreLocation.h>
+//#import <WX/WX.h>
+#import <WX/WXLocation.h>
 @interface ViewController : UIViewController
-
+{
+    WX * _wx;
+}
 
 @end
 

@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <WX/WXObject.h>
+#import <objc/runtime.h>
+#include <CoreLocation/CoreLocation.h>
 
-@protocol WXShooseLocationRes <NSObject>
+@protocol WXChooseLocationRes <NSObject>
 
 @property(nonatomic,strong) NSString * name;
 @property(nonatomic,strong) NSString * address;
@@ -18,15 +20,15 @@
 
 @end
 
-typedef void (^WXShooseLocationObjectSuccess)(id<WXShooseLocationRes> res);
-typedef void (^WXShooseLocationObjectFail)(NSError * error);
-typedef void (^WXShooseLocationObjectComplete)(void);
+typedef void (^WXChooseLocationObjectSuccess)(id<WXChooseLocationRes> res);
+typedef void (^WXChooseLocationObjectFail)(NSError * error);
+typedef void (^WXChooseLocationObjectComplete)(void);
 
-@protocol WXShooseLocationObject <NSObject>
+@protocol WXChooseLocationObject <NSObject>
 
-@property(nonatomic,strong) WXShooseLocationObjectSuccess success;
-@property(nonatomic,strong) WXShooseLocationObjectFail fail;
-@property(nonatomic,strong) WXShooseLocationObjectComplete complete;
+@property(nonatomic,strong) WXChooseLocationObjectSuccess success;
+@property(nonatomic,strong) WXChooseLocationObjectFail fail;
+@property(nonatomic,strong) WXChooseLocationObjectComplete complete;
 
 @end
 
@@ -40,12 +42,15 @@ typedef void (^WXShooseLocationObjectComplete)(void);
 @property(nonatomic,assign) double altitude;
 @property(nonatomic,assign) double verticalAccuracy;
 @property(nonatomic,assign) double horizontalAccuracy;
+@property(nonatomic,copy) NSString * errMsg;
+
+-(instancetype)initWithCLLocation:(CLLocation *)location errMsg:(NSString *)msg type:(NSString *)type;
 
 @end
 
 typedef void (^WXGetLocationObjectSuccess)(id<WXGetLocationRes> res);
 typedef void (^WXGetLocationObjectFail)(NSError * error);
-typedef void (^WXGetLocationObjectComplete)(void);
+typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 
 @protocol WXGetLocationObject <NSObject>
 
@@ -60,11 +65,11 @@ typedef void (^WXGetLocationObjectComplete)(void);
 @end
 
 
-@interface WXShooseLocationRes : NSObject<WXShooseLocationRes>
+@interface WXChooseLocationRes : NSObject<WXChooseLocationRes>
 
 @end
 
-@interface WXShooseLocationObject  : NSObject<WXShooseLocationObject>
+@interface WXChooseLocationObject  : NSObject<WXChooseLocationObject>
 
 @end
 
@@ -76,11 +81,17 @@ typedef void (^WXGetLocationObjectComplete)(void);
 
 @end
 
-@interface WX (WXLocation)
+@interface WX (WXLocation) <CLLocationManagerDelegate>
+@property (nonatomic, strong, readonly) CLLocationManager * locationManager;
+@property (nonatomic, strong) WXGetLocationObject * getLocationObject;
 
--(void) chooseLocation:(id<WXShooseLocationObject>) object;
+-(void) chooseLocation:(id<WXChooseLocationObject>) object;
+-(void) getLocation:(id<WXGetLocationObject>) object;
+@end
 
--(void) getLocation:(id<WXShooseLocationObject>) object;
+@interface CLLocation (WXLocation)
+/*CoreLocation 获取的地址为wgs84 这个方法可以生成一个转换成 gcj02 标准的坐标*/
+-(CLLocationCoordinate2D)generateGCJ02Coordinate;
 
 @end
 
