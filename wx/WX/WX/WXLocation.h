@@ -6,10 +6,10 @@
 //  Copyright © 2018 kkmofang.cn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+//#import <Foundation/Foundation.h>
 #import <WX/WXObject.h>
 #import <objc/runtime.h>
-#include <CoreLocation/CoreLocation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @protocol WXChooseLocationRes <NSObject>
 
@@ -60,7 +60,6 @@ typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 
 @property(nonatomic,strong) NSString * type;
 @property(nonatomic,assign) BOOL altitude;
-
 
 @end
 

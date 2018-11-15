@@ -118,7 +118,7 @@
 
 #pragma mark -- CLLocationManager Protocol
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
-    NSLog(@"%@", locations);
+    //NSLog(@"%@", locations);
     if (self.getLocationObject) {
         WXGetLocationRes * res = [[WXGetLocationRes alloc] initWithCLLocation:locations.lastObject errMsg:@"getLocation:ok" type:self.getLocationObject.type];
         self.getLocationObject.success(res);

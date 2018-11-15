@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
-//#import <WX/WX.h>
-#import <WX/WXLocation.h>
-@interface ViewController : UIViewController
+#import <WX/WX.h>
+
+@interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
+    NSArray * _arrVC;
     WX * _wx;
+    UITableView * _tableView;
 }
 
 @end

@@ -20,6 +20,9 @@
 		1A19B07A21992ADA00321431 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A19B07921992ADA00321431 /* main.m */; };
 		1A19B08021992BBC00321431 /* WX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A19B04F219924AF00321431 /* WX.framework */; };
 		1A19B08121992BBC00321431 /* WX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A19B04F219924AF00321431 /* WX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXAccelerometer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXAccelerometer.m */; };
+		E98DBB68219D7ACA002CE813 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E98DBB67219D7ACA002CE813 /* LocationViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,10 @@
 		1A19B07621992ADA00321431 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A19B07821992ADA00321431 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A19B07921992ADA00321431 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E922E321219D177C00A7EC81 /* WXAccelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXAccelerometer.h; sourceTree = "<group>"; };
+		E922E322219D177C00A7EC81 /* WXAccelerometer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXAccelerometer.m; sourceTree = "<group>"; };
+		E98DBB66219D7ACA002CE813 /* LocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
+		E98DBB67219D7ACA002CE813 /* LocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +119,8 @@
 				1A19B05C219925B800321431 /* WXLocation.h */,
 				1A19B05E2199285C00321431 /* WXLocation.m */,
 				1A19B053219924AF00321431 /* Info.plist */,
+				E922E321219D177C00A7EC81 /* WXAccelerometer.h */,
+				E922E322219D177C00A7EC81 /* WXAccelerometer.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -119,6 +128,7 @@
 		1A19B06921992AD700321431 /* demo */ = {
 			isa = PBXGroup;
 			children = (
+				E98DBB5D219D7889002CE813 /* view */,
 				1A19B06A21992AD700321431 /* AppDelegate.h */,
 				1A19B06B21992AD700321431 /* AppDelegate.m */,
 				1A19B06D21992AD700321431 /* ViewController.h */,
@@ -132,6 +142,15 @@
 			path = demo;
 			sourceTree = "<group>";
 		};
+		E98DBB5D219D7889002CE813 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				E98DBB66219D7ACA002CE813 /* LocationViewController.h */,
+				E98DBB67219D7ACA002CE813 /* LocationViewController.m */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -141,6 +160,7 @@
 			files = (
 				1A19B054219924AF00321431 /* WX.h in Headers */,
 				1A19B05D219925B800321431 /* WXLocation.h in Headers */,
+				E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */,
 				1A19B062219928D300321431 /* WXObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +268,7 @@
 			files = (
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
+				E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +279,7 @@
 				1A19B06F21992AD700321431 /* ViewController.m in Sources */,
 				1A19B07A21992ADA00321431 /* main.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
+				E98DBB68219D7ACA002CE813 /* LocationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
