@@ -13,9 +13,13 @@
 @interface ViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     NSArray * _arrVC;
-    WX * _wx;
     UITableView * _tableView;
 }
+
+@property (nonatomic, strong, readonly) WX * wx;
+
++(ViewController *)getInstance;
+
 
 @end
 

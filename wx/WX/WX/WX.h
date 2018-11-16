@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <WX/WXLocation.h>
 #import <WX/WXAccelerometer.h>
+#import <WX/WXBattery.h>
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;

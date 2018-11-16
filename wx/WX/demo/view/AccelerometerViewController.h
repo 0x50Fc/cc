@@ -1,5 +1,5 @@
 //
-//  LocationViewController.h
+//  AccelerometerViewController.h
 //  demo
 //
 //  Created by zuowu on 2018/11/16.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LocationViewController : UIViewController
+@interface AccelerometerViewController : UIViewController
 
 @end
 

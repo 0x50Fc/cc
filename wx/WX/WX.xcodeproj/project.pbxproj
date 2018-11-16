@@ -22,7 +22,14 @@
 		1A19B08121992BBC00321431 /* WX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A19B04F219924AF00321431 /* WX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXAccelerometer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXAccelerometer.m */; };
-		E98DBB68219D7ACA002CE813 /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E98DBB67219D7ACA002CE813 /* LocationViewController.m */; };
+		E9B48A23219E67020051416D /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A21219E67020051416D /* LocationViewController.m */; };
+		E9B48A24219E67020051416D /* LocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9B48A22219E67020051416D /* LocationViewController.xib */; };
+		E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A26219E68D20051416D /* AccelerometerViewController.m */; };
+		E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9B48A27219E68D20051416D /* AccelerometerViewController.xib */; };
+		E9B48A2C219E6EDB0051416D /* WXBattery.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B48A2A219E6EDB0051416D /* WXBattery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9B48A2D219E6EDB0051416D /* WXBattery.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A2B219E6EDB0051416D /* WXBattery.m */; };
+		E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A2F219E8FE70051416D /* BatteryViewController.m */; };
+		E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9B48A30219E8FE70051416D /* BatteryViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,8 +76,17 @@
 		1A19B07921992ADA00321431 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E922E321219D177C00A7EC81 /* WXAccelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXAccelerometer.h; sourceTree = "<group>"; };
 		E922E322219D177C00A7EC81 /* WXAccelerometer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXAccelerometer.m; sourceTree = "<group>"; };
-		E98DBB66219D7ACA002CE813 /* LocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
-		E98DBB67219D7ACA002CE813 /* LocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
+		E9B48A20219E67020051416D /* LocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
+		E9B48A21219E67020051416D /* LocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
+		E9B48A22219E67020051416D /* LocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationViewController.xib; sourceTree = "<group>"; };
+		E9B48A25219E68D20051416D /* AccelerometerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccelerometerViewController.h; sourceTree = "<group>"; };
+		E9B48A26219E68D20051416D /* AccelerometerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccelerometerViewController.m; sourceTree = "<group>"; };
+		E9B48A27219E68D20051416D /* AccelerometerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccelerometerViewController.xib; sourceTree = "<group>"; };
+		E9B48A2A219E6EDB0051416D /* WXBattery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXBattery.h; sourceTree = "<group>"; };
+		E9B48A2B219E6EDB0051416D /* WXBattery.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXBattery.m; sourceTree = "<group>"; };
+		E9B48A2E219E8FE70051416D /* BatteryViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BatteryViewController.h; sourceTree = "<group>"; };
+		E9B48A2F219E8FE70051416D /* BatteryViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BatteryViewController.m; sourceTree = "<group>"; };
+		E9B48A30219E8FE70051416D /* BatteryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BatteryViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +137,8 @@
 				1A19B053219924AF00321431 /* Info.plist */,
 				E922E321219D177C00A7EC81 /* WXAccelerometer.h */,
 				E922E322219D177C00A7EC81 /* WXAccelerometer.m */,
+				E9B48A2A219E6EDB0051416D /* WXBattery.h */,
+				E9B48A2B219E6EDB0051416D /* WXBattery.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -145,8 +163,15 @@
 		E98DBB5D219D7889002CE813 /* view */ = {
 			isa = PBXGroup;
 			children = (
-				E98DBB66219D7ACA002CE813 /* LocationViewController.h */,
-				E98DBB67219D7ACA002CE813 /* LocationViewController.m */,
+				E9B48A20219E67020051416D /* LocationViewController.h */,
+				E9B48A21219E67020051416D /* LocationViewController.m */,
+				E9B48A22219E67020051416D /* LocationViewController.xib */,
+				E9B48A25219E68D20051416D /* AccelerometerViewController.h */,
+				E9B48A26219E68D20051416D /* AccelerometerViewController.m */,
+				E9B48A27219E68D20051416D /* AccelerometerViewController.xib */,
+				E9B48A2E219E8FE70051416D /* BatteryViewController.h */,
+				E9B48A2F219E8FE70051416D /* BatteryViewController.m */,
+				E9B48A30219E8FE70051416D /* BatteryViewController.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -161,6 +186,7 @@
 				1A19B054219924AF00321431 /* WX.h in Headers */,
 				1A19B05D219925B800321431 /* WXLocation.h in Headers */,
 				E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */,
+				E9B48A2C219E6EDB0051416D /* WXBattery.h in Headers */,
 				1A19B062219928D300321431 /* WXObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,9 +279,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */,
 				1A19B07721992ADA00321431 /* LaunchScreen.storyboard in Resources */,
+				E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */,
 				1A19B07421992ADA00321431 /* Assets.xcassets in Resources */,
 				1A19B07221992AD700321431 /* Main.storyboard in Resources */,
+				E9B48A24219E67020051416D /* LocationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9B48A2D219E6EDB0051416D /* WXBattery.m in Sources */,
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
 				E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */,
@@ -278,8 +308,10 @@
 			files = (
 				1A19B06F21992AD700321431 /* ViewController.m in Sources */,
 				1A19B07A21992ADA00321431 /* main.m in Sources */,
+				E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
-				E98DBB68219D7ACA002CE813 /* LocationViewController.m in Sources */,
+				E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */,
+				E9B48A23219E67020051416D /* LocationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

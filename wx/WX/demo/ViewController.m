@@ -15,12 +15,24 @@
 
 @implementation ViewController
 
+@synthesize wx = _wx;
+
+static ViewController * __instance;
++(ViewController *)getInstance{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        __instance = [[ViewController alloc] init];
+    });
+    return __instance;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
     _arrVC = @[
                @{ @"text":@"定位 - Location", @"class":@"LocationViewController" },
-               @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" }
+               @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" },
+               @{ @"text":@"电量 - Battery", @"class":@"BatteryViewController" }
                ];
      _wx = [[WX alloc] init];
     _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -52,71 +64,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
     NSDictionary * dic = [_arrVC objectAtIndex:[indexPath row]];
-    id vc = [[NSClassFromString([dic valueForKey:@"class"]) alloc] init];
-    [self.navigationController pushViewController:vc animated:NO];
+    NSString * name = [dic valueForKey:@"class"];
+    id vc =  [[NSClassFromString(name) alloc]initWithNibName:name bundle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
-    
--(IBAction)starButton:(id)sender{
-//    [self testGetLocation];
-    [self testStartAccelerometer];
-}
-- (IBAction)stopButton:(id)sender {
-    WXStartAccelerometerObject * ob = [[WXStartAccelerometerObject alloc] init];
-
-    ob.success = ^(id<WXStartAccelerometerRes> res) {
-        NSLog(@"stop accelerometer success %@", res);
-    };
-    ob.complete = ^(id<WXStartAccelerometerRes> res) {
-        NSLog(@"stop accelerometer complete %@", res);
-    };
-    ob.fail = ^(NSError *error) {
-        NSLog(@"stop accelerometer fail %@", error);
-    };
-    
-    [_wx stopAccelerometer:ob];
-}
-
--(void)testGetLocation{
-    WXGetLocationObject * ob = [[WXGetLocationObject alloc]init];
-    ob.success = ^(id<WXGetLocationRes> res) {
-        NSLog(@"success");
-        NSLog(@"%@",res);
-    };
-    ob.fail = ^(NSError *error) {
-        
-    };
-    ob.complete = ^(id<WXGetLocationRes> res) {
-        if ([res.errMsg isEqualToString:@"getLocation:ok"]) {
-            NSLog(@"complete");
-            NSLog(@"%@",res);
-        }
-    };
-    ob.type = @"gcj02";
-    ob.altitude = YES;
-    
-    [_wx getLocation:ob];
-}
-
--(void)testStartAccelerometer{
-    WXStartAccelerometerObject * ob = [[WXStartAccelerometerObject alloc] init];
-    ob.interval = @"game";
-    ob.success = ^(id<WXStartAccelerometerRes> res) {
-        NSLog(@"star accelerometer success %@", res);
-    };
-    ob.complete = ^(id<WXStartAccelerometerRes> res) {
-        NSLog(@"star accelerometer complete %@", res);
-    };
-    ob.fail = ^(NSError *error) {
-        NSLog(@"star accelerometer fail %@", error);
-    };
-    
-    [_wx startAccelerometer:ob];
-    _wx.onAccelerometerChange = ^(id<WXOnAccelerometerChangeRes> res) {
-        NSLog(@"on accelerometer change = %@",res);
-    };
-
-}
-
 
 @end
