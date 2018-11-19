@@ -64,6 +64,52 @@ typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 @end
 
 
+@protocol WXOnCompassChageRes <NSObject>
+
+@property (nonatomic, assign) double direction;
+@property (nonatomic, assign) double accuracy;
+
+@end
+
+@protocol WXComparesRes <NSObject>
+
+@property (nonatomic, copy) NSString * errMsg;
+
+@end
+
+
+typedef void (^WXStartCompassObjectSuccess)(id<WXComparesRes> res);
+typedef void (^WXStartCompassObjectFail)(NSError * error);
+typedef void (^WXStartCompassObjectComplete)(id<WXComparesRes> res);
+
+@protocol WXStartCompassObject <NSObject>
+
+@property (nonatomic, strong) WXStartCompassObjectSuccess success;
+@property (nonatomic, strong) WXStartCompassObjectFail fail;
+@property (nonatomic, strong) WXStartCompassObjectComplete complete;
+
+@end
+
+
+typedef void (^WXStopCompassObjectSuccess)(id<WXComparesRes> res);
+typedef void (^WXStopCompassObjectFail)(NSError * error);
+typedef void (^WXStopCompassObjectComplete)(id<WXComparesRes> res);
+
+@protocol WXStopCompassObject <NSObject>
+
+@property (nonatomic, strong) WXStopCompassObjectSuccess success;
+@property (nonatomic, strong) WXStopCompassObjectFail fail;
+@property (nonatomic, strong) WXStopCompassObjectComplete complete;
+
+@end
+
+
+@interface WXComparesRes : NSObject<WXComparesRes>
+
+-(instancetype)initWithErrMsg:(NSString *) msg;
+
+@end
+
 @interface WXChooseLocationRes : NSObject<WXChooseLocationRes>
 
 @end
@@ -80,12 +126,35 @@ typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 
 @end
 
+@interface WXStartCompassObject : NSObject<WXStartCompassObject>
+
+@end
+
+@interface WXStopCompassObject : NSObject<WXStopCompassObject>
+
+@end
+
+@interface WXOnCompassChageRes : NSObject<WXOnCompassChageRes>
+
+-(instancetype)initWithHeading:(CLHeading *)heading;
+
+@end
+
+typedef void(^WXOnCompassChange) (id<WXOnCompassChageRes> res);
+
 @interface WX (WXLocation) <CLLocationManagerDelegate>
+
 @property (nonatomic, strong, readonly) CLLocationManager * locationManager;
 @property (nonatomic, strong) WXGetLocationObject * getLocationObject;
 
 -(void) chooseLocation:(id<WXChooseLocationObject>) object;
 -(void) getLocation:(id<WXGetLocationObject>) object;
+
+@property (nonatomic, strong) WXOnCompassChange onCompassChange;
+
+-(void) startCompass:(id<WXStartCompassObject>) object;
+-(void) stopCompass:(id<WXStopCompassObject>) object;
+
 @end
 
 @interface CLLocation (WXLocation)

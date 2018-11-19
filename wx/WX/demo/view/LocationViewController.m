@@ -40,6 +40,42 @@
 
     [wx getLocation:ob];
 }
+- (IBAction)btnStartCompass:(id)sender {
+    
+    WX * wx = [ViewController getInstance].wx;
+    
+    wx.onCompassChange = ^(id<WXOnCompassChageRes> res) {
+        NSLog(@"on compass change res = %@", res);
+    };
+
+    WXStartCompassObject * object = [[WXStartCompassObject alloc] init];
+    object.success = ^(id<WXComparesRes> res) {
+        NSLog(@"wx start compass success res = %@", res);
+    };
+    object.fail = ^(NSError *error) {
+        NSLog(@"wx start compass fail res = %@", error);
+    };
+    object.complete = ^(id<WXComparesRes> res) {
+        NSLog(@"wx start compass complete res = %@", res);
+    };
+    [wx startCompass:object];
+    
+}
+- (IBAction)btnStopCompass:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStopCompassObject * object = [[WXStopCompassObject alloc] init];
+    object.success = ^(id<WXComparesRes> res) {
+        NSLog(@"wx stop compass success res = %@", res);
+    };
+    object.fail = ^(NSError *error) {
+        NSLog(@"wx stop compass fail res = %@", error);
+    };
+    object.complete = ^(id<WXComparesRes> res) {
+        NSLog(@"wx stop compass complete res = %@", res);
+    };
+    
+    [wx stopCompass:object];
+}
 
 /*
 #pragma mark - Navigation

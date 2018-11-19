@@ -10,6 +10,7 @@
 
 #define LocationManagerKey "LocationManagerKey"
 #define GetLocationObjectKey "GetLocationObjectKey"
+#define OnCompassChangeKey "OnCompassChangeKey"
 
 @implementation WXChooseLocationRes
 
@@ -84,6 +85,66 @@
 
 @end
 
+@implementation WXComparesRes
+
+@synthesize errMsg = _errMsg;
+
+-(instancetype)initWithErrMsg:(NSString *) msg{
+    if (self = [super init]) {
+        self.errMsg = msg;
+    }
+    return self;
+}
+
+-(NSString *)description{
+    NSDictionary * dic = @{
+                           @"errMsg": _errMsg,
+                           };
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    
+    return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+@end
+
+@implementation WXStartCompassObject
+
+@synthesize success = _success;
+@synthesize fail = _fail;
+@synthesize complete = _complete;
+
+@end
+
+@implementation WXStopCompassObject
+
+@synthesize success = _success;
+@synthesize fail = _fail;
+@synthesize complete = _complete;
+
+@end
+
+@implementation WXOnCompassChageRes
+
+@synthesize direction = _direction;
+@synthesize accuracy = _accuracy;
+
+-(instancetype)initWithHeading:(CLHeading *)heading{
+    if (self = [super init]) {
+        self.accuracy = heading.headingAccuracy;
+        self.direction = heading.trueHeading;
+    }
+    return self;
+}
+
+-(NSString*) description{
+    return [NSString stringWithFormat:@"{direction:%f, accuracy:%f}", self.direction, self.accuracy];
+}
+@end
+
+
+
 @implementation WX (WXLocation)
 
 -(CLLocationManager *)locationManager{
@@ -106,7 +167,15 @@
 -(void)setGetLocationObject:(WXGetLocationObject *)object{
     objc_setAssociatedObject(self, GetLocationObjectKey, object, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-    
+
+
+-(WXOnCompassChange)onCompassChange{
+    return objc_getAssociatedObject(self, OnCompassChangeKey);
+}
+-(void)setOnCompassChange:(WXOnCompassChange)onCompassChange{
+    objc_setAssociatedObject(self, OnCompassChangeKey, onCompassChange, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(void) chooseLocation:(id<WXChooseLocationObject>) object {
     
 }
@@ -116,7 +185,21 @@
     [self.locationManager startUpdatingLocation];
 }
 
+-(void) startCompass:(id<WXStartCompassObject>) object{
+    [self.locationManager startUpdatingHeading];
+    WXComparesRes * res = [[WXComparesRes alloc] initWithErrMsg:@"startCompass:ok"];
+    object.success(res);
+    object.complete(res);
+}
+
+-(void) stopCompass:(id<WXStopCompassObject>) object{
+    [self.locationManager stopUpdatingHeading];
+    WXComparesRes * res = [[WXComparesRes alloc] initWithErrMsg:@"stopCompass:ok"];
+    object.success(res);
+    object.complete(res);
+}
 #pragma mark -- CLLocationManager Protocol
+
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     //NSLog(@"%@", locations);
     if (self.getLocationObject) {
@@ -136,6 +219,11 @@
         self.getLocationObject.complete(res);
     }
     [self.locationManager stopUpdatingLocation];
+}
+
+-(void) locationManager:(CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading{
+//    NSLog(@"new heading magneticHeading = %lf, trueHeading = %lf, headingAccuracy = %lf", newHeading.magneticHeading, newHeading.trueHeading, newHeading.headingAccuracy);
+    self.onCompassChange([[WXOnCompassChageRes alloc] initWithHeading:newHeading]);
 }
     
 @end

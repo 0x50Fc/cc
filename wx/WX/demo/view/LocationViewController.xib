@@ -29,11 +29,31 @@
                         <action selector="btnGetLocation:" destination="-1" eventType="touchUpInside" id="DRX-pW-Ndr"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fmg-0M-r7y">
+                    <rect key="frame" x="16" y="97" width="120" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Start Compass"/>
+                    <connections>
+                        <action selector="btnStartCompass:" destination="-1" eventType="touchUpInside" id="aXM-No-4a4"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orP-iP-9OA">
+                    <rect key="frame" x="232" y="97" width="120" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <state key="normal" title="Stop Compass"/>
+                    <connections>
+                        <action selector="btnStopCompass:" destination="-1" eventType="touchUpInside" id="aRV-qq-h7k"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="nTa-9n-lxo" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="6zR-UB-suU"/>
+                <constraint firstItem="fmg-0M-r7y" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="25" id="DvC-uB-cNT"/>
+                <constraint firstItem="orP-iP-9OA" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="77" id="YF9-ww-8HU"/>
                 <constraint firstItem="nTa-9n-lxo" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="pa7-am-hfB"/>
+                <constraint firstItem="fmg-0M-r7y" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="77" id="uea-9N-ffs"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="orP-iP-9OA" secondAttribute="trailing" constant="25" id="wgq-jO-rk9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
             <point key="canvasLocation" x="50.399999999999999" y="88.605697151424295"/>

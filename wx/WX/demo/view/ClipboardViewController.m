@@ -33,6 +33,10 @@
         NSLog(@"WX set clipboard error res = %@", error);
     };
     [wx setClipboardData:object];
+    
+    wx.onCompassChange = ^(id<WXOnCompassChageRes> res) {
+        NSLog(@"on compass change res = %@",res);
+    };
 }
 - (IBAction)btnGetClipboard:(id)sender {
     WX * wx = [ViewController getInstance].wx;
