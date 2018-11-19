@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ClipboardViewController">
+            <connections>
+                <outlet property="getField" destination="kPw-b0-D7i" id="0xG-T5-LYH"/>
+                <outlet property="setField" destination="ufv-1t-xYm" id="9cy-dO-Ntj"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="设定剪切板内容" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ufv-1t-xYm">
+                    <rect key="frame" x="0.0" y="44" width="375" height="150"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="获取剪切板内容" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kPw-b0-D7i">
+                    <rect key="frame" x="0.0" y="344" width="375" height="140"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="140" id="ric-a1-6jZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="84e-3G-Dbo">
+                    <rect key="frame" x="142" y="527" width="91" height="30"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <state key="normal" title="GetClipboard">
+                        <color key="titleColor" red="0.9524166127" green="0.077451690150000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="btnGetClipboard:" destination="-1" eventType="touchUpInside" id="u5V-S9-OaY"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wTt-nf-QXi">
+                    <rect key="frame" x="137" y="238" width="100" height="30"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <state key="normal" title="SetClipboard">
+                        <color key="titleColor" red="0.9524166127" green="0.077451690150000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="btnSetClipboard:" destination="-1" eventType="touchUpInside" id="VdU-NK-wtS"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.02042179404" green="0.02042179404" blue="0.02042179404" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="centerX" secondItem="wTt-nf-QXi" secondAttribute="centerX" id="102-yL-fU4"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="24" id="2uH-rL-X5a"/>
+                <constraint firstItem="wTt-nf-QXi" firstAttribute="top" secondItem="ufv-1t-xYm" secondAttribute="bottom" constant="49" id="Hjz-dl-kXS"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="centerX" secondItem="84e-3G-Dbo" secondAttribute="centerX" id="K4Q-ay-Mra"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="R5o-ow-Doz"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="V3Z-UF-Abk"/>
+                <constraint firstItem="84e-3G-Dbo" firstAttribute="top" secondItem="kPw-b0-D7i" secondAttribute="bottom" constant="43" id="Vqn-Ml-jbZ"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="leading" secondItem="kPw-b0-D7i" secondAttribute="leading" id="aLb-wX-LBT"/>
+                <constraint firstItem="kPw-b0-D7i" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="dWy-mn-3uh"/>
+                <constraint firstItem="84e-3G-Dbo" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="kPK-qN-0VG"/>
+                <constraint firstItem="ufv-1t-xYm" firstAttribute="trailing" secondItem="kPw-b0-D7i" secondAttribute="trailing" id="ksR-40-0Ps"/>
+                <constraint firstItem="kPw-b0-D7i" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="myd-5B-Lb1"/>
+                <constraint firstItem="wTt-nf-QXi" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="oAv-Du-jlB"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="ufv-1t-xYm" secondAttribute="bottom" constant="473" id="os8-GV-TXW"/>
+                <constraint firstItem="kPw-b0-D7i" firstAttribute="firstBaseline" secondItem="ufv-1t-xYm" secondAttribute="baseline" constant="150" id="wnK-v2-eKf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="130.40000000000001" y="147.97601199400302"/>
+        </view>
+    </objects>
+</document>

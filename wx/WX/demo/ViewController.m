@@ -32,7 +32,9 @@ static ViewController * __instance;
     _arrVC = @[
                @{ @"text":@"定位 - Location", @"class":@"LocationViewController" },
                @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" },
-               @{ @"text":@"电量 - Battery", @"class":@"BatteryViewController" }
+               @{ @"text":@"电量 - Battery", @"class":@"BatteryViewController" },
+               @{ @"text":@"蓝牙4.0(低功耗蓝牙) - BLE", @"class":@"BLEViewController" },
+               @{ @"text":@"剪切板 - Clipboard", @"class":@"ClipboardViewController" }
                ];
      _wx = [[WX alloc] init];
     _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -62,6 +64,7 @@ static ViewController * __instance;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     
     NSDictionary * dic = [_arrVC objectAtIndex:[indexPath row]];
     NSString * name = [dic valueForKey:@"class"];
