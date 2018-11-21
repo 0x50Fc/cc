@@ -11,6 +11,7 @@
 #import <WX/WXAccelerometer.h>
 #import <WX/WXBattery.h>
 #import <WX/WXClipboard.h>
+#import <WX/WXPhoneContact.h>
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;
