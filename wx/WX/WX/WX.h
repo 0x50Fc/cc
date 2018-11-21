@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <WX/WXLocation.h>
-#import <WX/WXAccelerometer.h>
+#import <WX/WXMotion.h>
 #import <WX/WXBattery.h>
 #import <WX/WXClipboard.h>
 #import <WX/WXPhoneContact.h>

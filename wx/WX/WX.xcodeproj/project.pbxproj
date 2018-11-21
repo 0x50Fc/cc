@@ -20,8 +20,8 @@
 		1A19B07A21992ADA00321431 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A19B07921992ADA00321431 /* main.m */; };
 		1A19B08021992BBC00321431 /* WX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A19B04F219924AF00321431 /* WX.framework */; };
 		1A19B08121992BBC00321431 /* WX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A19B04F219924AF00321431 /* WX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXAccelerometer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXAccelerometer.m */; };
+		E922E323219D177C00A7EC81 /* WXMotion.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXMotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E922E324219D177C00A7EC81 /* WXMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXMotion.m */; };
 		E93756D921A256AF00E740F1 /* BLEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756D721A256AF00E740F1 /* BLEViewController.m */; };
 		E93756DA21A256AF00E740F1 /* BLEViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93756D821A256AF00E740F1 /* BLEViewController.xib */; };
 		E93756DD21A269DC00E740F1 /* WXClipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756DB21A269DC00E740F1 /* WXClipboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,8 +88,8 @@
 		1A19B07621992ADA00321431 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A19B07821992ADA00321431 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A19B07921992ADA00321431 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E922E321219D177C00A7EC81 /* WXAccelerometer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXAccelerometer.h; sourceTree = "<group>"; };
-		E922E322219D177C00A7EC81 /* WXAccelerometer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXAccelerometer.m; sourceTree = "<group>"; };
+		E922E321219D177C00A7EC81 /* WXMotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMotion.h; sourceTree = "<group>"; };
+		E922E322219D177C00A7EC81 /* WXMotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXMotion.m; sourceTree = "<group>"; };
 		E93756D621A256AF00E740F1 /* BLEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEViewController.h; sourceTree = "<group>"; };
 		E93756D721A256AF00E740F1 /* BLEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEViewController.m; sourceTree = "<group>"; };
 		E93756D821A256AF00E740F1 /* BLEViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BLEViewController.xib; sourceTree = "<group>"; };
@@ -167,8 +167,8 @@
 				1A19B05C219925B800321431 /* WXLocation.h */,
 				1A19B05E2199285C00321431 /* WXLocation.m */,
 				1A19B053219924AF00321431 /* Info.plist */,
-				E922E321219D177C00A7EC81 /* WXAccelerometer.h */,
-				E922E322219D177C00A7EC81 /* WXAccelerometer.m */,
+				E922E321219D177C00A7EC81 /* WXMotion.h */,
+				E922E322219D177C00A7EC81 /* WXMotion.m */,
 				E9B48A2A219E6EDB0051416D /* WXBattery.h */,
 				E9B48A2B219E6EDB0051416D /* WXBattery.m */,
 				E9B48A33219EA8130051416D /* WXBluetooth.h */,
@@ -241,7 +241,7 @@
 			files = (
 				1A19B054219924AF00321431 /* WX.h in Headers */,
 				1A19B05D219925B800321431 /* WXLocation.h in Headers */,
-				E922E323219D177C00A7EC81 /* WXAccelerometer.h in Headers */,
+				E922E323219D177C00A7EC81 /* WXMotion.h in Headers */,
 				E9B48A2C219E6EDB0051416D /* WXBattery.h in Headers */,
 				E9B48A35219EA8130051416D /* WXBluetooth.h in Headers */,
 				E9B48A40219EC0210051416D /* WXBLE.h in Headers */,
@@ -365,7 +365,7 @@
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
 				E9B48A36219EA8130051416D /* WXBluetooth.m in Sources */,
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
-				E922E324219D177C00A7EC81 /* WXAccelerometer.m in Sources */,
+				E922E324219D177C00A7EC81 /* WXMotion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

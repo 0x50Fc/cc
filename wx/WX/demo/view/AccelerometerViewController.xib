@@ -21,7 +21,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jia-1h-dde">
-                    <rect key="frame" x="120.5" y="350" width="134" height="30"/>
+                    <rect key="frame" x="227" y="91" width="132" height="30"/>
                     <color key="backgroundColor" red="1" green="0.45771476300000002" blue="0.3017201478" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <state key="normal" title="StopAccelerometer"/>
                     <connections>
@@ -29,21 +29,44 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gX8-qa-GEh">
-                    <rect key="frame" x="120.5" y="170" width="134" height="30"/>
+                    <rect key="frame" x="16" y="91" width="134" height="30"/>
                     <color key="backgroundColor" red="0.060239674583535498" green="0.84099740932642486" blue="0.19167133529328309" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <state key="normal" title="StartAccelerometer"/>
                     <connections>
                         <action selector="btnStartAccelerometer:" destination="-1" eventType="touchUpInside" id="kMu-ef-ytS"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RnF-1f-7VO">
+                    <rect key="frame" x="16" y="210" width="134" height="30"/>
+                    <color key="backgroundColor" red="0.060239674579999999" green="0.8409974093" blue="0.1916713353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="StartGyroscope"/>
+                    <connections>
+                        <action selector="btnStartAccelerometer:" destination="-1" eventType="touchUpInside" id="rUt-fQ-Ib6"/>
+                        <action selector="btnStartGyroscope:" destination="-1" eventType="touchUpInside" id="ihL-47-KfU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qdu-iy-zU4">
+                    <rect key="frame" x="227" y="210" width="132" height="30"/>
+                    <color key="backgroundColor" red="1" green="0.45771476300000002" blue="0.3017201478" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="StopGyroscope"/>
+                    <connections>
+                        <action selector="btnStopAccelerometer:" destination="-1" eventType="touchUpInside" id="Vy2-mt-SWU"/>
+                        <action selector="btnStopGyroscope:" destination="-1" eventType="touchUpInside" id="N10-lO-8Tb"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="gX8-qa-GEh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="GkY-Bz-KdR"/>
-                <constraint firstItem="gX8-qa-GEh" firstAttribute="width" secondItem="Jia-1h-dde" secondAttribute="width" id="Jed-Oo-q9v"/>
-                <constraint firstItem="Jia-1h-dde" firstAttribute="top" secondItem="gX8-qa-GEh" secondAttribute="bottom" constant="150" id="Ke6-QP-rEM"/>
-                <constraint firstItem="gX8-qa-GEh" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="150" id="NDN-do-VaI"/>
-                <constraint firstItem="Jia-1h-dde" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="glT-71-exR"/>
+                <constraint firstItem="gX8-qa-GEh" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="71" id="S73-hu-C9B"/>
+                <constraint firstItem="gX8-qa-GEh" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="TKm-KR-fkZ"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Jia-1h-dde" secondAttribute="trailing" constant="16" id="Wey-v7-rj5"/>
+                <constraint firstItem="RnF-1f-7VO" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="190" id="YJI-dM-m7d"/>
+                <constraint firstItem="Qdu-iy-zU4" firstAttribute="width" secondItem="Jia-1h-dde" secondAttribute="width" id="YXW-ss-jiq"/>
+                <constraint firstItem="Qdu-iy-zU4" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="190" id="YbC-t8-BsH"/>
+                <constraint firstItem="RnF-1f-7VO" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="YcD-3F-T46"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Qdu-iy-zU4" secondAttribute="trailing" constant="16" id="g6C-4J-mqz"/>
+                <constraint firstItem="RnF-1f-7VO" firstAttribute="width" secondItem="gX8-qa-GEh" secondAttribute="width" id="rMK-Ba-eG0"/>
+                <constraint firstItem="Jia-1h-dde" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="71" id="rfF-By-8Xz"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
         </view>

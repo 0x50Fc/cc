@@ -50,6 +50,41 @@
     [wx stopAccelerometer:ob];
 }
 
+- (IBAction)btnStartGyroscope:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStartGyroscopeObject * object = [[WXStartGyroscopeObject alloc] init];
+    object.interval = @"normol";
+    object.success = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"start gyroscope success res = %@", res);
+    };
+    object.fail = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"start gyroscope fail res = %@", res);
+    };
+    object.complete = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"start gyroscope complete res = %@", res);
+    };
+    [wx startGyroscope:object];
+    
+    wx.onGyrscopeChage = ^(id<WXOnGyroscopeChangeRes> res) {
+        NSLog(@"on gyrscope change res = %@", res);
+    };
+}
+
+- (IBAction)btnStopGyroscope:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStopGyroscopeObject * object = [[WXStopGyroscopeObject alloc] init];
+    object.success = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"stop gyroscope success res = %@", res);
+    };
+    object.fail = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"stop gyroscope fail res = %@", res);
+    };
+    object.complete = ^(id<WXGyroscopeRes> res) {
+        NSLog(@"stop gyroscope complete res = %@", res);
+    };
+    [wx stopGyroscope:object];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
