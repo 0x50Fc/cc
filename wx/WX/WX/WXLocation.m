@@ -12,6 +12,8 @@
 #define GetLocationObjectKey "GetLocationObjectKey"
 #define OnCompassChangeKey "OnCompassChangeKey"
 
+#pragma mark -- location --
+
 @implementation WXChooseLocationRes
 
 @synthesize address = _address;
@@ -85,7 +87,9 @@
 
 @end
 
-@implementation WXComparesRes
+#pragma mark -- compass --
+
+@implementation WXCompassRes
 
 @synthesize errMsg = _errMsg;
 
@@ -143,7 +147,7 @@
 }
 @end
 
-
+#pragma mark -- wx --
 
 @implementation WX (WXLocation)
 
@@ -187,20 +191,22 @@
 
 -(void) startCompass:(id<WXStartCompassObject>) object{
     [self.locationManager startUpdatingHeading];
-    WXComparesRes * res = [[WXComparesRes alloc] initWithErrMsg:@"startCompass:ok"];
+    WXCompassRes * res = [[WXCompassRes alloc] initWithErrMsg:@"startCompass:ok"];
     object.success(res);
     object.complete(res);
 }
 
 -(void) stopCompass:(id<WXStopCompassObject>) object{
     [self.locationManager stopUpdatingHeading];
-    WXComparesRes * res = [[WXComparesRes alloc] initWithErrMsg:@"stopCompass:ok"];
+    WXCompassRes * res = [[WXCompassRes alloc] initWithErrMsg:@"stopCompass:ok"];
     object.success(res);
     object.complete(res);
 }
+
 #pragma mark -- CLLocationManager Protocol
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+//    CMDeviceMotion a;
     //NSLog(@"%@", locations);
     if (self.getLocationObject) {
         WXGetLocationRes * res = [[WXGetLocationRes alloc] initWithCLLocation:locations.lastObject errMsg:@"getLocation:ok" type:self.getLocationObject.type];

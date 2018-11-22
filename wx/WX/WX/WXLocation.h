@@ -11,6 +11,9 @@
 #import <objc/runtime.h>
 #import <CoreLocation/CoreLocation.h>
 
+
+#pragma mark -- location --
+
 @protocol WXChooseLocationRes <NSObject>
 
 @property(nonatomic,strong) NSString * name;
@@ -64,6 +67,21 @@ typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 @end
 
 
+@interface WXChooseLocationRes : NSObject<WXChooseLocationRes>
+@end
+
+@interface WXChooseLocationObject  : NSObject<WXChooseLocationObject>
+@end
+
+@interface WXGetLocationRes : NSObject<WXGetLocationRes>
+@end
+
+@interface WXGetLocationObject : NSObject<WXGetLocationObject>
+@end
+
+
+#pragma mark -- compass --
+
 @protocol WXOnCompassChageRes <NSObject>
 
 @property (nonatomic, assign) double direction;
@@ -71,16 +89,16 @@ typedef void (^WXGetLocationObjectComplete)(id<WXGetLocationRes> res);
 
 @end
 
-@protocol WXComparesRes <NSObject>
+@protocol WXCompassRes <NSObject>
 
 @property (nonatomic, copy) NSString * errMsg;
 
 @end
 
 
-typedef void (^WXStartCompassObjectSuccess)(id<WXComparesRes> res);
+typedef void (^WXStartCompassObjectSuccess)(id<WXCompassRes> res);
 typedef void (^WXStartCompassObjectFail)(NSError * error);
-typedef void (^WXStartCompassObjectComplete)(id<WXComparesRes> res);
+typedef void (^WXStartCompassObjectComplete)(id<WXCompassRes> res);
 
 @protocol WXStartCompassObject <NSObject>
 
@@ -91,9 +109,9 @@ typedef void (^WXStartCompassObjectComplete)(id<WXComparesRes> res);
 @end
 
 
-typedef void (^WXStopCompassObjectSuccess)(id<WXComparesRes> res);
+typedef void (^WXStopCompassObjectSuccess)(id<WXCompassRes> res);
 typedef void (^WXStopCompassObjectFail)(NSError * error);
-typedef void (^WXStopCompassObjectComplete)(id<WXComparesRes> res);
+typedef void (^WXStopCompassObjectComplete)(id<WXCompassRes> res);
 
 @protocol WXStopCompassObject <NSObject>
 
@@ -104,27 +122,12 @@ typedef void (^WXStopCompassObjectComplete)(id<WXComparesRes> res);
 @end
 
 
-@interface WXComparesRes : NSObject<WXComparesRes>
+@interface WXCompassRes : NSObject<WXCompassRes>
 
 -(instancetype)initWithErrMsg:(NSString *) msg;
 
 @end
 
-@interface WXChooseLocationRes : NSObject<WXChooseLocationRes>
-
-@end
-
-@interface WXChooseLocationObject  : NSObject<WXChooseLocationObject>
-
-@end
-
-@interface WXGetLocationRes : NSObject<WXGetLocationRes>
-
-@end
-
-@interface WXGetLocationObject : NSObject<WXGetLocationObject>
-
-@end
 
 @interface WXStartCompassObject : NSObject<WXStartCompassObject>
 
@@ -140,6 +143,9 @@ typedef void (^WXStopCompassObjectComplete)(id<WXComparesRes> res);
 
 @end
 
+#pragma mark -- wx --
+
+
 typedef void(^WXOnCompassChange) (id<WXOnCompassChageRes> res);
 
 @interface WX (WXLocation) <CLLocationManagerDelegate>
@@ -147,10 +153,10 @@ typedef void(^WXOnCompassChange) (id<WXOnCompassChageRes> res);
 @property (nonatomic, strong, readonly) CLLocationManager * locationManager;
 @property (nonatomic, strong) WXGetLocationObject * getLocationObject;
 
+@property (nonatomic, strong) WXOnCompassChange onCompassChange;
+
 -(void) chooseLocation:(id<WXChooseLocationObject>) object;
 -(void) getLocation:(id<WXGetLocationObject>) object;
-
-@property (nonatomic, strong) WXOnCompassChange onCompassChange;
 
 -(void) startCompass:(id<WXStartCompassObject>) object;
 -(void) stopCompass:(id<WXStopCompassObject>) object;

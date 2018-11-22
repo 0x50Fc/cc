@@ -12,6 +12,8 @@
 
 
 
+#pragma mark -- accelerometer --
+
 @protocol WXStartAccelerometerRes <NSObject>
 
 @property(nonatomic,copy) NSString * errMsg;
@@ -25,11 +27,6 @@ typedef void (^WXStartAccelerometerObjectComplete)(id<WXStartAccelerometerRes> r
 
 @protocol WXStartAccelerometerObject <NSObject>
 
-/*
- * game    20ms/次
- * ui      60ms/次
- * noraml 200ms/次
- */
 @property(nonatomic, copy) NSString * interval;
 @property(nonatomic, strong) WXStartAccelerometerObjectSuccess success;
 @property(nonatomic, strong) WXStartAccelerometerObjectFail fail;
@@ -65,6 +62,7 @@ typedef void (^WXStartAccelerometerObjectComplete)(id<WXStartAccelerometerRes> r
 
 @end
 
+#pragma mark -- gyrosco --
 
 @protocol WXGyroscopeRes <NSObject>
 
@@ -128,20 +126,84 @@ typedef void (^WXStopGyroscopeObjectComplete)(id<WXGyroscopeRes> res);
 @end
 
 
+#pragma mark -- device motion --
+
+@protocol WXOnDeviceMotionChangeRes <NSObject>
+
+@property (nonatomic, assign) double alpha;
+@property (nonatomic, assign) double beta;
+@property (nonatomic, assign) double gamma;
+
+@property (nonatomic, copy) NSString * testStr;
+
+@end
+
+@protocol WXDeviceMotionRes <NSObject>
+
+@property (nonatomic, copy) NSString * errMsg;
+
+@end
+
+typedef void (^WXStartDeviceMotionListeningObjectSuccess)(id<WXDeviceMotionRes> res);
+typedef void (^WXStartDeviceMotionListeningObjectFail)(id<WXDeviceMotionRes> res);
+typedef void (^WXStartDeviceMotionListeningObjectComplete)(id<WXDeviceMotionRes> res);
+
+@protocol WXStartDeviceMotionListeningObject <NSObject>
+
+@property (nonatomic, copy) NSString * interval;
+@property (nonatomic, strong) WXStartDeviceMotionListeningObjectSuccess success;
+@property (nonatomic, strong) WXStartDeviceMotionListeningObjectFail fail;
+@property (nonatomic, strong) WXStartDeviceMotionListeningObjectComplete complete;
+
+@end
+
+typedef void (^WXStopDeviceMotionListeningObjectSuccess)(id<WXDeviceMotionRes> res);
+typedef void (^WXStopDeviceMotionListeningObjectFail)(id<WXDeviceMotionRes> res);
+typedef void (^WXStopDeviceMotionListeningObjectComplete)(id<WXDeviceMotionRes> res);
+
+@protocol WXStopDeviceMotionListeningObject <NSObject>
+
+@property (strong, nonatomic) WXStopDeviceMotionListeningObjectSuccess success;
+@property (strong, nonatomic) WXStopDeviceMotionListeningObjectFail fail;
+@property (strong, nonatomic) WXStopDeviceMotionListeningObjectComplete complete;
+
+@end
+
+@interface WXOnDeviceMotionChangeRes : NSObject <WXOnDeviceMotionChangeRes>
+-(instancetype)initWithCMDeviceMotion:(CMDeviceMotion *) motion;
+@end
+
+@interface WXDeviceMotionRes : NSObject <WXDeviceMotionRes>
+-(instancetype) initWithErrMsg:(NSString *) msg;
+@end
+
+@interface WXStartDeviceMotionListeningObject : NSObject <WXStartDeviceMotionListeningObject>
+@end
+
+@interface WXStopDeviceMotionListeningObject : NSObject <WXStopDeviceMotionListeningObject>
+@end
+
+#pragma mark -- wx --
+
 typedef void (^WXOnAccelerometerChange)(id<WXOnAccelerometerChangeRes> res);
 typedef void (^WXOnGyroscopeChange)(id<WXOnGyroscopeChangeRes> res);
+typedef void (^WXOnDeviceMotionChange)(id<WXOnDeviceMotionChangeRes> res);
 
 @interface WX (Motion)
 
 @property (nonatomic, strong, readonly) CMMotionManager * motionManager;
-@property(nonatomic, strong) WXOnAccelerometerChange onAccelerometerChange;
-@property(nonatomic, strong) WXOnGyroscopeChange onGyrscopeChage;
+@property (nonatomic, strong) WXOnAccelerometerChange onAccelerometerChange;
+@property (nonatomic, strong) WXOnGyroscopeChange onGyrscopeChage;
+@property (nonatomic, strong) WXOnDeviceMotionChange onDeviceMotionChange;
 
 -(void)startAccelerometer:(id<WXStartAccelerometerObject>) object;
 -(void)stopAccelerometer:(id<WXStartAccelerometerObject>) object;
 
 -(void)startGyroscope:(id<WXStartGyroscopeObject>) object;
 -(void)stopGyroscope:(id<WXStopGyroscopeObject>) object;
+
+-(void)startDeviceMotionListening:(id<WXStartDeviceMotionListeningObject>) object;
+-(void)stopDeviceMotionListening:(id<WXStopDeviceMotionListeningObject>) object;
 
 @end
 

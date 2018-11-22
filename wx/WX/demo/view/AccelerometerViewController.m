@@ -85,6 +85,43 @@
     [wx stopGyroscope:object];
 }
 
+
+- (IBAction)btnStartDeviceMotion:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStartDeviceMotionListeningObject * object = [[WXStartDeviceMotionListeningObject alloc] init];
+    object.interval = @"ui";
+    object.success = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    object.fail = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    object.complete = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    [wx startDeviceMotionListening:object];
+    wx.onDeviceMotionChange = ^(id<WXOnDeviceMotionChangeRes> res) {
+        
+        self.labelDeviceMotion.text = res.testStr;
+    };
+}
+
+- (IBAction)btnStopDeviceMotion:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStopDeviceMotionListeningObject * object = [[WXStopDeviceMotionListeningObject alloc] init];
+    object.success = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    object.fail = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    object.complete = ^(id<WXDeviceMotionRes> res) {
+        
+    };
+    [wx stopDeviceMotionListening:object];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
