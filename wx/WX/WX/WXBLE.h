@@ -10,11 +10,11 @@
  */
 
 #import <WX/WX.h>
-#import <CoreBluetooth/CoreBluetooth.h>
 
 
-@interface WX (WXBLE) <CBCentralManagerDelegate>
-@property (nonatomic, strong, readonly) CBCentralManager * cbCentralManager;
+
+@interface WX (WXBLE) 
+
 @end
 
 

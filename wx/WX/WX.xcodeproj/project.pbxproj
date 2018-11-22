@@ -30,6 +30,12 @@
 		E93756E321A2974E00E740F1 /* ClipboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93756E121A2974E00E740F1 /* ClipboardViewController.xib */; };
 		E93756E621A2BCBE00E740F1 /* WXPhoneContact.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E93756E721A2BCBE00E740F1 /* WXPhoneContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */; };
+		E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B0234321A64FAE0035DB08 /* WXNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B0234421A64FAE0035DB08 /* WXNetwork.m */; };
+		E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E9B023AE21A68A090035DB08 /* WXMakePhoneCall.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B023AC21A68A090035DB08 /* WXMakePhoneCall.m */; };
+		E9B023B221A68C100035DB08 /* MakePhoneCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B023B021A68C100035DB08 /* MakePhoneCallViewController.m */; };
+		E9B023B321A68C100035DB08 /* MakePhoneCallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9B023B121A68C100035DB08 /* MakePhoneCallViewController.xib */; };
 		E9B48A23219E67020051416D /* LocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A21219E67020051416D /* LocationViewController.m */; };
 		E9B48A24219E67020051416D /* LocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E9B48A22219E67020051416D /* LocationViewController.xib */; };
 		E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B48A26219E68D20051416D /* AccelerometerViewController.m */; };
@@ -100,6 +106,13 @@
 		E93756E121A2974E00E740F1 /* ClipboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClipboardViewController.xib; sourceTree = "<group>"; };
 		E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXPhoneContact.h; sourceTree = "<group>"; };
 		E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXPhoneContact.m; sourceTree = "<group>"; };
+		E9B0234321A64FAE0035DB08 /* WXNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetwork.h; sourceTree = "<group>"; };
+		E9B0234421A64FAE0035DB08 /* WXNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetwork.m; sourceTree = "<group>"; };
+		E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMakePhoneCall.h; sourceTree = "<group>"; };
+		E9B023AC21A68A090035DB08 /* WXMakePhoneCall.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXMakePhoneCall.m; sourceTree = "<group>"; };
+		E9B023AF21A68C100035DB08 /* MakePhoneCallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MakePhoneCallViewController.h; sourceTree = "<group>"; };
+		E9B023B021A68C100035DB08 /* MakePhoneCallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MakePhoneCallViewController.m; sourceTree = "<group>"; };
+		E9B023B121A68C100035DB08 /* MakePhoneCallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MakePhoneCallViewController.xib; sourceTree = "<group>"; };
 		E9B48A20219E67020051416D /* LocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocationViewController.h; sourceTree = "<group>"; };
 		E9B48A21219E67020051416D /* LocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocationViewController.m; sourceTree = "<group>"; };
 		E9B48A22219E67020051416D /* LocationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LocationViewController.xib; sourceTree = "<group>"; };
@@ -179,6 +192,10 @@
 				E93756DC21A269DC00E740F1 /* WXClipboard.m */,
 				E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */,
 				E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */,
+				E9B0234321A64FAE0035DB08 /* WXNetwork.h */,
+				E9B0234421A64FAE0035DB08 /* WXNetwork.m */,
+				E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */,
+				E9B023AC21A68A090035DB08 /* WXMakePhoneCall.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -221,6 +238,9 @@
 				E9CBC93321A39CBE00EE3D1C /* PhoneContactViewController.h */,
 				E9CBC93421A39CBE00EE3D1C /* PhoneContactViewController.m */,
 				E9CBC93521A39CBE00EE3D1C /* PhoneContactViewController.xib */,
+				E9B023AF21A68C100035DB08 /* MakePhoneCallViewController.h */,
+				E9B023B021A68C100035DB08 /* MakePhoneCallViewController.m */,
+				E9B023B121A68C100035DB08 /* MakePhoneCallViewController.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -240,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A19B054219924AF00321431 /* WX.h in Headers */,
+				1A19B062219928D300321431 /* WXObject.h in Headers */,
 				1A19B05D219925B800321431 /* WXLocation.h in Headers */,
 				E922E323219D177C00A7EC81 /* WXMotion.h in Headers */,
 				E9B48A2C219E6EDB0051416D /* WXBattery.h in Headers */,
@@ -247,7 +268,8 @@
 				E9B48A40219EC0210051416D /* WXBLE.h in Headers */,
 				E93756DD21A269DC00E740F1 /* WXClipboard.h in Headers */,
 				E93756E621A2BCBE00E740F1 /* WXPhoneContact.h in Headers */,
-				1A19B062219928D300321431 /* WXObject.h in Headers */,
+				E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */,
+				E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */,
+				E9B023B321A68C100035DB08 /* MakePhoneCallViewController.xib in Resources */,
 				1A19B07721992ADA00321431 /* LaunchScreen.storyboard in Resources */,
 				E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */,
 				E9CBC93721A39CBE00EE3D1C /* PhoneContactViewController.xib in Resources */,
@@ -366,6 +389,8 @@
 				E9B48A36219EA8130051416D /* WXBluetooth.m in Sources */,
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
 				E922E324219D177C00A7EC81 /* WXMotion.m in Sources */,
+				E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */,
+				E9B023AE21A68A090035DB08 /* WXMakePhoneCall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +403,7 @@
 				E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */,
 				E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
+				E9B023B221A68C100035DB08 /* MakePhoneCallViewController.m in Sources */,
 				E9CBC93621A39CBE00EE3D1C /* PhoneContactViewController.m in Sources */,
 				E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */,
 				E9B48A23219E67020051416D /* LocationViewController.m in Sources */,

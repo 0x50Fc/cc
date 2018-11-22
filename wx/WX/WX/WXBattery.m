@@ -8,6 +8,8 @@
 
 #import "WXBattery.h"
 
+#pragma mark -- battery --
+
 @implementation WXGetBatteryInfoRes
 
 @synthesize level = _level;
@@ -53,6 +55,8 @@
 @end
 
 
+#pragma mark -- wx --
+
 @implementation WX (WXBattery)
 
 -(void)getBatteryInfo:(id<WXGetBatteryInfoObject>) object{
@@ -62,6 +66,9 @@
     object.complete(res);
     object.success(res);
 }
+
+
+
 
 @end
 

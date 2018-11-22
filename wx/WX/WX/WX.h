@@ -12,6 +12,10 @@
 #import <WX/WXBattery.h>
 #import <WX/WXClipboard.h>
 #import <WX/WXPhoneContact.h>
+#import <WX/WXNetwork.h>
+#import <WX/WXMakePhoneCall.h>
+
+
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;

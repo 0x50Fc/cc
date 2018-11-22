@@ -8,19 +8,10 @@
 
 #import "WXBLE.h"
 
-#define CBCenterManagerKey ""
+
 
 @implementation WX (WXBLE)
 
-- (CBCentralManager *)cbCentralManager{
 
-//    CBCentralManager * _manager = [[CBCentralManager alloc] initWithDelegate:self queue:dispatch_get_main_queue()];
-
-    return nil;
-}
-
-- (void)centralManagerDidUpdateState:(CBCentralManager *)central{
-    
-}
 
 @end

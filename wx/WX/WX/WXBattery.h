@@ -8,6 +8,7 @@
 
 #import <WX/WX.h>
 
+#pragma mark -- battery --
 
 @protocol WXGetBatteryInfoRes <NSObject>
 
@@ -23,7 +24,6 @@ typedef void (^WXGetBatteryInfoObjectFail)(NSError * error);
 typedef void (^WXGetBatteryInfoObjectFailComplete)(id<WXGetBatteryInfoRes> res);
 
 @protocol WXGetBatteryInfoObject <NSObject>
-
 @property (nonatomic, strong) WXGetBatteryInfoObjectSuccess success;
 @property (nonatomic, strong) WXGetBatteryInfoObjectFail fail;
 @property (nonatomic, strong) WXGetBatteryInfoObjectFailComplete complete;
@@ -37,11 +37,12 @@ typedef void (^WXGetBatteryInfoObjectFailComplete)(id<WXGetBatteryInfoRes> res);
 
 @end
 
-
 @interface WXGetBatteryInfoObject : NSObject <WXGetBatteryInfoObject>
 
 @end
 
+
+#pragma mark -- wx --
 
 @interface WX (WXBattery)
 

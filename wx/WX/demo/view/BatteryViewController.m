@@ -31,6 +31,7 @@
         self.lableLevel.text = res.level;
         self.labelIsCharing.text = [[NSNumber numberWithBool:res.isCharging] stringValue];
         self.labelErrMsg.text = res.errMsg;
+        
     };
     ob.fail = ^(NSError *error) {
         NSLog(@"WXGetBettery info fail = %@", error);

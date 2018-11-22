@@ -15,7 +15,7 @@
  */
 
 #import <WX/WX.h>
-#import <ExternalAccessory/ExternalAccessory.h>
+
 
 
 @interface WX (WXBluetooth)
