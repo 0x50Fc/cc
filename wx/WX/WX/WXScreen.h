@@ -11,15 +11,15 @@
 
 @protocol WXGetScreenBrightnessRes <NSObject>
 @property (nonatomic, assign) float value;
-@property (nonatomic, strong) NSString * errMsg;
+@property (nonatomic, copy) NSString * errMsg;
 @end
 
 @protocol WXSetScreenBrightnessRes <NSObject>
-@property (nonatomic, strong) NSString * errMsg;
+@property (nonatomic, copy) NSString * errMsg;
 @end
 
 @protocol WXSetKeepScreenOnRes <NSObject>
-@property (nonatomic, strong) NSString * errMsg;
+@property (nonatomic, copy) NSString * errMsg;
 @end
 
 @interface WXGetScreenBrightnessRes : NSObject <WXGetScreenBrightnessRes>

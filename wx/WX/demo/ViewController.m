@@ -28,7 +28,7 @@ static ViewController * __instance;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
+//   VibrateViewController
     _arrVC = @[
                @{ @"text":@"定位 - Location", @"class":@"LocationViewController" },
                @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" },
@@ -37,7 +37,8 @@ static ViewController * __instance;
                @{ @"text":@"剪切板 - Clipboard", @"class":@"ClipboardViewController" },
                @{ @"text":@"联系人 - PhoneContact", @"class":@"PhoneContactViewController" },
                @{ @"text":@"打电话 - MakePhoneCall", @"class":@"MakePhoneCallViewController" },
-               @{ @"text":@"屏幕 - Screen", @"class":@"ScreenViewController" }
+               @{ @"text":@"屏幕 - Screen", @"class":@"ScreenViewController" },
+               @{ @"text":@"震动 - Vibrate", @"class":@"VibrateViewController" }
                ];
      _wx = [[WX alloc] init];
     _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];

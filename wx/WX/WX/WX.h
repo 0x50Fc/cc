@@ -15,6 +15,7 @@
 #import <WX/WXNetwork.h>
 #import <WX/WXMakePhoneCall.h>
 #import <WX/WXScreen.h>
+#import <WX/WXVibrate.h>
 
 
 

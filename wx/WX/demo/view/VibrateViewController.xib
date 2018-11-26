@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VibrateViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ucx-70-Qj8">
+                    <rect key="frame" x="143.5" y="198" width="88" height="30"/>
+                    <color key="backgroundColor" red="1" green="0.45771476300000002" blue="0.3017201478" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Vibrate Long"/>
+                    <connections>
+                        <action selector="btnVirbateLong:" destination="-1" eventType="touchUpInside" id="3Sc-8Y-oYl"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vTb-DS-y8e">
+                    <rect key="frame" x="141.5" y="458" width="92" height="30"/>
+                    <color key="backgroundColor" red="0.060239674579999999" green="0.8409974093" blue="0.1916713353" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Vibrate Short"/>
+                    <connections>
+                        <action selector="btnVirbateShort:" destination="-1" eventType="touchUpInside" id="lwl-9T-4wF"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="ucx-70-Qj8" secondAttribute="bottom" constant="439" id="fYO-if-tCR"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="vTb-DS-y8e" secondAttribute="bottom" constant="179" id="rJz-q8-yHn"/>
+                <constraint firstItem="ucx-70-Qj8" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="sgD-SY-xaX"/>
+                <constraint firstItem="vTb-DS-y8e" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ydM-tT-wfK"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

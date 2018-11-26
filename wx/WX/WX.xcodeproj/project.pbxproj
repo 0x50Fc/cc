@@ -24,6 +24,10 @@
 		E91B717421AB8B0800700082 /* WXScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717221AB8B0800700082 /* WXScreen.m */; };
 		E91B717821AB9EAD00700082 /* ScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717621AB9EAD00700082 /* ScreenViewController.m */; };
 		E91B717921AB9EAD00700082 /* ScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E91B717721AB9EAD00700082 /* ScreenViewController.xib */; };
+		E91B717C21ABC3C700700082 /* WXVibrate.h in Headers */ = {isa = PBXBuildFile; fileRef = E91B717A21ABC3C700700082 /* WXVibrate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E91B717D21ABC3C700700082 /* WXVibrate.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717B21ABC3C700700082 /* WXVibrate.m */; };
+		E91B718121ABC50600700082 /* VibrateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717F21ABC50600700082 /* VibrateViewController.m */; };
+		E91B718221ABC50600700082 /* VibrateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E91B718021ABC50600700082 /* VibrateViewController.xib */; };
 		E922E323219D177C00A7EC81 /* WXMotion.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXMotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E922E324219D177C00A7EC81 /* WXMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXMotion.m */; };
 		E93756D921A256AF00E740F1 /* BLEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756D721A256AF00E740F1 /* BLEViewController.m */; };
@@ -103,6 +107,11 @@
 		E91B717521AB9EAD00700082 /* ScreenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScreenViewController.h; sourceTree = "<group>"; };
 		E91B717621AB9EAD00700082 /* ScreenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScreenViewController.m; sourceTree = "<group>"; };
 		E91B717721AB9EAD00700082 /* ScreenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScreenViewController.xib; sourceTree = "<group>"; };
+		E91B717A21ABC3C700700082 /* WXVibrate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXVibrate.h; sourceTree = "<group>"; };
+		E91B717B21ABC3C700700082 /* WXVibrate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXVibrate.m; sourceTree = "<group>"; };
+		E91B717E21ABC50600700082 /* VibrateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VibrateViewController.h; sourceTree = "<group>"; };
+		E91B717F21ABC50600700082 /* VibrateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VibrateViewController.m; sourceTree = "<group>"; };
+		E91B718021ABC50600700082 /* VibrateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VibrateViewController.xib; sourceTree = "<group>"; };
 		E922E321219D177C00A7EC81 /* WXMotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMotion.h; sourceTree = "<group>"; };
 		E922E322219D177C00A7EC81 /* WXMotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXMotion.m; sourceTree = "<group>"; };
 		E93756D621A256AF00E740F1 /* BLEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEViewController.h; sourceTree = "<group>"; };
@@ -207,6 +216,8 @@
 				E9B023AC21A68A090035DB08 /* WXMakePhoneCall.m */,
 				E91B717121AB8B0800700082 /* WXScreen.h */,
 				E91B717221AB8B0800700082 /* WXScreen.m */,
+				E91B717A21ABC3C700700082 /* WXVibrate.h */,
+				E91B717B21ABC3C700700082 /* WXVibrate.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -255,6 +266,9 @@
 				E91B717521AB9EAD00700082 /* ScreenViewController.h */,
 				E91B717621AB9EAD00700082 /* ScreenViewController.m */,
 				E91B717721AB9EAD00700082 /* ScreenViewController.xib */,
+				E91B717E21ABC50600700082 /* VibrateViewController.h */,
+				E91B717F21ABC50600700082 /* VibrateViewController.m */,
+				E91B718021ABC50600700082 /* VibrateViewController.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -285,6 +299,7 @@
 				E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */,
 				E91B717321AB8B0800700082 /* WXScreen.h in Headers */,
 				E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */,
+				E91B717C21ABC3C700700082 /* WXVibrate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,6 +393,7 @@
 			files = (
 				E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */,
 				E91B717921AB9EAD00700082 /* ScreenViewController.xib in Resources */,
+				E91B718221ABC50600700082 /* VibrateViewController.xib in Resources */,
 				E9B023B321A68C100035DB08 /* MakePhoneCallViewController.xib in Resources */,
 				1A19B07721992ADA00321431 /* LaunchScreen.storyboard in Resources */,
 				E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */,
@@ -399,6 +415,7 @@
 			files = (
 				E93756E721A2BCBE00E740F1 /* WXPhoneContact.m in Sources */,
 				E93756DE21A269DC00E740F1 /* WXClipboard.m in Sources */,
+				E91B717D21ABC3C700700082 /* WXVibrate.m in Sources */,
 				E9B48A41219EC0210051416D /* WXBLE.m in Sources */,
 				E9B48A2D219E6EDB0051416D /* WXBattery.m in Sources */,
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
@@ -421,6 +438,7 @@
 				E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */,
 				E91B717821AB9EAD00700082 /* ScreenViewController.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
+				E91B718121ABC50600700082 /* VibrateViewController.m in Sources */,
 				E9B023B221A68C100035DB08 /* MakePhoneCallViewController.m in Sources */,
 				E9CBC93621A39CBE00EE3D1C /* PhoneContactViewController.m in Sources */,
 				E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */,
