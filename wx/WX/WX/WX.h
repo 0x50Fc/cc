@@ -14,6 +14,7 @@
 #import <WX/WXPhoneContact.h>
 #import <WX/WXNetwork.h>
 #import <WX/WXMakePhoneCall.h>
+#import <WX/WXScreen.h>
 
 
 

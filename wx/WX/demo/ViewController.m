@@ -36,7 +36,8 @@ static ViewController * __instance;
                @{ @"text":@"蓝牙4.0(低功耗蓝牙) - BLE", @"class":@"BLEViewController" },
                @{ @"text":@"剪切板 - Clipboard", @"class":@"ClipboardViewController" },
                @{ @"text":@"联系人 - PhoneContact", @"class":@"PhoneContactViewController" },
-               @{ @"text":@"打电话 - MakePhoneCall", @"class":@"MakePhoneCallViewController" }
+               @{ @"text":@"打电话 - MakePhoneCall", @"class":@"MakePhoneCallViewController" },
+               @{ @"text":@"屏幕 - Screen", @"class":@"ScreenViewController" }
                ];
      _wx = [[WX alloc] init];
     _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
