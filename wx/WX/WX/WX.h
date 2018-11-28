@@ -16,6 +16,7 @@
 #import <WX/WXMakePhoneCall.h>
 #import <WX/WXScreen.h>
 #import <WX/WXVibrate.h>
+#import <WX/WXBluetooth.h>
 
 
 

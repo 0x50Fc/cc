@@ -1,16 +1,17 @@
 //
-//  BLEViewController.h
+//  BluetoothViewController.h
 //  demo
 //
-//  Created by zuowu on 2018/11/19.
+//  Created by zuowu on 2018/11/27.
 //  Copyright © 2018 kkmofang.cn. All rights reserved.
 //
+
 
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BLEViewController : UIViewController
+@interface BluetoothViewController : UIViewController
 
 @end
 

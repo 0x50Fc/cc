@@ -33,7 +33,7 @@ static ViewController * __instance;
                @{ @"text":@"定位 - Location", @"class":@"LocationViewController" },
                @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" },
                @{ @"text":@"电量 - Battery", @"class":@"BatteryViewController" },
-               @{ @"text":@"蓝牙4.0(低功耗蓝牙) - BLE", @"class":@"BLEViewController" },
+               @{ @"text":@"蓝牙 - Bluetooth", @"class":@"BluetoothViewController" },
                @{ @"text":@"剪切板 - Clipboard", @"class":@"ClipboardViewController" },
                @{ @"text":@"联系人 - PhoneContact", @"class":@"PhoneContactViewController" },
                @{ @"text":@"打电话 - MakePhoneCall", @"class":@"MakePhoneCallViewController" },

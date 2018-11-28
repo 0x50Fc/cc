@@ -28,16 +28,18 @@
 		E91B717D21ABC3C700700082 /* WXVibrate.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717B21ABC3C700700082 /* WXVibrate.m */; };
 		E91B718121ABC50600700082 /* VibrateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B717F21ABC50600700082 /* VibrateViewController.m */; };
 		E91B718221ABC50600700082 /* VibrateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E91B718021ABC50600700082 /* VibrateViewController.xib */; };
+		E91B718521ABCF5900700082 /* WXWifi.h in Headers */ = {isa = PBXBuildFile; fileRef = E91B718321ABCF5900700082 /* WXWifi.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E91B718621ABCF5900700082 /* WXWifi.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B718421ABCF5900700082 /* WXWifi.m */; };
 		E922E323219D177C00A7EC81 /* WXMotion.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXMotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E922E324219D177C00A7EC81 /* WXMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXMotion.m */; };
-		E93756D921A256AF00E740F1 /* BLEViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756D721A256AF00E740F1 /* BLEViewController.m */; };
-		E93756DA21A256AF00E740F1 /* BLEViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93756D821A256AF00E740F1 /* BLEViewController.xib */; };
 		E93756DD21A269DC00E740F1 /* WXClipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756DB21A269DC00E740F1 /* WXClipboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E93756DE21A269DC00E740F1 /* WXClipboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756DC21A269DC00E740F1 /* WXClipboard.m */; };
 		E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E021A2974E00E740F1 /* ClipboardViewController.m */; };
 		E93756E321A2974E00E740F1 /* ClipboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93756E121A2974E00E740F1 /* ClipboardViewController.xib */; };
 		E93756E621A2BCBE00E740F1 /* WXPhoneContact.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E93756E721A2BCBE00E740F1 /* WXPhoneContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */; };
+		E952965621ACF95300724CE4 /* BluetoothViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E952965421ACF95300724CE4 /* BluetoothViewController.m */; };
+		E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E952965521ACF95300724CE4 /* BluetoothViewController.xib */; };
 		E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B0234321A64FAE0035DB08 /* WXNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B0234421A64FAE0035DB08 /* WXNetwork.m */; };
 		E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -112,11 +114,11 @@
 		E91B717E21ABC50600700082 /* VibrateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VibrateViewController.h; sourceTree = "<group>"; };
 		E91B717F21ABC50600700082 /* VibrateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VibrateViewController.m; sourceTree = "<group>"; };
 		E91B718021ABC50600700082 /* VibrateViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VibrateViewController.xib; sourceTree = "<group>"; };
+		E91B718321ABCF5900700082 /* WXWifi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXWifi.h; sourceTree = "<group>"; };
+		E91B718421ABCF5900700082 /* WXWifi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXWifi.m; sourceTree = "<group>"; };
+		E91B718921ABCFE000700082 /* demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = demo.entitlements; sourceTree = "<group>"; };
 		E922E321219D177C00A7EC81 /* WXMotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMotion.h; sourceTree = "<group>"; };
 		E922E322219D177C00A7EC81 /* WXMotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXMotion.m; sourceTree = "<group>"; };
-		E93756D621A256AF00E740F1 /* BLEViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BLEViewController.h; sourceTree = "<group>"; };
-		E93756D721A256AF00E740F1 /* BLEViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BLEViewController.m; sourceTree = "<group>"; };
-		E93756D821A256AF00E740F1 /* BLEViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BLEViewController.xib; sourceTree = "<group>"; };
 		E93756DB21A269DC00E740F1 /* WXClipboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXClipboard.h; sourceTree = "<group>"; };
 		E93756DC21A269DC00E740F1 /* WXClipboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXClipboard.m; sourceTree = "<group>"; };
 		E93756DF21A2974E00E740F1 /* ClipboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClipboardViewController.h; sourceTree = "<group>"; };
@@ -124,6 +126,9 @@
 		E93756E121A2974E00E740F1 /* ClipboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClipboardViewController.xib; sourceTree = "<group>"; };
 		E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXPhoneContact.h; sourceTree = "<group>"; };
 		E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXPhoneContact.m; sourceTree = "<group>"; };
+		E952965321ACF95200724CE4 /* BluetoothViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothViewController.h; sourceTree = "<group>"; };
+		E952965421ACF95300724CE4 /* BluetoothViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothViewController.m; sourceTree = "<group>"; };
+		E952965521ACF95300724CE4 /* BluetoothViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BluetoothViewController.xib; sourceTree = "<group>"; };
 		E9B0234321A64FAE0035DB08 /* WXNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetwork.h; sourceTree = "<group>"; };
 		E9B0234421A64FAE0035DB08 /* WXNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetwork.m; sourceTree = "<group>"; };
 		E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMakePhoneCall.h; sourceTree = "<group>"; };
@@ -218,6 +223,8 @@
 				E91B717221AB8B0800700082 /* WXScreen.m */,
 				E91B717A21ABC3C700700082 /* WXVibrate.h */,
 				E91B717B21ABC3C700700082 /* WXVibrate.m */,
+				E91B718321ABCF5900700082 /* WXWifi.h */,
+				E91B718421ABCF5900700082 /* WXWifi.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -225,6 +232,7 @@
 		1A19B06921992AD700321431 /* demo */ = {
 			isa = PBXGroup;
 			children = (
+				E91B718921ABCFE000700082 /* demo.entitlements */,
 				E98DBB5D219D7889002CE813 /* view */,
 				1A19B06A21992AD700321431 /* AppDelegate.h */,
 				1A19B06B21992AD700321431 /* AppDelegate.m */,
@@ -251,9 +259,6 @@
 				E9B48A2E219E8FE70051416D /* BatteryViewController.h */,
 				E9B48A2F219E8FE70051416D /* BatteryViewController.m */,
 				E9B48A30219E8FE70051416D /* BatteryViewController.xib */,
-				E93756D621A256AF00E740F1 /* BLEViewController.h */,
-				E93756D721A256AF00E740F1 /* BLEViewController.m */,
-				E93756D821A256AF00E740F1 /* BLEViewController.xib */,
 				E93756DF21A2974E00E740F1 /* ClipboardViewController.h */,
 				E93756E021A2974E00E740F1 /* ClipboardViewController.m */,
 				E93756E121A2974E00E740F1 /* ClipboardViewController.xib */,
@@ -269,6 +274,9 @@
 				E91B717E21ABC50600700082 /* VibrateViewController.h */,
 				E91B717F21ABC50600700082 /* VibrateViewController.m */,
 				E91B718021ABC50600700082 /* VibrateViewController.xib */,
+				E952965321ACF95200724CE4 /* BluetoothViewController.h */,
+				E952965421ACF95300724CE4 /* BluetoothViewController.m */,
+				E952965521ACF95300724CE4 /* BluetoothViewController.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -299,6 +307,7 @@
 				E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */,
 				E91B717321AB8B0800700082 /* WXScreen.h in Headers */,
 				E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */,
+				E91B718521ABCF5900700082 /* WXWifi.h in Headers */,
 				E91B717C21ABC3C700700082 /* WXVibrate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,6 +366,11 @@
 					};
 					1A19B06721992AD700321431 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.WAC = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -399,8 +413,8 @@
 				E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */,
 				E9CBC93721A39CBE00EE3D1C /* PhoneContactViewController.xib in Resources */,
 				E93756E321A2974E00E740F1 /* ClipboardViewController.xib in Resources */,
-				E93756DA21A256AF00E740F1 /* BLEViewController.xib in Resources */,
 				1A19B07421992ADA00321431 /* Assets.xcassets in Resources */,
+				E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */,
 				1A19B07221992AD700321431 /* Main.storyboard in Resources */,
 				E9B48A24219E67020051416D /* LocationViewController.xib in Resources */,
 			);
@@ -421,6 +435,7 @@
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
 				E9B48A36219EA8130051416D /* WXBluetooth.m in Sources */,
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
+				E91B718621ABCF5900700082 /* WXWifi.m in Sources */,
 				E922E324219D177C00A7EC81 /* WXMotion.m in Sources */,
 				E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */,
 				E91B717421AB8B0800700082 /* WXScreen.m in Sources */,
@@ -433,6 +448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A19B06F21992AD700321431 /* ViewController.m in Sources */,
+				E952965621ACF95300724CE4 /* BluetoothViewController.m in Sources */,
 				1A19B07A21992ADA00321431 /* main.m in Sources */,
 				E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */,
 				E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */,
@@ -443,7 +459,6 @@
 				E9CBC93621A39CBE00EE3D1C /* PhoneContactViewController.m in Sources */,
 				E9B48A28219E68D20051416D /* AccelerometerViewController.m in Sources */,
 				E9B48A23219E67020051416D /* LocationViewController.m in Sources */,
-				E93756D921A256AF00E740F1 /* BLEViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
