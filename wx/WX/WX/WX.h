@@ -17,8 +17,7 @@
 #import <WX/WXScreen.h>
 #import <WX/WXVibrate.h>
 #import <WX/WXBluetooth.h>
-
-
+#import <WX/WXBLE.h>
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;

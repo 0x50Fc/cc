@@ -283,8 +283,6 @@
 @end
 
 @interface WX()
-@property (nonatomic, strong) CBCentralManager * centralManager;
-@property (nonatomic, strong) CBPeripheral * peripheral;
 @property (nonatomic, strong) WXBOpenBluetoothAdapterObject * openBluetoothAdapterObject;
 @property (nonatomic, strong) WXStartBluetoothDevicesDiscoveryObject * sartBluetoothDevicesDiscoveryObject;
 @property (nonatomic, strong) NSNumber * starScanTime;
@@ -301,13 +299,6 @@
 }
 -(void)setCentralManager:(CBCentralManager *)centralManager{
     objc_setAssociatedObject(self, CentralManagerKey, centralManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
--(CBPeripheral *)peripheral{
-    return objc_getAssociatedObject(self,  "peripheral");
-}
--(void)setPeripheral:(CBPeripheral *)peripheral{
-    objc_setAssociatedObject(self, "peripheral", peripheral, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 -(WXBOpenBluetoothAdapterObject *)openBluetoothAdapterObject{
@@ -578,10 +569,7 @@
 - (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
     
     WXOnBluetoothDeviceFoundPeripheral * p = [[WXOnBluetoothDeviceFoundPeripheral alloc] initWithDiscoverPeripheral:peripheral advertisementData:advertisementData RSSI:RSSI];
-//    if (p.advertisServiceUUIDs && p.advertisServiceUUIDs.count > 0) {
-//        NSLog(@"%@",p);
-//    }
-    
+
     BOOL saved = [self.peripherArray alreadySaveObject:p method:^BOOL(id objA, id objB) {
         WXOnBluetoothDeviceFoundPeripheral * pa = (WXOnBluetoothDeviceFoundPeripheral *)objA;
         WXOnBluetoothDeviceFoundPeripheral * pb = (WXOnBluetoothDeviceFoundPeripheral *)objB;
@@ -593,14 +581,6 @@
     if (!saved) {
         [self.peripherArray addObject:p];
     }
-
-//    if ([peripheral.name isEqualToString:@"nut"]) {
-//        if (peripheral.state == CBPeripheralStateDisconnected) {
-//            self.peripheral = peripheral;
-//            [self.centralManager connectPeripheral:peripheral options:nil];
-//        }
-//
-//    }
 
     if (self.sartBluetoothDevicesDiscoveryObject) {
         
@@ -621,27 +601,6 @@
             }
         }
     }
-}
-
--(void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-    NSLog(@"连接成功 %@", peripheral);
-    
-    for (int i = 0 ; i < peripheral.services.count; i++) {
-        CBService * service = [peripheral.services objectAtIndex:i];
-        NSLog(@"service uuid = %@", service.UUID.UUIDString);
-    }
-    
-    
-
-        NSArray * arr = [self.centralManager retrieveConnectedPeripheralsWithServices:@[[CBUUID UUIDWithString:@"1803"]]];
-        NSLog(@"get connected devices %@",arr);
-    
-}
--(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"断开连接 %@", peripheral);
-}
--(void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"断开连接 %@", peripheral);
 }
 
 

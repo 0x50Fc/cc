@@ -4,7 +4,7 @@
 //
 //  Created by zuowu on 2018/11/16.
 //  Copyright © 2018 kkmofang.cn. All rights reserved.
-//  传统蓝牙 bluetooth 2.0
+//  bluetooth
 
 
 #import <WX/WX.h>
@@ -143,6 +143,7 @@ typedef void (^WXOnBluetoothAdapterStateChange)(id<WXOnBluetoothAdapterStateChan
 
 @interface WX (WXBluetooth) <CBCentralManagerDelegate>
 
+@property (nonatomic, strong) CBCentralManager * centralManager;
 @property (nonatomic, strong) WXOnBluetoothDeviceFound onBluetoothDeviceFound;
 @property (nonatomic, strong) WXOnBluetoothAdapterStateChange onBluetoothAdapterStateChange;
 

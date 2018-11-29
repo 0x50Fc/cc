@@ -97,6 +97,24 @@
 }
 - (IBAction)btnGetConnectBluetoothDevices:(id)sender {
 }
+- (IBAction)btnCreateBLEConnection:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXCreateBLEConnectionObject * object = [[WXCreateBLEConnectionObject alloc] init];
+    //86823066-8557-AFDE-633D-E78FE707E680 caozuowu
+    //927D71EF-8B67-08D9-CD08-59373A59D536
+    object.deviceId = @"86823066-8557-AFDE-633D-E78FE707E680";
+    object.timeout = 1000;
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCreateBLEConnectionObject success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCreateBLEConnectionObject fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCreateBLEConnectionObject complete res = %@", res);
+    };
+    [wx createBLEConnection:object];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
