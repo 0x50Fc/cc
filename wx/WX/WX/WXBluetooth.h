@@ -38,34 +38,27 @@
 @interface WXGetBluetoothAdapterStateRes : NSObject <WXBluetoothRes>
 @property(nonatomic, assign) BOOL discovering;
 @property(nonatomic, assign) BOOL available;
--(instancetype)initWithErrMsg:(NSString *)msg errCode:(int)code discovering:(BOOL) discovering available:(BOOL) available;
 @end
 
 @interface WXOnBluetoothAdapterStateChangeRes : NSObject <WXOnBluetoothAdapterStateChangeRes>
--(instancetype)initWithAvailable:(BOOL)available discovering:(BOOL)discovering;
 @end
 
 @interface WXBOpenBluetoothAdapterRes : NSObject <WXBluetoothRes>
 @property (nonatomic, assign) int state;
--(instancetype)initWithErrMsg:(NSString *)msg state:(int) s errCode:(int) ecode;
 @end
 
 @interface WXCloseBluetoothAdapterRes : NSObject <WXBluetoothRes>
--(instancetype)initWithErrMsg:(NSString *)msg;
 @end
 
 @interface WXStartBluetoothDevicesDiscoveryRes : NSObject <WXBluetoothRes>
 @property (nonatomic, assign) BOOL isDiscovering;
--(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode isDiscovering:(BOOL) isDiscovering;
 @end
 
 @interface WXStopBluetoothDevicesDiscoveryRes : NSObject <WXBluetoothRes>
--(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode;
 @end
 
 
 @protocol WXOnBluetoothDeviceFoundPeripheral <NSObject>
-
 @property (nonatomic, copy) NSString * name;                              //蓝牙设备名称，某些设备可能没有
 @property (nonatomic, copy) NSString * deviceId;                          //用于区分设备的 id
 @property (nonatomic, copy) NSNumber * RSSI;                              //当前蓝牙设备的信号强度
@@ -73,26 +66,34 @@
 @property (nonatomic, copy) NSArray<NSString *> * advertisServiceUUIDs;   //当前蓝牙设备的广播数据段中的 ServiceUUIDs 数据段
 @property (nonatomic, copy) NSString * localName;                         //当前蓝牙设备的广播数据段中的 LocalName 数据段
 @property (nonatomic, copy) NSDictionary * serviceData;                   //当前蓝牙设备的广播数据段中的 ServiceData 数据段
-
--(instancetype) initWithDiscoverPeripheral:(CBPeripheral *) peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI;
 @end
 
 @protocol WXOnBluetoothDeviceFoundRes <NSObject>
-
 @property (nonatomic, copy) NSArray<id<WXOnBluetoothDeviceFoundPeripheral>> * devices;
+@end
 
+@protocol WXConnectedBluetoothDevices <NSObject>
+@property (nonatomic, copy) NSString * name;                              //蓝牙设备名称，某些设备可能没有
+@property (nonatomic, copy) NSString * deviceId;                          //用于区分设备的 id
+@end
+
+@protocol WXGetConnectedBluetoothDevicesRes <NSObject>
+@property (nonatomic, copy) NSArray<id<WXConnectedBluetoothDevices>> * devices;
 @end
 
 @interface WXOnBluetoothDeviceFoundPeripheral : NSObject <WXOnBluetoothDeviceFoundPeripheral>
-
 @end
 
 @interface WXOnBluetoothDeviceFoundRes : NSObject <WXOnBluetoothDeviceFoundRes>
--(instancetype)initWithDevices:(NSArray<id<WXOnBluetoothDeviceFoundPeripheral>> *)devices;
 @end
 
 @interface WXGetBluetoothDevicesRes : NSObject <WXBluetoothRes, WXOnBluetoothDeviceFoundRes>
--(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode devices:(NSArray<id<WXOnBluetoothDeviceFoundPeripheral>> *) devices;
+@end
+
+@interface WXConnectedBluetoothDevices : NSObject <WXConnectedBluetoothDevices>
+@end
+
+@interface WXGetConnectedBluetoothDevicesRes : NSObject <WXBluetoothRes, WXGetConnectedBluetoothDevicesRes>
 @end
 
 typedef void (^WXBluetoothObjectSuccess) (id<WXBluetoothRes> res);
@@ -111,28 +112,29 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 @property (nonatomic, assign) long interval;
 @end
 
-@interface WXGetBluetoothAdapterStateObject : NSObject <WXBluetoothObject>
+@protocol WXGetConnectedBluetoothDevicesIdentifiers <NSObject>
+@property (nonatomic, copy) NSArray<NSString *> * services;
+@end
 
+@interface WXGetBluetoothAdapterStateObject : NSObject <WXBluetoothObject>
 @end
 
 @interface WXBOpenBluetoothAdapterObject : NSObject <WXBluetoothObject>
-
 @end
 
 @interface WXCloseBluetoothAdapterObject : NSObject <WXBluetoothObject>
-
 @end
 
 @interface WXStartBluetoothDevicesDiscoveryObject : NSObject <WXBluetoothObject, WXBluetoothDiscoverObject>
-
 @end
 
 @interface WXStopBluetoothDevicesDiscoveryObject : NSObject <WXBluetoothObject>
-
 @end
 
 @interface WXGetBluetoothDevicesObject : NSObject <WXBluetoothObject>
+@end
 
+@interface WXGetConnectedBluetoothDevices : NSObject <WXBluetoothObject, WXGetConnectedBluetoothDevicesIdentifiers>
 @end
 
 
@@ -153,6 +155,7 @@ typedef void (^WXOnBluetoothAdapterStateChange)(id<WXOnBluetoothAdapterStateChan
 -(void)stopBluetoothDevicesDiscovery:(id<WXBluetoothObject>) object;
 
 -(void)getBluetoothDevices:(id<WXBluetoothObject>) object;
+-(void)getConnectedBluetoothDevices:(id<WXBluetoothObject, WXGetConnectedBluetoothDevicesIdentifiers>) object;
 
 @end
 

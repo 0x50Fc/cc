@@ -95,6 +95,8 @@
     };
     [wx getBluetoothDevices:object];
 }
+- (IBAction)btnGetConnectBluetoothDevices:(id)sender {
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -69,15 +69,17 @@
 @end
 
 @implementation WXCloseBluetoothAdapterRes
+@synthesize errCode;
 @synthesize errMsg = _errMsg;
--(instancetype)initWithErrMsg:(NSString *)msg{
+-(instancetype)initWithErrMsg:(NSString *)msg errCode:(int)errCode{
     if (self = [super init]) {
         self.errMsg = msg;
+        self.errCode = errCode;
     }
     return self;
 }
 -(NSString *)description{
-    return [NSString stringWithFormat:@"{errMsg:%@}",self.errMsg];
+    return [NSString stringWithFormat:@"{errMsg:%@, errCode:%d}",self.errMsg,self.errCode];
 }
 @end
 
@@ -194,6 +196,45 @@
 }
 @end
 
+@implementation WXConnectedBluetoothDevices
+@synthesize name = _name;
+@synthesize deviceId = _deviceId;
+-(instancetype)initWithCBPeripheral:(CBPeripheral *)peripheral {
+    if (self = [super init]) {
+        self.name = peripheral.name;
+        self.deviceId = peripheral.identifier.UUIDString;
+    }
+    return self;
+}
+-(NSString *)description{
+    return [NSString stringWithFormat:@"{name:%@, deviceId:%@}", self.name, self.deviceId];
+}
+@end
+
+@implementation WXGetConnectedBluetoothDevicesRes
+@synthesize errMsg = _errMsg;
+@synthesize errCode = _errCode;
+@synthesize devices = _devices;
+-(instancetype)initWithDevices:(NSArray *)devices errMsg:(NSString *)errMsg errCode:(int)errCode{
+    if (self = [super init]) {
+        self.devices = devices;
+        self.errMsg = errMsg;
+        self.errCode = errCode;
+    }
+    return self;
+}
+-(NSString *)description{
+    NSMutableString * str = [[NSMutableString alloc] init];
+    [str appendString:@"(\n"];
+    for (WXConnectedBluetoothDevices * device in self.devices) {
+        [str appendString:[NSString stringWithFormat:@"%@ ,\n,", device]];
+    }
+    [str appendString:@")"];
+    return str;
+}
+@end
+
+
 
 @implementation WXGetBluetoothAdapterStateObject
 @synthesize success = _success;
@@ -229,6 +270,13 @@
 @end
 
 @implementation WXGetBluetoothDevicesObject
+@synthesize success = _success;
+@synthesize fail = _fail;
+@synthesize complete = _complete;
+@end
+
+@implementation WXGetConnectedBluetoothDevices
+@synthesize services = _services;
 @synthesize success = _success;
 @synthesize fail = _fail;
 @synthesize complete = _complete;
@@ -354,7 +402,7 @@
     self.centralManager = nil;
     self.openBluetoothAdapterObject = nil;
     [self.peripherArray removeAllObjects];
-    WXCloseBluetoothAdapterRes * res = [[WXCloseBluetoothAdapterRes alloc] initWithErrMsg:@"closeBluetoothAdapter:fail"];
+    WXCloseBluetoothAdapterRes * res = [[WXCloseBluetoothAdapterRes alloc] initWithErrMsg:@"closeBluetoothAdapter:fail" errCode:0];
     if (object != nil) {
         object.success(res);
         object.complete(res);
@@ -436,6 +484,32 @@
         object.complete(res);
     }
     
+}
+
+-(void)getConnectedBluetoothDevices:(id<WXBluetoothObject, WXGetConnectedBluetoothDevicesIdentifiers>) object{
+    
+    if (self.centralManager == nil) {
+        
+        WXGetConnectedBluetoothDevicesRes * res = [[WXGetConnectedBluetoothDevicesRes alloc] initWithDevices:@[] errMsg:@"getConnectedBluetoothDevices:fail ble adapter hans't been opened or ble is unavailable." errCode:10000];
+        object.fail(res);
+        object.complete(res);
+        
+    }else {
+
+        NSMutableArray<CBUUID *> * arr = [[NSMutableArray alloc]init];
+        for (NSString * identifier in object.services) {
+            [arr addObject:[CBUUID UUIDWithString:identifier]];
+        }
+        NSArray<CBPeripheral *> * peripherals = [self.centralManager retrieveConnectedPeripheralsWithServices:arr];
+        NSMutableArray<WXConnectedBluetoothDevices *> * devices = [[NSMutableArray alloc]init];
+        for (CBPeripheral * peripheral in peripherals) {
+            [devices addObject:[[WXConnectedBluetoothDevices alloc] initWithCBPeripheral:peripheral]];
+        }
+        WXGetConnectedBluetoothDevicesRes * res = [[WXGetConnectedBluetoothDevicesRes alloc] initWithDevices:devices errMsg:@"getConnectedBluetoothDevices:ok" errCode:0];
+        object.success(res);
+        object.complete(res);
+        
+    }
 }
 
 #pragma mark -- CBCentralManagerDelegate

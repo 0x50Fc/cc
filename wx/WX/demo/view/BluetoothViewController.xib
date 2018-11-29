@@ -55,11 +55,19 @@
                         <action selector="btnGetBluetoothDevices:" destination="-1" eventType="touchUpInside" id="Kji-Hd-0Qd"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nax-Xj-ml1">
+                    <rect key="frame" x="85" y="230" width="205" height="30"/>
+                    <state key="normal" title="getConnectBluetoothDevicies"/>
+                    <connections>
+                        <action selector="btnGetConnectBluetoothDevices:" destination="-1" eventType="touchUpInside" id="5bi-oj-2qI"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="7EI-lr-xlq" secondAttribute="centerX" id="4sc-cc-lYK"/>
                 <constraint firstItem="RqR-W1-aAE" firstAttribute="top" secondItem="7EI-lr-xlq" secondAttribute="bottom" constant="8" symbolic="YES" id="75j-Xd-YRo"/>
+                <constraint firstItem="Nax-Xj-ml1" firstAttribute="centerX" secondItem="RqR-W1-aAE" secondAttribute="centerX" id="Btb-l2-PT0"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="116" id="HmO-rh-qlZ"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="eA0-EE-fq3" secondAttribute="bottom" constant="8" symbolic="YES" id="QWF-48-vQK"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="UtE-fc-ZZc" secondAttribute="bottom" constant="8" symbolic="YES" id="R4l-06-ygb"/>
@@ -67,6 +75,7 @@
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eng-zL-Y1G"/>
                 <constraint firstItem="UtE-fc-ZZc" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="fUe-Ph-xDV"/>
                 <constraint firstItem="RqR-W1-aAE" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="115" id="kKM-6s-DbW"/>
+                <constraint firstItem="Nax-Xj-ml1" firstAttribute="top" secondItem="RqR-W1-aAE" secondAttribute="bottom" constant="8" symbolic="YES" id="sEW-aA-06S"/>
                 <constraint firstItem="7EI-lr-xlq" firstAttribute="top" secondItem="aXh-Bb-M0Z" secondAttribute="bottom" constant="8" symbolic="YES" id="tTd-mc-24G"/>
                 <constraint firstItem="eA0-EE-fq3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="z0k-gg-fWM"/>
             </constraints>
