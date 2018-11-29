@@ -35,21 +35,40 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXh-Bb-M0Z">
-                    <rect key="frame" x="79" y="168" width="217" height="30"/>
+                    <rect key="frame" x="79" y="116" width="217" height="30"/>
                     <state key="normal" title="SartBluetoothDevicesDiscovery"/>
                     <connections>
                         <action selector="btnStartBluetoothDevicesDiscovery:" destination="-1" eventType="touchUpInside" id="T9V-XK-aTd"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7EI-lr-xlq">
+                    <rect key="frame" x="77" y="154" width="221" height="30"/>
+                    <state key="normal" title="StopBluetoothDevicesDiscovery"/>
+                    <connections>
+                        <action selector="btnStopBluetoothDevicesDiscovery:" destination="-1" eventType="touchUpInside" id="KZ6-ws-NsL"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RqR-W1-aAE">
+                    <rect key="frame" x="115" y="192" width="144" height="30"/>
+                    <state key="normal" title="getBluetoothDevices"/>
+                    <connections>
+                        <action selector="btnGetBluetoothDevices:" destination="-1" eventType="touchUpInside" id="Kji-Hd-0Qd"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="148" id="08M-NW-ghm"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="UtE-fc-ZZc" secondAttribute="trailing" constant="16" id="9b7-fq-5I7"/>
-                <constraint firstItem="eA0-EE-fq3" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="58" id="EYc-Uo-qQH"/>
-                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Vy6-W3-r02"/>
-                <constraint firstItem="UtE-fc-ZZc" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="58" id="W7R-sZ-bWT"/>
-                <constraint firstItem="eA0-EE-fq3" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="wpa-BY-TbI"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="7EI-lr-xlq" secondAttribute="centerX" id="4sc-cc-lYK"/>
+                <constraint firstItem="RqR-W1-aAE" firstAttribute="top" secondItem="7EI-lr-xlq" secondAttribute="bottom" constant="8" symbolic="YES" id="75j-Xd-YRo"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="116" id="HmO-rh-qlZ"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="eA0-EE-fq3" secondAttribute="bottom" constant="8" symbolic="YES" id="QWF-48-vQK"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="UtE-fc-ZZc" secondAttribute="bottom" constant="8" symbolic="YES" id="R4l-06-ygb"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="RqR-W1-aAE" secondAttribute="centerX" id="ZQv-6e-nC3"/>
+                <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eng-zL-Y1G"/>
+                <constraint firstItem="UtE-fc-ZZc" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="fUe-Ph-xDV"/>
+                <constraint firstItem="RqR-W1-aAE" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="115" id="kKM-6s-DbW"/>
+                <constraint firstItem="7EI-lr-xlq" firstAttribute="top" secondItem="aXh-Bb-M0Z" secondAttribute="bottom" constant="8" symbolic="YES" id="tTd-mc-24G"/>
+                <constraint firstItem="eA0-EE-fq3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leadingMargin" id="z0k-gg-fWM"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
         </view>

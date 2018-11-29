@@ -59,12 +59,41 @@
     };
     
     wx.onBluetoothDeviceFound = ^(id<WXOnBluetoothDeviceFoundRes> res) {
-        NSLog(@"found devices\n");
-        NSLog(@"%@",res);
+
+//        NSLog(@"found devices\n");
+//        NSLog(@"%@",res);
     };
     
     [wx startBluetoothDevicesDiscovery:object];
     
+}
+- (IBAction)btnStopBluetoothDevicesDiscovery:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXStopBluetoothDevicesDiscoveryObject * object = [[WXStopBluetoothDevicesDiscoveryObject alloc] init];
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"StopBluetoothDevicesDiscovery success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"StopBluetoothDevicesDiscovery fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"StopBluetoothDevicesDiscovery complete res = %@", res);
+    };
+    [wx stopBluetoothDevicesDiscovery:object];
+}
+- (IBAction)btnGetBluetoothDevices:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXGetBluetoothDevicesObject * object = [[WXGetBluetoothDevicesObject alloc] init];
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBluetoothDevicesObject success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBluetoothDevicesObject fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBluetoothDevicesObject complete res = %@", res);
+    };
+    [wx getBluetoothDevices:object];
 }
 
 - (void)viewDidLoad {

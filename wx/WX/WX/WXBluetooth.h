@@ -26,12 +26,27 @@
  */
 
 @protocol WXBluetoothRes <NSObject>
-@property(nonatomic, copy) NSString * errMsg;
+@property (nonatomic, copy) NSString * errMsg;
+@property (nonatomic, assign) int errCode;
+@end
+
+@protocol WXOnBluetoothAdapterStateChangeRes <NSObject>
+@property (nonatomic, assign) BOOL available;
+@property (nonatomic, assign) BOOL discovering;
+@end
+
+@interface WXGetBluetoothAdapterStateRes : NSObject <WXBluetoothRes>
+@property(nonatomic, assign) BOOL discovering;
+@property(nonatomic, assign) BOOL available;
+-(instancetype)initWithErrMsg:(NSString *)msg errCode:(int)code discovering:(BOOL) discovering available:(BOOL) available;
+@end
+
+@interface WXOnBluetoothAdapterStateChangeRes : NSObject <WXOnBluetoothAdapterStateChangeRes>
+-(instancetype)initWithAvailable:(BOOL)available discovering:(BOOL)discovering;
 @end
 
 @interface WXBOpenBluetoothAdapterRes : NSObject <WXBluetoothRes>
 @property (nonatomic, assign) int state;
-@property (nonatomic, assign) int errCode;
 -(instancetype)initWithErrMsg:(NSString *)msg state:(int) s errCode:(int) ecode;
 @end
 
@@ -40,13 +55,11 @@
 @end
 
 @interface WXStartBluetoothDevicesDiscoveryRes : NSObject <WXBluetoothRes>
-@property (nonatomic, assign) int errCode;
 @property (nonatomic, assign) BOOL isDiscovering;
 -(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode isDiscovering:(BOOL) isDiscovering;
 @end
 
 @interface WXStopBluetoothDevicesDiscoveryRes : NSObject <WXBluetoothRes>
-@property (nonatomic, assign) int errCode;
 -(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode;
 @end
 
@@ -78,6 +91,10 @@
 -(instancetype)initWithDevices:(NSArray<id<WXOnBluetoothDeviceFoundPeripheral>> *)devices;
 @end
 
+@interface WXGetBluetoothDevicesRes : NSObject <WXBluetoothRes, WXOnBluetoothDeviceFoundRes>
+-(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode devices:(NSArray<id<WXOnBluetoothDeviceFoundPeripheral>> *) devices;
+@end
+
 typedef void (^WXBluetoothObjectSuccess) (id<WXBluetoothRes> res);
 typedef void (^WXBluetoothObjectFail) (id<WXBluetoothRes> res);
 typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
@@ -92,6 +109,10 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 @property (nonatomic, copy) NSArray<NSString*> * services;
 @property (nonatomic, assign) BOOL allowDuplicatesKey;
 @property (nonatomic, assign) long interval;
+@end
+
+@interface WXGetBluetoothAdapterStateObject : NSObject <WXBluetoothObject>
+
 @end
 
 @interface WXBOpenBluetoothAdapterObject : NSObject <WXBluetoothObject>
@@ -110,17 +131,20 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 
 @end
 
+@interface WXGetBluetoothDevicesObject : NSObject <WXBluetoothObject>
+
+@end
+
 
 typedef void (^WXOnBluetoothDeviceFound)(id<WXOnBluetoothDeviceFoundRes> res);
+typedef void (^WXOnBluetoothAdapterStateChange)(id<WXOnBluetoothAdapterStateChangeRes> res);
 
 @interface WX (WXBluetooth) <CBCentralManagerDelegate>
 
-@property (nonatomic, strong) WXBOpenBluetoothAdapterObject * openBluetoothAdapterObject;
-@property (nonatomic, strong) WXStartBluetoothDevicesDiscoveryObject * sartBluetoothDevicesDiscoveryObject;
-@property (nonatomic, strong) NSNumber * starScanTime;
-@property (nonatomic, strong, readonly) NSMutableArray<WXOnBluetoothDeviceFoundPeripheral *> * peripherAarray;
 @property (nonatomic, strong) WXOnBluetoothDeviceFound onBluetoothDeviceFound;
+@property (nonatomic, strong) WXOnBluetoothAdapterStateChange onBluetoothAdapterStateChange;
 
+-(void)getBluetoothAdapterState:(id<WXBluetoothObject>) object;
 
 -(void)openBluetoothAdapter:(id<WXBluetoothObject>) object;
 -(void)closeBluetoothAdapter:(id<WXBluetoothObject>) object;
@@ -128,6 +152,12 @@ typedef void (^WXOnBluetoothDeviceFound)(id<WXOnBluetoothDeviceFoundRes> res);
 -(void)startBluetoothDevicesDiscovery:(id<WXBluetoothObject, WXBluetoothDiscoverObject>) object;
 -(void)stopBluetoothDevicesDiscovery:(id<WXBluetoothObject>) object;
 
+-(void)getBluetoothDevices:(id<WXBluetoothObject>) object;
+
 @end
 
+typedef BOOL (^ArrayCompareFunc)(id objA, id objB);
+@interface NSMutableArray (WXBOpenBluetooth)
+-(BOOL)alreadySaveObject:(id)object method:(ArrayCompareFunc)func ;
+@end
 
