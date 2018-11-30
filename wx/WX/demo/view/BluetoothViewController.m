@@ -100,10 +100,9 @@
 - (IBAction)btnCreateBLEConnection:(id)sender {
     WX * wx = [ViewController getInstance].wx;
     WXCreateBLEConnectionObject * object = [[WXCreateBLEConnectionObject alloc] init];
-    //86823066-8557-AFDE-633D-E78FE707E680 caozuowu
-    //927D71EF-8B67-08D9-CD08-59373A59D536
-    object.deviceId = @"86823066-8557-AFDE-633D-E78FE707E680";
-    object.timeout = 1000;
+ 
+    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+//    object.timeout = 1000;
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"WXCreateBLEConnectionObject success res = %@", res);
     };
@@ -114,6 +113,37 @@
         NSLog(@"WXCreateBLEConnectionObject complete res = %@", res);
     };
     [wx createBLEConnection:object];
+}
+- (IBAction)btnCloseBLEConnection:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXCloseBLEConnectionObject * object = [[WXCloseBLEConnectionObject alloc]init];
+    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCloseBLEConnectionObject success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCloseBLEConnectionObject fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXCloseBLEConnectionObject complete res = %@", res);
+    };
+    [wx closeBLEConnection:object];
+}
+- (IBAction)btbGetBLEDevicesServices:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXGetBLEDeviceServicesObject * object = [[WXGetBLEDeviceServicesObject alloc]init];
+    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBLEDeviceServicesObject success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBLEDeviceServicesObject fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WXGetBLEDeviceServicesObject complete res = %@", res);
+    };
+    [wx getBLEDeviceServices:object];
+    
 }
 
 - (void)viewDidLoad {
