@@ -84,11 +84,13 @@
     if (self = [super init]) {
         self.errMsg = errMsg;
         self.errCode = errCode;
-        self.services = [[NSMutableArray alloc] init];
+        NSMutableArray * array = [[NSMutableArray alloc] init];
         if (peripheral) {
+            
             self.deviceId = peripheral.identifier.UUIDString;
             for (CBService * service in peripheral.services) {
-                [self.services addObject:[[WXBLEDeviceService alloc] initWithCBService:service]];
+                [array addObject:[[WXBLEDeviceService alloc] initWithCBService:service]];
+                self.services = array;
             }
         }
     }
@@ -292,7 +294,7 @@
     
 }
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"连接断开连接 %@", peripheral);
+    NSLog(@"断开连接 %@", peripheral);
     if (self.closeBLEConnectionObject) {
         //主动断开连接
         WXCloseBLEConnectionRes * res = [[WXCloseBLEConnectionRes alloc] initWithErrMsg:@"closeBLEConnectionObject:ok" ErrCode:0];

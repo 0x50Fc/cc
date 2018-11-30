@@ -61,10 +61,19 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 
 @interface WXGetBLEDeviceServicesRes : NSObject <WXBluetoothRes>
 @property (nonatomic, copy) NSString * deviceId;
-@property (nonatomic, copy) NSMutableArray<WXBLEDeviceService *> * services;
+@property (nonatomic, copy) NSArray<WXBLEDeviceService *> * services;
 @end
 
 @interface WXGetBLEDeviceServicesObject : NSObject<WXBluetoothObject, WXGetBLEConnectionInfo>
+@end
+
+
+@protocol WXBGetLEDeviceCharacteristicsInfo <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, copy) NSString * serviceId;
+@end
+
+@interface WXBGetLEDeviceCharacteristicsObject : NSObject <WXBluetoothObject, WXBGetLEDeviceCharacteristicsInfo>
 @end
 
 
@@ -74,7 +83,7 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 -(void)closeBLEConnection:(id<WXBluetoothObject, WXGetBLEConnectionInfo>) object;
 
 -(void)getBLEDeviceServices:(id<WXBluetoothObject, WXGetBLEConnectionInfo>) object;
-
+-(void)getBLEDeviceCharacteristics:(id<WXBluetoothObject, WXBGetLEDeviceCharacteristicsInfo>)object;
 @end
 
 

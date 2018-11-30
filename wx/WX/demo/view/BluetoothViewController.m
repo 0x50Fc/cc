@@ -97,11 +97,14 @@
 }
 - (IBAction)btnGetConnectBluetoothDevices:(id)sender {
 }
+
+#define DEVICE_UUID @"633A275D-F798-B03C-E088-10B8C184E94C"
+
 - (IBAction)btnCreateBLEConnection:(id)sender {
     WX * wx = [ViewController getInstance].wx;
     WXCreateBLEConnectionObject * object = [[WXCreateBLEConnectionObject alloc] init];
  
-    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+    object.deviceId = DEVICE_UUID;
 //    object.timeout = 1000;
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"WXCreateBLEConnectionObject success res = %@", res);
@@ -117,7 +120,7 @@
 - (IBAction)btnCloseBLEConnection:(id)sender {
     WX * wx = [ViewController getInstance].wx;
     WXCloseBLEConnectionObject * object = [[WXCloseBLEConnectionObject alloc]init];
-    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+    object.deviceId = DEVICE_UUID;
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"WXCloseBLEConnectionObject success res = %@", res);
     };
@@ -132,7 +135,7 @@
 - (IBAction)btbGetBLEDevicesServices:(id)sender {
     WX * wx = [ViewController getInstance].wx;
     WXGetBLEDeviceServicesObject * object = [[WXGetBLEDeviceServicesObject alloc]init];
-    object.deviceId = @"B51D5777-2BCD-5025-8A90-81259E17669F";
+    object.deviceId = DEVICE_UUID;
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"WXGetBLEDeviceServicesObject success res = %@", res);
     };
