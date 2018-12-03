@@ -68,6 +68,30 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 @end
 
 
+
+
+@protocol WXBLEDeviceCharacteristicPropertie <NSObject>
+@property (nonatomic, assign) BOOL read;                 //1<<1 CBCharacteristicPropertyRead
+@property (nonatomic, assign) BOOL write;                //1<<3 CBCharacteristicPropertyWrite
+@property (nonatomic, assign) BOOL notify;               //1<<4 CBCharacteristicPropertyNotify
+@property (nonatomic, assign) BOOL indicate;             //1<<5 CBCharacteristicPropertyIndicate
+@end
+
+@interface WXBLEDeviceCharacteristicPropertie : NSObject <WXBLEDeviceCharacteristicPropertie>
+@end
+
+@protocol WXBLEDeviceCharacteristic <NSObject>
+@property (nonatomic, strong) WXBLEDeviceCharacteristicPropertie * properties;
+@property (nonatomic, copy) NSString * uuid;
+@end
+
+@interface WXBLEDeviceCharacteristic : NSObject <WXBLEDeviceCharacteristic>
+@end
+
+@interface WXGetBLEDeviceCharacteristicsRes : NSObject <WXBluetoothRes>
+@property (nonatomic, copy) NSArray<WXBLEDeviceCharacteristic *> * characteristics;
+@end
+
 @protocol WXBGetLEDeviceCharacteristicsInfo <NSObject>
 @property (nonatomic, copy) NSString * deviceId;
 @property (nonatomic, copy) NSString * serviceId;
@@ -77,13 +101,53 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 @end
 
 
+
+@interface WXNotifyBLECharacteristicValueChangeRes : NSObject <WXBluetoothRes>
+@end
+
+@protocol WXNotifyBLECharacteristicValueChangeInfo <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, copy) NSString * serviceId;
+@property (nonatomic, copy) NSString * characteristicId;
+@property (nonatomic, assign) BOOL state;
+@end
+
+@interface WXNotifyBLECharacteristicValueChangeObject : NSObject <WXBluetoothObject, WXNotifyBLECharacteristicValueChangeInfo>
+@end
+
+
+@protocol WXOnBLECharacteristicValueChangeRes <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, copy) NSString * serviceId;
+@property (nonatomic, copy) NSString * characteristicId;
+@property (nonatomic, copy) NSData * value;
+@end
+
+@interface WXOnBLECharacteristicValueChangeRes : NSObject <WXOnBLECharacteristicValueChangeRes>
+@end
+
+
+
+
+typedef void (^WXOnBLECharacteristicValueChang)(id<WXOnBLECharacteristicValueChangeRes>);
+
 @interface WX (WXBLE) <CBPeripheralDelegate>
+
+@property (nonatomic, strong) WXOnBLECharacteristicValueChang onBLECharacteristicValueChange;
 
 -(void)createBLEConnection:(id<WXBluetoothObject, WXCreateBLEConnectionInfo>) object;
 -(void)closeBLEConnection:(id<WXBluetoothObject, WXGetBLEConnectionInfo>) object;
 
 -(void)getBLEDeviceServices:(id<WXBluetoothObject, WXGetBLEConnectionInfo>) object;
--(void)getBLEDeviceCharacteristics:(id<WXBluetoothObject, WXBGetLEDeviceCharacteristicsInfo>)object;
+-(void)getBLEDeviceCharacteristics:(id<WXBluetoothObject, WXBGetLEDeviceCharacteristicsInfo>) object;
+
+-(void)notifyBLECharacteristicValueChange:(id<WXBluetoothObject, WXNotifyBLECharacteristicValueChangeInfo>) object;
+@end
+
+
+typedef BOOL(^FatureFunc) (id objectA, id objectB);
+@interface NSArray (WXBLE)
+-(id)objectByFeature:(id)objectA func:(FatureFunc)func;
 @end
 
 

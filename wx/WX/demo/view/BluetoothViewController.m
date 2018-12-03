@@ -9,6 +9,11 @@
 #import "BluetoothViewController.h"
 #import "ViewController.h"
 
+#define DEVICE_UUID @"633A275D-F798-B03C-E088-10B8C184E94C"
+#define S_ID @"FEBE"
+#define C_ID @"9EC813B4-256B-4090-93A8-A4F0E9107733"
+//#define C_ID @"234BFBD5-E3B3-4536-A3FE-723620D4B78D"
+
 @interface BluetoothViewController ()
 
 @end
@@ -98,7 +103,7 @@
 - (IBAction)btnGetConnectBluetoothDevices:(id)sender {
 }
 
-#define DEVICE_UUID @"633A275D-F798-B03C-E088-10B8C184E94C"
+
 
 - (IBAction)btnCreateBLEConnection:(id)sender {
     WX * wx = [ViewController getInstance].wx;
@@ -147,6 +152,40 @@
     };
     [wx getBLEDeviceServices:object];
     
+}
+- (IBAction)BtnGetBLEDevicesCharacteristics:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXBGetLEDeviceCharacteristicsObject * object = [[WXBGetLEDeviceCharacteristicsObject alloc] init];
+    object.deviceId = DEVICE_UUID;
+    object.serviceId = S_ID;
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"BtnGetBLEDevicesCharacteristics success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"BtnGetBLEDevicesCharacteristics fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"BtnGetBLEDevicesCharacteristics complete res = %@", res);
+    };
+    [wx getBLEDeviceCharacteristics:object];
+}
+- (IBAction)btnNotifyBLECharacteristicValueChange:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXNotifyBLECharacteristicValueChangeObject * object = [[WXNotifyBLECharacteristicValueChangeObject alloc] init];
+    object.deviceId = DEVICE_UUID;
+    object.serviceId = S_ID;
+    object.characteristicId = C_ID;
+    object.state = YES;
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"NotifyBLECharacteristicValueChange success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"NotifyBLECharacteristicValueChange fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"NotifyBLECharacteristicValueChange complete res = %@", res);
+    };
+    [wx notifyBLECharacteristicValueChange:object];
 }
 
 - (void)viewDidLoad {

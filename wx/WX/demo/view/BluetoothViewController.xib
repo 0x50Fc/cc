@@ -83,23 +83,43 @@
                         <action selector="btbGetBLEDevicesServices:" destination="-1" eventType="touchUpInside" id="1wA-NO-w1i"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xMd-Fw-QzV">
+                    <rect key="frame" x="86" y="382" width="202" height="30"/>
+                    <state key="normal" title="GetBLEDeviceCharacteristics"/>
+                    <connections>
+                        <action selector="BtnGetBLEDevicesCharacteristics:" destination="-1" eventType="touchUpInside" id="bfW-jx-Q50"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPo-St-lY3">
+                    <rect key="frame" x="60" y="420" width="254" height="30"/>
+                    <state key="normal" title="NotifyBLECharacteristicValueChange"/>
+                    <connections>
+                        <action selector="btnNotifyBLECharacteristicValueChange:" destination="-1" eventType="touchUpInside" id="cfS-Ay-7cd"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="7EI-lr-xlq" secondAttribute="centerX" id="4sc-cc-lYK"/>
                 <constraint firstItem="RqR-W1-aAE" firstAttribute="top" secondItem="7EI-lr-xlq" secondAttribute="bottom" constant="8" symbolic="YES" id="75j-Xd-YRo"/>
                 <constraint firstItem="Nax-Xj-ml1" firstAttribute="centerX" secondItem="RqR-W1-aAE" secondAttribute="centerX" id="Btb-l2-PT0"/>
+                <constraint firstItem="BPo-St-lY3" firstAttribute="centerX" secondItem="xMd-Fw-QzV" secondAttribute="centerX" id="Fdc-Ad-Kvo"/>
+                <constraint firstItem="BPo-St-lY3" firstAttribute="top" secondItem="xMd-Fw-QzV" secondAttribute="bottom" constant="8" symbolic="YES" id="HFM-jb-cQ6"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="116" id="HmO-rh-qlZ"/>
                 <constraint firstItem="zW0-b1-v0a" firstAttribute="trailing" secondItem="RqR-W1-aAE" secondAttribute="trailing" id="JRb-zx-aWm"/>
                 <constraint firstItem="XF3-GZ-uB5" firstAttribute="top" secondItem="zW0-b1-v0a" secondAttribute="bottom" constant="8" symbolic="YES" id="Mv0-lg-jQW"/>
                 <constraint firstItem="Idy-Yz-jNs" firstAttribute="centerX" secondItem="Nax-Xj-ml1" secondAttribute="centerX" id="O8K-gH-wA0"/>
+                <constraint firstItem="xMd-Fw-QzV" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="86" id="QQ4-xE-MCc"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="eA0-EE-fq3" secondAttribute="bottom" constant="8" symbolic="YES" id="QWF-48-vQK"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="top" secondItem="UtE-fc-ZZc" secondAttribute="bottom" constant="8" symbolic="YES" id="R4l-06-ygb"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="RqR-W1-aAE" secondAttribute="centerX" id="ZQv-6e-nC3"/>
+                <constraint firstItem="xMd-Fw-QzV" firstAttribute="top" secondItem="XF3-GZ-uB5" secondAttribute="bottom" constant="8" symbolic="YES" id="a9q-1D-zy4"/>
                 <constraint firstItem="aXh-Bb-M0Z" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="eng-zL-Y1G"/>
                 <constraint firstItem="UtE-fc-ZZc" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailingMargin" id="fUe-Ph-xDV"/>
+                <constraint firstItem="BPo-St-lY3" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="60" id="fuV-e7-Eht"/>
                 <constraint firstItem="RqR-W1-aAE" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="115" id="kKM-6s-DbW"/>
                 <constraint firstItem="zW0-b1-v0a" firstAttribute="leading" secondItem="RqR-W1-aAE" secondAttribute="leading" id="kkX-pJ-VIa"/>
+                <constraint firstItem="xMd-Fw-QzV" firstAttribute="centerX" secondItem="XF3-GZ-uB5" secondAttribute="centerX" id="p9L-sc-P7A"/>
                 <constraint firstItem="Nax-Xj-ml1" firstAttribute="top" secondItem="RqR-W1-aAE" secondAttribute="bottom" constant="8" symbolic="YES" id="sEW-aA-06S"/>
                 <constraint firstItem="7EI-lr-xlq" firstAttribute="top" secondItem="aXh-Bb-M0Z" secondAttribute="bottom" constant="8" symbolic="YES" id="tTd-mc-24G"/>
                 <constraint firstItem="XF3-GZ-uB5" firstAttribute="centerX" secondItem="zW0-b1-v0a" secondAttribute="centerX" id="ukM-s2-Q52"/>
