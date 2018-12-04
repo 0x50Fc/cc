@@ -128,12 +128,22 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 
 
 
+@protocol WXOnBLEConnectionStateChangeInfo <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, assign) BOOL connected;
+@end
+
+@interface WXOnBLEConnectionStateChangeRes : NSObject <WXBluetoothRes,WXOnBLEConnectionStateChangeInfo>
+@end
+
 
 typedef void (^WXOnBLECharacteristicValueChang)(id<WXOnBLECharacteristicValueChangeRes>);
+typedef void (^WXOnBLEConnectionStateChange)(id<WXBluetoothRes,WXOnBLEConnectionStateChangeInfo>);
 
 @interface WX (WXBLE) <CBPeripheralDelegate>
 
 @property (nonatomic, strong) WXOnBLECharacteristicValueChang onBLECharacteristicValueChange;
+@property (nonatomic, strong) WXOnBLEConnectionStateChange onBLEConnectionStateChange;
 
 -(void)createBLEConnection:(id<WXBluetoothObject, WXCreateBLEConnectionInfo>) object;
 -(void)closeBLEConnection:(id<WXBluetoothObject, WXGetBLEConnectionInfo>) object;

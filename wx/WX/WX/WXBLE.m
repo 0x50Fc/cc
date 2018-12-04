@@ -15,6 +15,7 @@
 #define GetBLEDeviceCharacteristicsKey "GetBLEDeviceCharacteristicsKey"
 #define NotifyBLECharacteristicValueChangeObjectKey "NotifyBLECharacteristicValueChangeObjectKey"
 #define OnBLECharacteristicValueChangeKey "OnBLECharacteristicValueChangeKey"
+#define OnBLEConnectionStateChangeKey "OnBLEConnectionStateChangeKey"
 
 @implementation WXCreateBLEConnectionRes
 @synthesize errMsg = _errMsg;
@@ -223,6 +224,39 @@
 @synthesize serviceId = _serviceId;
 @synthesize characteristicId = _characteristicId;
 @synthesize value = _value;
+-(instancetype)initWithPeripheral:(CBPeripheral *)peripheral Characteristic:(CBCharacteristic *)characteristic{
+    if (self = [super init]) {
+        self.deviceId = peripheral.identifier.UUIDString;
+        self.serviceId = characteristic.service.UUID.UUIDString;
+        self.characteristicId = characteristic.UUID.UUIDString;
+        self.value = characteristic.value;
+    }
+    return self;
+}
+-(NSString *)description{
+    return [NSString stringWithFormat:@"deviceId:%@, serviceId:%@, characteristicId:%@, value:%@",self.deviceId,self.serviceId,self.characteristicId,self.value];
+}
+@end
+
+
+
+@implementation WXOnBLEConnectionStateChangeRes
+@synthesize errMsg = _errMsg;
+@synthesize errCode = _errCode;
+@synthesize deviceId = _deviceId;
+@synthesize connected = _connected;
+-(instancetype)initWithPeripheral:(CBPeripheral *)peripheral Connected:(BOOL)connected ErrMsg:(NSString *)errMsg ErrCode:(int)errCode{
+    if (self = [super init]) {
+        self.deviceId = peripheral.identifier.UUIDString;
+        self.connected = connected;
+        self.errMsg = errMsg;
+        self.errCode = errCode;
+    }
+    return self;
+}
+-(NSString *)description{
+    return [NSString stringWithFormat:@"{deviceId:%@, connected:%d, errMsg:%@, errCode:%d}",self.deviceId, self.connected, self.errMsg, self.errCode];
+}
 @end
 
 
@@ -245,6 +279,13 @@
 }
 -(void)setOnBLECharacteristicValueChange:(WXOnBLECharacteristicValueChang)onBLECharacteristicValueChange{
     objc_setAssociatedObject(self, OnBLECharacteristicValueChangeKey, onBLECharacteristicValueChange, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(WXOnBLEConnectionStateChange)onBLEConnectionStateChange{
+    return objc_getAssociatedObject(self, OnBLEConnectionStateChangeKey);
+}
+-(void)setOnBLEConnectionStateChange:(WXOnBLEConnectionStateChange)onBLEConnectionStateChange{
+    objc_setAssociatedObject(self, OnBLEConnectionStateChangeKey, onBLEConnectionStateChange, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 
@@ -507,6 +548,10 @@
         self.createBLEConnectionObject = nil;
     }
     
+    if (self.onBLEConnectionStateChange) {
+        self.onBLEConnectionStateChange([[WXOnBLEConnectionStateChangeRes alloc]initWithPeripheral:peripheral Connected:YES ErrMsg:@"connect success" ErrCode:0]);
+    }
+    
 }
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
     NSLog(@"断开连接 %@", peripheral);
@@ -517,20 +562,36 @@
         self.closeBLEConnectionObject.complete(res);
         [self.connectedPeripherals removeObject:peripheral];
         self.closeBLEConnectionObject = nil;
+        
+        //主动断开
+        if (self.onBLEConnectionStateChange) {
+            self.onBLEConnectionStateChange([[WXOnBLEConnectionStateChangeRes alloc]initWithPeripheral:peripheral Connected:NO ErrMsg:@"disconnect success" ErrCode:0]);
+            
+        }
+    }else {
+        //被动断开
+        if (self.onBLEConnectionStateChange) {
+            self.onBLEConnectionStateChange([[WXOnBLEConnectionStateChangeRes alloc]initWithPeripheral:peripheral Connected:NO ErrMsg:@"disconnect 10006" ErrCode:10006]);
+        }
     }
 }
 -(void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
-    NSLog(@"连接失败 %@", peripheral);
+    //NSLog(@"连接失败 %@", peripheral);
     if (self.createBLEConnectionObject) {
         WXCreateBLEConnectionRes * res = [[WXCreateBLEConnectionRes alloc] initWithErrMsg:@"createBLEConnection:fail errCode 10003 连接失败" ErrCode:10003];
         self.createBLEConnectionObject.fail(res);
         self.createBLEConnectionObject.complete(res);
         self.createBLEConnectionObject = nil;
     }
+    
+    if (self.onBLEConnectionStateChange) {
+        self.onBLEConnectionStateChange([[WXOnBLEConnectionStateChangeRes alloc]initWithPeripheral:peripheral Connected:NO ErrMsg:@"connect fail 10003" ErrCode:10003]);
+    }
 }
 
 #pragma mark -- CBPeripheralDelegate
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(NSError *)error{
+    
     //NSLog(@"peripheral:didDiscoverServices %@", peripheral.services);
     if (self.getBLEDeviceServicesObject) {
         WXGetBLEDeviceServicesRes * res = [[WXGetBLEDeviceServicesRes alloc] initWithErrMsg:@"getBLEDeviceServices:ok" errCode:0 peripheral:peripheral];
@@ -541,6 +602,7 @@
 }
 
 -(void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(NSError *)error{
+    
     //NSLog(@"peripheral = %@", peripheral);
     //NSLog(@"characteristics = %@",service.characteristics);
     if (self.getBLEDeviceCharacteristicsObject) {
@@ -555,11 +617,12 @@
             self.getBLEDeviceCharacteristicsObject.complete(res);
             self.getBLEDeviceCharacteristicsObject = nil;
         }
-
     }
+    
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error{
+    
     NSLog(@"error = %@", error);
     if (self.notifyBLECharacteristicValueChangeObject) {
         if (error) {
@@ -587,13 +650,10 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error{
     if (self.onBLECharacteristicValueChange) {
-        self.onBLECharacteristicValueChange(nil);
-    }
-    if (error) {
-        NSLog(@"err = %@", error);
-    }else {
-        NSLog(@"peripheral = %@", peripheral);
-        NSLog(@"characteristic = %@", characteristic);
+        if (!error) {
+            WXOnBLECharacteristicValueChangeRes * res = [[WXOnBLECharacteristicValueChangeRes alloc] initWithPeripheral:peripheral Characteristic:characteristic];
+            self.onBLECharacteristicValueChange(res);
+        }
     }
 }
 
