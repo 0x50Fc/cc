@@ -16,6 +16,8 @@
 #define NotifyBLECharacteristicValueChangeObjectKey "NotifyBLECharacteristicValueChangeObjectKey"
 #define OnBLECharacteristicValueChangeKey "OnBLECharacteristicValueChangeKey"
 #define OnBLEConnectionStateChangeKey "OnBLEConnectionStateChangeKey"
+#define ReadBLECharacteristicValueObjectKey "ReadBLECharacteristicValueObjectKey"
+#define WriteBLECharacteristicValueObjectKey "WriteBLECharacteristicValueObjectKey"
 
 @implementation WXCreateBLEConnectionRes
 @synthesize errMsg = _errMsg;
@@ -126,10 +128,10 @@
 @synthesize indicate = _indicate;
 -(instancetype)initWithProperties:(CBCharacteristicProperties)properties{
     if (self = [super init]) {
-        self.read = properties & (1 << 1) ? YES : NO;
-        self.write = properties & (1 << 3) ? YES : NO;
-        self.notify = properties & (1 << 4) ? YES : NO;
-        self.indicate = properties & (1 << 5) ? YES : NO;
+        self.read = properties & CBCharacteristicPropertyRead ? YES : NO;
+        self.write = properties & CBCharacteristicPropertyWrite ? YES : NO;
+        self.notify = properties & CBCharacteristicPropertyNotify ? YES : NO;
+        self.indicate = properties & CBCharacteristicPropertyIndicate ? YES : NO;
     }
     return self;
 }
@@ -260,6 +262,61 @@
 @end
 
 
+
+@implementation WXReadBLECharacteristicValueRes
+@synthesize errMsg = _errMsg;
+@synthesize errCode = _errCode;
+-(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode {
+    if (self = [super init]) {
+        self.errMsg = errMsg;
+        self.errCode = errCode;
+    }
+    return self;
+}
+-(NSString *)description{
+    return [NSString stringWithFormat:@"{errMsg:%@, errCode:%d}", self.errMsg, self.errCode];
+}
+@end
+
+@implementation WXReadBLECharacteristicValueObject
+@synthesize deviceId = _deviceId;
+@synthesize serviceId = _serviceId;
+@synthesize characteristicId = _characteristicId;
+@synthesize success = _success;
+@synthesize fail = _fail;
+@synthesize complete = _complete;
+@end
+
+
+
+@implementation WXWriteBLECharacteristicValueRes
+@synthesize errMsg = _errMsg;
+@synthesize errCode = _errCode;
+-(instancetype)initWithErrMsg:(NSString *)errMsg ErrCode:(int)errCode {
+    if (self = [super init]) {
+        self.errMsg = errMsg;
+        self.errCode = errCode;
+    }
+    return self;
+}
+-(NSString *)description{
+    return [NSString stringWithFormat:@"{errMsg:%@, errCode:%d}", self.errMsg, self.errCode];
+}
+@end
+
+@implementation WXWriteBLECharacteristicValueObject
+@synthesize deviceId = _deviceId;
+@synthesize serviceId = _serviceId;
+@synthesize characteristicId = _characteristicId;
+@synthesize value = _value;
+@synthesize success = _success;
+@synthesize fail = _fail;
+@synthesize complete = _complete;
+@end
+
+
+
+
 @interface WX()
 
 @property (nonatomic, strong, readonly) NSMutableArray<CBPeripheral *> * connectedPeripherals;
@@ -269,6 +326,8 @@
 @property (nonatomic, strong) WXGetBLEDeviceServicesObject * getBLEDeviceServicesObject;
 @property (nonatomic, strong) WXBGetLEDeviceCharacteristicsObject * getBLEDeviceCharacteristicsObject;
 @property (nonatomic, strong) WXNotifyBLECharacteristicValueChangeObject * notifyBLECharacteristicValueChangeObject;
+@property (nonatomic, strong) WXReadBLECharacteristicValueObject * readBLECharacteristicValueObject;
+@property (nonatomic, strong) WXWriteBLECharacteristicValueObject * writeBLECharacteristicValueObject;
 
 @end
 
@@ -329,6 +388,20 @@
     objc_setAssociatedObject(self, NotifyBLECharacteristicValueChangeObjectKey, notifyBLECharacteristicValueChangeObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+-(WXReadBLECharacteristicValueObject *)readBLECharacteristicValueObject{
+    return objc_getAssociatedObject(self, ReadBLECharacteristicValueObjectKey);
+}
+-(void)setReadBLECharacteristicValueObject:(WXReadBLECharacteristicValueObject *)readBLECharacteristicValueObject{
+    objc_setAssociatedObject(self, ReadBLECharacteristicValueObjectKey, readBLECharacteristicValueObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(WXWriteBLECharacteristicValueObject *)writeBLECharacteristicValueObject{
+    return objc_getAssociatedObject(self, WriteBLECharacteristicValueObjectKey);
+}
+-(void)setWriteBLECharacteristicValueObject:(WXWriteBLECharacteristicValueObject *)writeBLECharacteristicValueObject{
+    objc_setAssociatedObject(self, WriteBLECharacteristicValueObjectKey, writeBLECharacteristicValueObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 -(CBPeripheral *) findPeripheral:(NSString *)uuid{
 
     NSArray * arr = [self.centralManager retrievePeripheralsWithIdentifiers:@[[[NSUUID alloc]initWithUUIDString:uuid]]];
@@ -376,8 +449,8 @@
             }
             
             self.createBLEConnectionObject = object;
+            NSLog(@"connect peripheral id = %@",peripheral.identifier);
             [self.centralManager connectPeripheral:peripheral options:nil];
-            NSLog(@"id = %@",peripheral.identifier);
             
             if (object.timeout && object.timeout > 0) {
                 //设定超时
@@ -463,12 +536,9 @@
     }else{
         CBPeripheral * peripheral = [self findConnectedPeripheral:object.deviceId];
         if (peripheral) {
-            CBService * service = [peripheral.services objectByFeature:object.serviceId func:^BOOL(id objectA, id objectB) {
-                NSString * SID = objectA;
-                CBService * service = objectB;
-                return [SID isEqualToString:service.UUID.UUIDString] ? YES : NO;
-            }];
+            CBService * service = [peripheral findServiceByID:object.serviceId];
             if (service) {
+                //获取特征值
                 self.getBLEDeviceCharacteristicsObject = object;
                 [peripheral discoverCharacteristics:nil forService:service];
             }else{
@@ -498,17 +568,9 @@
         
         CBPeripheral * peripheral = [self findConnectedPeripheral:object.deviceId];
         if (peripheral) {
-            CBService * service = [peripheral.services objectByFeature:object.serviceId func:^BOOL(id objectA, id objectB) {
-                NSString * SID = objectA;
-                CBService * service = objectB;
-                return [SID isEqualToString:service.UUID.UUIDString] ? YES : NO;
-            }];
+            CBService * service = [peripheral findServiceByID:object.serviceId];
             if (service) {
-                CBCharacteristic * characteristic = [service.characteristics objectByFeature:object.characteristicId func:^BOOL(id objectA, id objectB) {
-                    NSString * CID = objectA;
-                    CBCharacteristic * characteristic = objectB;
-                    return [CID isEqualToString:characteristic.UUID.UUIDString] ? YES : NO;
-                }];
+                CBCharacteristic * characteristic = [service findCharacteristicByID:object.characteristicId];
                 if (characteristic) {
                     //开始设定特征值notify
                     self.notifyBLECharacteristicValueChangeObject = object;
@@ -534,6 +596,87 @@
     }
 }
 
+-(void)readBLECharacteristicValue:(id<WXBluetoothObject, WXReadBLECharacteristicValueInfo>) object{
+    
+    if (self.centralManager == nil) {
+        //未初始化
+        WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail errCode 10000" ErrCode:10000];
+        object.fail(res);
+        object.complete(res);
+    }else {
+        CBPeripheral * peripheral = [self findConnectedPeripheral:object.deviceId];
+        if (peripheral) {
+            CBService * service = [peripheral findServiceByID:object.serviceId];
+            if (service) {
+                CBCharacteristic * characteristic = [service findCharacteristicByID:object.characteristicId];
+                if (characteristic) {
+                    //开始读
+                    self.readBLECharacteristicValueObject = object;
+                    [peripheral readValueForCharacteristic:characteristic];
+                }else {
+                    //特征值未找到
+                    WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail errCode 10005" ErrCode:10005];
+                    object.fail(res);
+                    object.complete(res);
+                }
+            }else {
+                //服务未找到
+                WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail errCode 10004" ErrCode:10004];
+                object.fail(res);
+                object.complete(res);
+            }
+        }else {
+            //设备未找到
+            WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail errCode 10002" ErrCode:10002];
+            object.fail(res);
+            object.complete(res);
+        }
+
+    }
+    
+}
+
+-(void)writeBLECharacteristicValue:(id<WXBluetoothObject, WXWriteBLECharacteristicValueInfo>) object{
+    
+    if (self.centralManager == nil) {
+        //未初始化
+        WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10000" ErrCode:10000];
+        object.fail(res);
+        object.complete(res);
+    }else {
+        CBPeripheral * peripheral = [self findConnectedPeripheral:object.deviceId];
+        if (peripheral) {
+            CBService * service = [peripheral findServiceByID:object.serviceId];
+            if (service) {
+                CBCharacteristic * characteristic = [service findCharacteristicByID:object.characteristicId];
+                if (characteristic) {
+                    //开始写
+                    self.writeBLECharacteristicValueObject = object;
+                    [peripheral writeValue:object.value forCharacteristic:characteristic type:CBCharacteristicWriteWithResponse];
+                }else {
+                    //特征值未找到
+                    WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10005" ErrCode:10005];
+                    object.fail(res);
+                    object.complete(res);
+                }
+            }else {
+                //服务未找到
+                WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10004" ErrCode:10004];
+                object.fail(res);
+                object.complete(res);
+            }
+        }else {
+            //设备未找到
+            WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10002" ErrCode:10002];
+            object.fail(res);
+            object.complete(res);
+        }
+
+    }
+}
+
+
+
 
 #pragma mark -- CBCentralManagerDelegate
 
@@ -554,6 +697,7 @@
     
 }
 -(void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    
     NSLog(@"断开连接 %@", peripheral);
     if (self.closeBLEConnectionObject) {
         //主动断开连接
@@ -576,6 +720,7 @@
     }
 }
 -(void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(NSError *)error{
+    
     //NSLog(@"连接失败 %@", peripheral);
     if (self.createBLEConnectionObject) {
         WXCreateBLEConnectionRes * res = [[WXCreateBLEConnectionRes alloc] initWithErrMsg:@"createBLEConnection:fail errCode 10003 连接失败" ErrCode:10003];
@@ -623,7 +768,7 @@
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error{
     
-    NSLog(@"error = %@", error);
+    //NSLog(@"error = %@", error);
     if (self.notifyBLECharacteristicValueChangeObject) {
         if (error) {
             if (error.code == 6) {
@@ -649,24 +794,86 @@
 }
 
 - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error{
+    
+    //读反馈
+    if (self.readBLECharacteristicValueObject) {
+        if (error == nil) {
+            //成功
+            WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:ok" ErrCode:0];
+            self.readBLECharacteristicValueObject.success(res);
+            self.readBLECharacteristicValueObject.complete(res);
+            self.readBLECharacteristicValueObject = nil;
+        }else {
+            if (error.code == 2) {
+                //特征不支持读取操作
+                WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail characteristic not support read errCode 10007" ErrCode:10007];
+                self.readBLECharacteristicValueObject.fail(res);
+                self.readBLECharacteristicValueObject.complete(res);
+                self.readBLECharacteristicValueObject = nil;
+            }else {
+                //其他错误
+                WXReadBLECharacteristicValueRes * res = [[WXReadBLECharacteristicValueRes alloc] initWithErrMsg:@"readBLECharacteristicValue:fail errCode 10008" ErrCode:10008];
+                self.readBLECharacteristicValueObject.fail(res);
+                self.readBLECharacteristicValueObject.complete(res);
+                self.readBLECharacteristicValueObject = nil;
+            }
+        }
+        
+    }
+    
     if (self.onBLECharacteristicValueChange) {
-        if (!error) {
-            WXOnBLECharacteristicValueChangeRes * res = [[WXOnBLECharacteristicValueChangeRes alloc] initWithPeripheral:peripheral Characteristic:characteristic];
-            self.onBLECharacteristicValueChange(res);
+        WXOnBLECharacteristicValueChangeRes * res = [[WXOnBLECharacteristicValueChangeRes alloc] initWithPeripheral:peripheral Characteristic:characteristic];
+        self.onBLECharacteristicValueChange(res);
+    }
+}
+
+- (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error{
+    //写反馈
+    if (self.writeBLECharacteristicValueObject) {
+        if (error == nil) {
+            //写成功
+            WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:ok" ErrCode:0];
+            self.writeBLECharacteristicValueObject.success(res);
+            self.writeBLECharacteristicValueObject.complete(res);
+            self.writeBLECharacteristicValueObject = nil;
+        }else {
+            if (error.code == 3) {
+                WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail not support write errCode 10007" ErrCode:10007];
+                self.writeBLECharacteristicValueObject.fail(res);
+                self.writeBLECharacteristicValueObject.complete(res);
+                self.writeBLECharacteristicValueObject = nil;
+            }else {
+                WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10008" ErrCode:10008];
+                self.writeBLECharacteristicValueObject.fail(res);
+                self.writeBLECharacteristicValueObject.complete(res);
+                self.writeBLECharacteristicValueObject = nil;
+            }
         }
     }
 }
 
 @end
 
-
-@implementation NSArray (WXBLE)
--(id)objectByFeature:(id)objectA func:(FatureFunc)func{
-    for (id objectB in self) {
-        if (func(objectA, objectB)) {
-            return objectB;
+@implementation CBPeripheral(WXBLE)
+-(CBService *)findServiceByID:(NSString *)ID{
+    for (CBService * service in self.services) {
+        if ([service.UUID.UUIDString isEqualToString:ID]) {
+            return service;
         }
     }
     return nil;
 }
 @end
+
+
+@implementation CBService(WXBLE)
+-(CBCharacteristic *)findCharacteristicByID:(NSString *)ID{
+    for (CBCharacteristic * characteristic in self.characteristics) {
+        if ([characteristic.UUID.UUIDString isEqualToString:ID]) {
+            return characteristic;
+        }
+    }
+    return nil;
+}
+@end
+

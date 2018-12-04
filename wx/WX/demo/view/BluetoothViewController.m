@@ -11,8 +11,9 @@
 
 #define DEVICE_UUID @"633A275D-F798-B03C-E088-10B8C184E94C"
 #define S_ID @"FEBE"
-#define C_ID @"9EC813B4-256B-4090-93A8-A4F0E9107733"
-//#define C_ID @"234BFBD5-E3B3-4536-A3FE-723620D4B78D"
+//#define C_ID @"D417C028-9818-4354-99D1-2AC09D074591"   //可读写
+//#define C_ID @"234BFBD5-E3B3-4536-A3FE-723620D4B78D"   //不可读取
+#define C_ID @"9EC813B4-256B-4090-93A8-A4F0E9107733"   //不可写
 
 @interface BluetoothViewController ()
 
@@ -187,10 +188,54 @@
     };
     [wx notifyBLECharacteristicValueChange:object];
 }
+- (IBAction)btnReadBLECharacteristicValue:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXReadBLECharacteristicValueObject * object = [[WXReadBLECharacteristicValueObject alloc] init];
+    object.deviceId = DEVICE_UUID;
+    object.serviceId = S_ID;
+    object.characteristicId = C_ID;
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"ReadBLECharacteristicValue success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"ReadBLECharacteristicValue fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"ReadBLECharacteristicValue complete res = %@", res);
+    };
+    [wx readBLECharacteristicValue:object];
+}
+- (IBAction)btnWriteBLECharacteristicValue:(id)sender {
+    WX * wx = [ViewController getInstance].wx;
+    WXWriteBLECharacteristicValueObject * object = [[WXWriteBLECharacteristicValueObject alloc] init];
+    object.deviceId = DEVICE_UUID;
+    object.serviceId = S_ID;
+    object.characteristicId = C_ID;
+    char * str = "123456789";
+    object.value = [NSData dataWithBytes:str length:strlen(str)];
+    object.success = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WriteBLECharacteristicValue success res = %@", res);
+    };
+    object.fail = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WriteBLECharacteristicValue fail res = %@", res);
+    };
+    object.complete = ^(id<WXBluetoothRes> res) {
+        NSLog(@"WriteBLECharacteristicValue complete res = %@", res);
+    };
+    [wx writeBLECharacteristicValue:object];
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    WX * wx = [ViewController getInstance].wx;
+    wx.onBLEConnectionStateChange = ^(id<WXBluetoothRes,WXOnBLEConnectionStateChangeInfo> res) {
+        NSLog(@"onBLEConnectionStateChange res = %@", res);
+    };
+    wx.onBLECharacteristicValueChange = ^(id<WXOnBLECharacteristicValueChangeRes> res) {
+        NSLog(@"onBLECharacteristicValueChange res = %@", res);
+    };
+ 
 }
 
 /*

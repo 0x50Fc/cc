@@ -12,20 +12,20 @@
 @protocol WXBluetoothRes;
 @protocol WXBluetoothObject;
 
-@protocol WXBluetoothRes <NSObject>
-@property (nonatomic, copy) NSString * errMsg;
-@property (nonatomic, assign) int errCode;
-@end
+//@protocol WXBluetoothRes <NSObject>
+//@property (nonatomic, copy) NSString * errMsg;
+//@property (nonatomic, assign) int errCode;
+//@end
 
 typedef void (^WXBluetoothObjectSuccess) (id<WXBluetoothRes> res);
 typedef void (^WXBluetoothObjectFail) (id<WXBluetoothRes> res);
 typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 
-@protocol WXBluetoothObject <NSObject>
-@property (nonatomic, strong) WXBluetoothObjectSuccess success;
-@property (nonatomic, strong) WXBluetoothObjectFail fail;
-@property (nonatomic, strong) WXBluetoothObjectComplete complete;
-@end
+//@protocol WXBluetoothObject <NSObject>
+//@property (nonatomic, strong) WXBluetoothObjectSuccess success;
+//@property (nonatomic, strong) WXBluetoothObjectFail fail;
+//@property (nonatomic, strong) WXBluetoothObjectComplete complete;
+//@end
 
 @protocol WXCreateBLEConnectionInfo <NSObject>
 @property (nonatomic, strong) NSString * deviceId;
@@ -137,8 +137,38 @@ typedef void (^WXBluetoothObjectComplete) (id<WXBluetoothRes> res);
 @end
 
 
-typedef void (^WXOnBLECharacteristicValueChang)(id<WXOnBLECharacteristicValueChangeRes>);
-typedef void (^WXOnBLEConnectionStateChange)(id<WXBluetoothRes,WXOnBLEConnectionStateChangeInfo>);
+
+@interface WXReadBLECharacteristicValueRes : NSObject<WXBluetoothRes>
+@end
+
+@protocol WXReadBLECharacteristicValueInfo <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, copy) NSString * serviceId;
+@property (nonatomic, copy) NSString * characteristicId;
+@end
+
+@interface WXReadBLECharacteristicValueObject : NSObject <WXBluetoothObject, WXReadBLECharacteristicValueInfo>
+@end
+
+
+
+@interface WXWriteBLECharacteristicValueRes : NSObject<WXBluetoothRes>
+@end
+
+@protocol WXWriteBLECharacteristicValueInfo <NSObject>
+@property (nonatomic, copy) NSString * deviceId;
+@property (nonatomic, copy) NSString * serviceId;
+@property (nonatomic, copy) NSString * characteristicId;
+@property (nonatomic, copy) NSData * value;
+@end
+
+@interface WXWriteBLECharacteristicValueObject : NSObject <WXBluetoothObject, WXWriteBLECharacteristicValueInfo>
+@end
+
+
+
+typedef void (^WXOnBLECharacteristicValueChang)(id<WXOnBLECharacteristicValueChangeRes> res);
+typedef void (^WXOnBLEConnectionStateChange)(id<WXBluetoothRes,WXOnBLEConnectionStateChangeInfo> res);
 
 @interface WX (WXBLE) <CBPeripheralDelegate>
 
@@ -152,12 +182,18 @@ typedef void (^WXOnBLEConnectionStateChange)(id<WXBluetoothRes,WXOnBLEConnection
 -(void)getBLEDeviceCharacteristics:(id<WXBluetoothObject, WXBGetLEDeviceCharacteristicsInfo>) object;
 
 -(void)notifyBLECharacteristicValueChange:(id<WXBluetoothObject, WXNotifyBLECharacteristicValueChangeInfo>) object;
+
+-(void)readBLECharacteristicValue:(id<WXBluetoothObject, WXReadBLECharacteristicValueInfo>) object;
+-(void)writeBLECharacteristicValue:(id<WXBluetoothObject, WXWriteBLECharacteristicValueInfo>) object;
 @end
 
 
-typedef BOOL(^FatureFunc) (id objectA, id objectB);
-@interface NSArray (WXBLE)
--(id)objectByFeature:(id)objectA func:(FatureFunc)func;
+@interface CBPeripheral(WXBLE)
+-(CBService *)findServiceByID:(NSString *)ID;
+@end
+
+@interface CBService(WXBLE)
+-(CBCharacteristic *)findCharacteristicByID:(NSString *)ID;
 @end
 
 
