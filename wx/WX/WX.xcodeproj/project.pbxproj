@@ -40,6 +40,8 @@
 		E93756E721A2BCBE00E740F1 /* WXPhoneContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */; };
 		E952965621ACF95300724CE4 /* BluetoothViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E952965421ACF95300724CE4 /* BluetoothViewController.m */; };
 		E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E952965521ACF95300724CE4 /* BluetoothViewController.xib */; };
+		E95F408421B66EFD00CFD56A /* WXIBeacon.h in Headers */ = {isa = PBXBuildFile; fileRef = E95F408221B66EFD00CFD56A /* WXIBeacon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E95F408521B66EFD00CFD56A /* WXIBeacon.m in Sources */ = {isa = PBXBuildFile; fileRef = E95F408321B66EFD00CFD56A /* WXIBeacon.m */; };
 		E9B0234521A64FAE0035DB08 /* WXNetwork.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B0234321A64FAE0035DB08 /* WXNetwork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */ = {isa = PBXBuildFile; fileRef = E9B0234421A64FAE0035DB08 /* WXNetwork.m */; };
 		E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -129,6 +131,8 @@
 		E952965321ACF95200724CE4 /* BluetoothViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothViewController.h; sourceTree = "<group>"; };
 		E952965421ACF95300724CE4 /* BluetoothViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothViewController.m; sourceTree = "<group>"; };
 		E952965521ACF95300724CE4 /* BluetoothViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BluetoothViewController.xib; sourceTree = "<group>"; };
+		E95F408221B66EFD00CFD56A /* WXIBeacon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXIBeacon.h; sourceTree = "<group>"; };
+		E95F408321B66EFD00CFD56A /* WXIBeacon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXIBeacon.m; sourceTree = "<group>"; };
 		E9B0234321A64FAE0035DB08 /* WXNetwork.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXNetwork.h; sourceTree = "<group>"; };
 		E9B0234421A64FAE0035DB08 /* WXNetwork.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXNetwork.m; sourceTree = "<group>"; };
 		E9B023AB21A68A090035DB08 /* WXMakePhoneCall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMakePhoneCall.h; sourceTree = "<group>"; };
@@ -225,6 +229,8 @@
 				E91B717B21ABC3C700700082 /* WXVibrate.m */,
 				E91B718321ABCF5900700082 /* WXWifi.h */,
 				E91B718421ABCF5900700082 /* WXWifi.m */,
+				E95F408221B66EFD00CFD56A /* WXIBeacon.h */,
+				E95F408321B66EFD00CFD56A /* WXIBeacon.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -308,6 +314,7 @@
 				E91B717321AB8B0800700082 /* WXScreen.h in Headers */,
 				E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */,
 				E91B718521ABCF5900700082 /* WXWifi.h in Headers */,
+				E95F408421B66EFD00CFD56A /* WXIBeacon.h in Headers */,
 				E91B717C21ABC3C700700082 /* WXVibrate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +444,7 @@
 				1A19B063219928D300321431 /* WXObject.m in Sources */,
 				E91B718621ABCF5900700082 /* WXWifi.m in Sources */,
 				E922E324219D177C00A7EC81 /* WXMotion.m in Sources */,
+				E95F408521B66EFD00CFD56A /* WXIBeacon.m in Sources */,
 				E9B0234621A64FAE0035DB08 /* WXNetwork.m in Sources */,
 				E91B717421AB8B0800700082 /* WXScreen.m in Sources */,
 				E9B023AE21A68A090035DB08 /* WXMakePhoneCall.m in Sources */,

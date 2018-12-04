@@ -838,11 +838,13 @@
             self.writeBLECharacteristicValueObject = nil;
         }else {
             if (error.code == 3) {
+                //特征不支持写
                 WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail not support write errCode 10007" ErrCode:10007];
                 self.writeBLECharacteristicValueObject.fail(res);
                 self.writeBLECharacteristicValueObject.complete(res);
                 self.writeBLECharacteristicValueObject = nil;
             }else {
+                //其他错误
                 WXWriteBLECharacteristicValueRes * res = [[WXWriteBLECharacteristicValueRes alloc] initWithErrMsg:@"writeBLECharacteristicValue:fail errCode 10008" ErrCode:10008];
                 self.writeBLECharacteristicValueObject.fail(res);
                 self.writeBLECharacteristicValueObject.complete(res);

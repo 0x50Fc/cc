@@ -18,6 +18,7 @@
 #import <WX/WXVibrate.h>
 #import <WX/WXBluetooth.h>
 #import <WX/WXBLE.h>
+#import <WX/WXIBeacon.h>
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;
