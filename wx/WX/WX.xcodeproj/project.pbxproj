@@ -38,6 +38,12 @@
 		E93756E321A2974E00E740F1 /* ClipboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93756E121A2974E00E740F1 /* ClipboardViewController.xib */; };
 		E93756E621A2BCBE00E740F1 /* WXPhoneContact.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E93756E721A2BCBE00E740F1 /* WXPhoneContact.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */; };
+		E93CBE9621B7733D00967CA0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E93CBE9521B7733D00967CA0 /* AppDelegate.m */; };
+		E93CBE9921B7733D00967CA0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93CBE9821B7733D00967CA0 /* ViewController.m */; };
+		E93CBE9C21B7733D00967CA0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E93CBE9A21B7733D00967CA0 /* Main.storyboard */; };
+		E93CBE9E21B7733E00967CA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E93CBE9D21B7733E00967CA0 /* Assets.xcassets */; };
+		E93CBEA121B7733E00967CA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */; };
+		E93CBEA421B7733E00967CA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E93CBEA321B7733E00967CA0 /* main.m */; };
 		E952965621ACF95300724CE4 /* BluetoothViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E952965421ACF95300724CE4 /* BluetoothViewController.m */; };
 		E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E952965521ACF95300724CE4 /* BluetoothViewController.xib */; };
 		E95F408421B66EFD00CFD56A /* WXIBeacon.h in Headers */ = {isa = PBXBuildFile; fileRef = E95F408221B66EFD00CFD56A /* WXIBeacon.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -128,6 +134,16 @@
 		E93756E121A2974E00E740F1 /* ClipboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClipboardViewController.xib; sourceTree = "<group>"; };
 		E93756E421A2BCBE00E740F1 /* WXPhoneContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXPhoneContact.h; sourceTree = "<group>"; };
 		E93756E521A2BCBE00E740F1 /* WXPhoneContact.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXPhoneContact.m; sourceTree = "<group>"; };
+		E93CBE9221B7733D00967CA0 /* IBeaconTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IBeaconTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E93CBE9421B7733D00967CA0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		E93CBE9521B7733D00967CA0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		E93CBE9721B7733D00967CA0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		E93CBE9821B7733D00967CA0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		E93CBE9B21B7733D00967CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E93CBE9D21B7733E00967CA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E93CBEA021B7733E00967CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E93CBEA221B7733E00967CA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E93CBEA321B7733E00967CA0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E952965321ACF95200724CE4 /* BluetoothViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothViewController.h; sourceTree = "<group>"; };
 		E952965421ACF95300724CE4 /* BluetoothViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothViewController.m; sourceTree = "<group>"; };
 		E952965521ACF95300724CE4 /* BluetoothViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BluetoothViewController.xib; sourceTree = "<group>"; };
@@ -176,6 +192,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E93CBE8F21B7733D00967CA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -184,6 +207,7 @@
 			children = (
 				1A19B051219924AF00321431 /* WX */,
 				1A19B06921992AD700321431 /* demo */,
+				E93CBE9321B7733D00967CA0 /* IBeaconTest */,
 				1A19B050219924AF00321431 /* Products */,
 				E9B48A37219EA8C30051416D /* Frameworks */,
 			);
@@ -194,6 +218,7 @@
 			children = (
 				1A19B04F219924AF00321431 /* WX.framework */,
 				1A19B06821992AD700321431 /* demo.app */,
+				E93CBE9221B7733D00967CA0 /* IBeaconTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,6 +231,8 @@
 				1A19B061219928D300321431 /* WXObject.m */,
 				1A19B05C219925B800321431 /* WXLocation.h */,
 				1A19B05E2199285C00321431 /* WXLocation.m */,
+				E95F408221B66EFD00CFD56A /* WXIBeacon.h */,
+				E95F408321B66EFD00CFD56A /* WXIBeacon.m */,
 				1A19B053219924AF00321431 /* Info.plist */,
 				E922E321219D177C00A7EC81 /* WXMotion.h */,
 				E922E322219D177C00A7EC81 /* WXMotion.m */,
@@ -229,8 +256,6 @@
 				E91B717B21ABC3C700700082 /* WXVibrate.m */,
 				E91B718321ABCF5900700082 /* WXWifi.h */,
 				E91B718421ABCF5900700082 /* WXWifi.m */,
-				E95F408221B66EFD00CFD56A /* WXIBeacon.h */,
-				E95F408321B66EFD00CFD56A /* WXIBeacon.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -251,6 +276,22 @@
 				1A19B07921992ADA00321431 /* main.m */,
 			);
 			path = demo;
+			sourceTree = "<group>";
+		};
+		E93CBE9321B7733D00967CA0 /* IBeaconTest */ = {
+			isa = PBXGroup;
+			children = (
+				E93CBE9421B7733D00967CA0 /* AppDelegate.h */,
+				E93CBE9521B7733D00967CA0 /* AppDelegate.m */,
+				E93CBE9721B7733D00967CA0 /* ViewController.h */,
+				E93CBE9821B7733D00967CA0 /* ViewController.m */,
+				E93CBE9A21B7733D00967CA0 /* Main.storyboard */,
+				E93CBE9D21B7733E00967CA0 /* Assets.xcassets */,
+				E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */,
+				E93CBEA221B7733E00967CA0 /* Info.plist */,
+				E93CBEA321B7733E00967CA0 /* main.m */,
+			);
+			path = IBeaconTest;
 			sourceTree = "<group>";
 		};
 		E98DBB5D219D7889002CE813 /* view */ = {
@@ -359,6 +400,23 @@
 			productReference = 1A19B06821992AD700321431 /* demo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E93CBE9121B7733D00967CA0 /* IBeaconTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E93CBEA521B7733E00967CA0 /* Build configuration list for PBXNativeTarget "IBeaconTest" */;
+			buildPhases = (
+				E93CBE8E21B7733D00967CA0 /* Sources */,
+				E93CBE8F21B7733D00967CA0 /* Frameworks */,
+				E93CBE9021B7733D00967CA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IBeaconTest;
+			productName = IBeaconTest;
+			productReference = E93CBE9221B7733D00967CA0 /* IBeaconTest.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -379,6 +437,9 @@
 							};
 						};
 					};
+					E93CBE9121B7733D00967CA0 = {
+						CreatedOnToolsVersion = 10.1;
+					};
 				};
 			};
 			buildConfigurationList = 1A19B049219924AE00321431 /* Build configuration list for PBXProject "WX" */;
@@ -396,6 +457,7 @@
 			targets = (
 				1A19B04E219924AF00321431 /* WX */,
 				1A19B06721992AD700321431 /* demo */,
+				E93CBE9121B7733D00967CA0 /* IBeaconTest */,
 			);
 		};
 /* End PBXProject section */
@@ -424,6 +486,16 @@
 				E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */,
 				1A19B07221992AD700321431 /* Main.storyboard in Resources */,
 				E9B48A24219E67020051416D /* LocationViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E93CBE9021B7733D00967CA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E93CBEA121B7733E00967CA0 /* LaunchScreen.storyboard in Resources */,
+				E93CBE9E21B7733E00967CA0 /* Assets.xcassets in Resources */,
+				E93CBE9C21B7733D00967CA0 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +542,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E93CBE8E21B7733D00967CA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E93CBE9921B7733D00967CA0 /* ViewController.m in Sources */,
+				E93CBEA421B7733E00967CA0 /* main.m in Sources */,
+				E93CBE9621B7733D00967CA0 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -493,6 +575,22 @@
 			isa = PBXVariantGroup;
 			children = (
 				1A19B07621992ADA00321431 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		E93CBE9A21B7733D00967CA0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E93CBE9B21B7733D00967CA0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E93CBEA021B7733E00967CA0 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -704,6 +802,40 @@
 			};
 			name = Release;
 		};
+		E93CBEA621B7733E00967CA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JC2EQSWR8C;
+				INFOPLIST_FILE = IBeaconTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CZW.IBeaconTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E93CBEA721B7733E00967CA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JC2EQSWR8C;
+				INFOPLIST_FILE = IBeaconTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CZW.IBeaconTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -730,6 +862,15 @@
 			buildConfigurations = (
 				1A19B07C21992ADA00321431 /* Debug */,
 				1A19B07D21992ADA00321431 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E93CBEA521B7733E00967CA0 /* Build configuration list for PBXNativeTarget "IBeaconTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E93CBEA621B7733E00967CA0 /* Debug */,
+				E93CBEA721B7733E00967CA0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
