@@ -14,9 +14,9 @@
 @property (nonatomic, assign) int errCode;
 @end
 
-typedef void (^WXIBeaconObjectSuccess) (id<WXBluetoothRes> res);
-typedef void (^WXIBeaconObjectFail) (id<WXBluetoothRes> res);
-typedef void (^WXIBeaconObjectComplete) (id<WXBluetoothRes> res);
+typedef void (^WXIBeaconObjectSuccess) (id<WXIBeaconRes> res);
+typedef void (^WXIBeaconObjectFail) (id<WXIBeaconRes> res);
+typedef void (^WXIBeaconObjectComplete) (id<WXIBeaconRes> res);
 
 @protocol WXIBeaconObject <NSObject>
 @property (nonatomic, strong) WXIBeaconObjectSuccess success;
@@ -24,16 +24,16 @@ typedef void (^WXIBeaconObjectComplete) (id<WXBluetoothRes> res);
 @property (nonatomic, strong) WXIBeaconObjectComplete complete;
 @end
 
-@protocol IBeaconInfo <NSObject>
+@protocol WXIBeaconInfo <NSObject>
 @property (nonatomic, copy) NSString * uuid;          //设备广播的 uuid
-@property (nonatomic, copy) NSString * major;         //设备的主 id
-@property (nonatomic, copy) NSString * minor;         //设备的次 id
+@property (nonatomic, copy) NSNumber * major;         //设备的主 id
+@property (nonatomic, copy) NSNumber * minor;         //设备的次 id
 @property (nonatomic, assign) NSInteger proximity;    //表示设备距离的枚举值
 @property (nonatomic, assign) double accuracy;        //设备的距离
-@property (nonatomic, assign) double rssi;            //信号强度
+@property (nonatomic, assign) NSInteger rssi;            //信号强度
 @end
 
-@interface IBeaconInfo : NSObject <IBeaconInfo>
+@interface WXIBeaconInfo : NSObject <WXIBeaconInfo>
 @end
 
 
@@ -63,7 +63,7 @@ typedef void (^WXIBeaconObjectComplete) (id<WXBluetoothRes> res);
 
 
 @interface WXGetBeaconsRes : NSObject <WXIBeaconRes>
-@property (nonatomic, copy) NSArray<IBeaconInfo *> * beacons;
+@property (nonatomic, copy) NSArray<WXIBeaconInfo *> * beacons;
 @end
 
 @interface WXGetBeaconsObject : NSObject <WXIBeaconObject>
@@ -83,7 +83,7 @@ typedef void (^WXIBeaconObjectComplete) (id<WXBluetoothRes> res);
 
 
 @protocol WXOnBeaconUpdateRes <NSObject>
-@property (nonatomic, copy) NSArray<IBeaconInfo *> * beacons;
+@property (nonatomic, copy) NSArray<WXIBeaconInfo *> * beacons;
 @end
 
 @interface WXOnBeaconUpdateRes : NSObject <WXOnBeaconUpdateRes>
@@ -95,7 +95,7 @@ typedef void (^WXIBeaconObjectComplete) (id<WXBluetoothRes> res);
 typedef void (^WXOnBeaconServiceChang)(id<WXOnBeaconServiceChangeRes> res);
 typedef void (^WXOnBeaconUpdate)(id<WXOnBeaconUpdateRes> res);
 
-@interface WX (WXIBeacon)
+@interface WX (WXIBeacon) <CLLocationManagerDelegate, CBPeripheralManagerDelegate>
 
 @property (nonatomic, strong) WXOnBeaconServiceChang onBeaconServiceChang;
 @property (nonatomic, strong) WXOnBeaconUpdate onBeaconUpdate;

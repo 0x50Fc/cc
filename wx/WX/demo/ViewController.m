@@ -18,6 +18,8 @@
 @synthesize wx = _wx;
 
 static ViewController * __instance;
+- (IBAction)ddd:(id)sender {
+}
 +(ViewController *)getInstance{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -38,7 +40,8 @@ static ViewController * __instance;
                @{ @"text":@"联系人 - PhoneContact", @"class":@"PhoneContactViewController" },
                @{ @"text":@"打电话 - MakePhoneCall", @"class":@"MakePhoneCallViewController" },
                @{ @"text":@"屏幕 - Screen", @"class":@"ScreenViewController" },
-               @{ @"text":@"震动 - Vibrate", @"class":@"VibrateViewController" }
+               @{ @"text":@"震动 - Vibrate", @"class":@"VibrateViewController" },
+               @{ @"text":@"iBeacon - iBeacon", @"class":@"IBeaconViewController" }
                ];
      _wx = [[WX alloc] init];
     _tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -46,6 +49,8 @@ static ViewController * __instance;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     [self.view addSubview:_tableView];
+}
+- (IBAction)bkk:(id)sender {
 }
 
 
@@ -66,6 +71,7 @@ static ViewController * __instance;
     
     return cell;
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     

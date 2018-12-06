@@ -44,6 +44,8 @@
 		E93CBE9E21B7733E00967CA0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E93CBE9D21B7733E00967CA0 /* Assets.xcassets */; };
 		E93CBEA121B7733E00967CA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */; };
 		E93CBEA421B7733E00967CA0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E93CBEA321B7733E00967CA0 /* main.m */; };
+		E93CBEAB21B7B13900967CA0 /* IBeaconViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93CBEA921B7B13900967CA0 /* IBeaconViewController.m */; };
+		E93CBEAC21B7B13900967CA0 /* IBeaconViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E93CBEAA21B7B13900967CA0 /* IBeaconViewController.xib */; };
 		E952965621ACF95300724CE4 /* BluetoothViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E952965421ACF95300724CE4 /* BluetoothViewController.m */; };
 		E952965721ACF95300724CE4 /* BluetoothViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E952965521ACF95300724CE4 /* BluetoothViewController.xib */; };
 		E95F408421B66EFD00CFD56A /* WXIBeacon.h in Headers */ = {isa = PBXBuildFile; fileRef = E95F408221B66EFD00CFD56A /* WXIBeacon.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -144,6 +146,9 @@
 		E93CBEA021B7733E00967CA0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E93CBEA221B7733E00967CA0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E93CBEA321B7733E00967CA0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		E93CBEA821B7B13900967CA0 /* IBeaconViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IBeaconViewController.h; sourceTree = "<group>"; };
+		E93CBEA921B7B13900967CA0 /* IBeaconViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IBeaconViewController.m; sourceTree = "<group>"; };
+		E93CBEAA21B7B13900967CA0 /* IBeaconViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IBeaconViewController.xib; sourceTree = "<group>"; };
 		E952965321ACF95200724CE4 /* BluetoothViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BluetoothViewController.h; sourceTree = "<group>"; };
 		E952965421ACF95300724CE4 /* BluetoothViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BluetoothViewController.m; sourceTree = "<group>"; };
 		E952965521ACF95300724CE4 /* BluetoothViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BluetoothViewController.xib; sourceTree = "<group>"; };
@@ -324,6 +329,9 @@
 				E952965321ACF95200724CE4 /* BluetoothViewController.h */,
 				E952965421ACF95300724CE4 /* BluetoothViewController.m */,
 				E952965521ACF95300724CE4 /* BluetoothViewController.xib */,
+				E93CBEA821B7B13900967CA0 /* IBeaconViewController.h */,
+				E93CBEA921B7B13900967CA0 /* IBeaconViewController.m */,
+				E93CBEAA21B7B13900967CA0 /* IBeaconViewController.xib */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -432,6 +440,9 @@
 					1A19B06721992AD700321431 = {
 						CreatedOnToolsVersion = 10.1;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.WAC = {
 								enabled = 0;
 							};
@@ -477,6 +488,7 @@
 				E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */,
 				E91B717921AB9EAD00700082 /* ScreenViewController.xib in Resources */,
 				E91B718221ABC50600700082 /* VibrateViewController.xib in Resources */,
+				E93CBEAC21B7B13900967CA0 /* IBeaconViewController.xib in Resources */,
 				E9B023B321A68C100035DB08 /* MakePhoneCallViewController.xib in Resources */,
 				1A19B07721992ADA00321431 /* LaunchScreen.storyboard in Resources */,
 				E9B48A29219E68D20051416D /* AccelerometerViewController.xib in Resources */,
@@ -533,6 +545,7 @@
 				E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */,
 				E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */,
 				E91B717821AB9EAD00700082 /* ScreenViewController.m in Sources */,
+				E93CBEAB21B7B13900967CA0 /* IBeaconViewController.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
 				E91B718121ABC50600700082 /* VibrateViewController.m in Sources */,
 				E9B023B221A68C100035DB08 /* MakePhoneCallViewController.m in Sources */,
@@ -773,7 +786,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JC2EQSWR8C;
 				INFOPLIST_FILE = demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -791,7 +804,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JC2EQSWR8C;
 				INFOPLIST_FILE = demo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -809,6 +822,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JC2EQSWR8C;
 				INFOPLIST_FILE = IBeaconTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -826,6 +840,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JC2EQSWR8C;
 				INFOPLIST_FILE = IBeaconTest/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
