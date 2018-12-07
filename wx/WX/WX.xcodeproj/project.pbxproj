@@ -32,6 +32,10 @@
 		E91B718621ABCF5900700082 /* WXWifi.m in Sources */ = {isa = PBXBuildFile; fileRef = E91B718421ABCF5900700082 /* WXWifi.m */; };
 		E922E323219D177C00A7EC81 /* WXMotion.h in Headers */ = {isa = PBXBuildFile; fileRef = E922E321219D177C00A7EC81 /* WXMotion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E922E324219D177C00A7EC81 /* WXMotion.m in Sources */ = {isa = PBXBuildFile; fileRef = E922E322219D177C00A7EC81 /* WXMotion.m */; };
+		E92836A421B912B400692125 /* WXRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = E92836A221B912B400692125 /* WXRecorder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E92836A521B912B400692125 /* WXRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = E92836A321B912B400692125 /* WXRecorder.m */; };
+		E92836B021B926B300692125 /* RecorderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E92836AD21B926B200692125 /* RecorderViewController.xib */; };
+		E92836B121B926B300692125 /* RecorderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E92836AF21B926B300692125 /* RecorderViewController.m */; };
 		E93756DD21A269DC00E740F1 /* WXClipboard.h in Headers */ = {isa = PBXBuildFile; fileRef = E93756DB21A269DC00E740F1 /* WXClipboard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E93756DE21A269DC00E740F1 /* WXClipboard.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756DC21A269DC00E740F1 /* WXClipboard.m */; };
 		E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E93756E021A2974E00E740F1 /* ClipboardViewController.m */; };
@@ -129,6 +133,11 @@
 		E91B718921ABCFE000700082 /* demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = demo.entitlements; sourceTree = "<group>"; };
 		E922E321219D177C00A7EC81 /* WXMotion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXMotion.h; sourceTree = "<group>"; };
 		E922E322219D177C00A7EC81 /* WXMotion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXMotion.m; sourceTree = "<group>"; };
+		E92836A221B912B400692125 /* WXRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXRecorder.h; sourceTree = "<group>"; };
+		E92836A321B912B400692125 /* WXRecorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXRecorder.m; sourceTree = "<group>"; };
+		E92836AD21B926B200692125 /* RecorderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecorderViewController.xib; sourceTree = "<group>"; };
+		E92836AE21B926B300692125 /* RecorderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecorderViewController.h; sourceTree = "<group>"; };
+		E92836AF21B926B300692125 /* RecorderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecorderViewController.m; sourceTree = "<group>"; };
 		E93756DB21A269DC00E740F1 /* WXClipboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXClipboard.h; sourceTree = "<group>"; };
 		E93756DC21A269DC00E740F1 /* WXClipboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WXClipboard.m; sourceTree = "<group>"; };
 		E93756DF21A2974E00E740F1 /* ClipboardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClipboardViewController.h; sourceTree = "<group>"; };
@@ -261,6 +270,8 @@
 				E91B717B21ABC3C700700082 /* WXVibrate.m */,
 				E91B718321ABCF5900700082 /* WXWifi.h */,
 				E91B718421ABCF5900700082 /* WXWifi.m */,
+				E92836A221B912B400692125 /* WXRecorder.h */,
+				E92836A321B912B400692125 /* WXRecorder.m */,
 			);
 			path = WX;
 			sourceTree = "<group>";
@@ -283,23 +294,7 @@
 			path = demo;
 			sourceTree = "<group>";
 		};
-		E93CBE9321B7733D00967CA0 /* IBeaconTest */ = {
-			isa = PBXGroup;
-			children = (
-				E93CBE9421B7733D00967CA0 /* AppDelegate.h */,
-				E93CBE9521B7733D00967CA0 /* AppDelegate.m */,
-				E93CBE9721B7733D00967CA0 /* ViewController.h */,
-				E93CBE9821B7733D00967CA0 /* ViewController.m */,
-				E93CBE9A21B7733D00967CA0 /* Main.storyboard */,
-				E93CBE9D21B7733E00967CA0 /* Assets.xcassets */,
-				E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */,
-				E93CBEA221B7733E00967CA0 /* Info.plist */,
-				E93CBEA321B7733E00967CA0 /* main.m */,
-			);
-			path = IBeaconTest;
-			sourceTree = "<group>";
-		};
-		E98DBB5D219D7889002CE813 /* view */ = {
+		E92836AB21B9239900692125 /* Device */ = {
 			isa = PBXGroup;
 			children = (
 				E9B48A20219E67020051416D /* LocationViewController.h */,
@@ -333,6 +328,41 @@
 				E93CBEA921B7B13900967CA0 /* IBeaconViewController.m */,
 				E93CBEAA21B7B13900967CA0 /* IBeaconViewController.xib */,
 			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		E92836AC21B923BC00692125 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				E92836AE21B926B300692125 /* RecorderViewController.h */,
+				E92836AF21B926B300692125 /* RecorderViewController.m */,
+				E92836AD21B926B200692125 /* RecorderViewController.xib */,
+			);
+			path = Media;
+			sourceTree = "<group>";
+		};
+		E93CBE9321B7733D00967CA0 /* IBeaconTest */ = {
+			isa = PBXGroup;
+			children = (
+				E93CBE9421B7733D00967CA0 /* AppDelegate.h */,
+				E93CBE9521B7733D00967CA0 /* AppDelegate.m */,
+				E93CBE9721B7733D00967CA0 /* ViewController.h */,
+				E93CBE9821B7733D00967CA0 /* ViewController.m */,
+				E93CBE9A21B7733D00967CA0 /* Main.storyboard */,
+				E93CBE9D21B7733E00967CA0 /* Assets.xcassets */,
+				E93CBE9F21B7733E00967CA0 /* LaunchScreen.storyboard */,
+				E93CBEA221B7733E00967CA0 /* Info.plist */,
+				E93CBEA321B7733E00967CA0 /* main.m */,
+			);
+			path = IBeaconTest;
+			sourceTree = "<group>";
+		};
+		E98DBB5D219D7889002CE813 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				E92836AC21B923BC00692125 /* Media */,
+				E92836AB21B9239900692125 /* Device */,
+			);
 			path = view;
 			sourceTree = "<group>";
 		};
@@ -364,6 +394,7 @@
 				E9B023AD21A68A090035DB08 /* WXMakePhoneCall.h in Headers */,
 				E91B718521ABCF5900700082 /* WXWifi.h in Headers */,
 				E95F408421B66EFD00CFD56A /* WXIBeacon.h in Headers */,
+				E92836A421B912B400692125 /* WXRecorder.h in Headers */,
 				E91B717C21ABC3C700700082 /* WXVibrate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,6 +516,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E92836B021B926B300692125 /* RecorderViewController.xib in Resources */,
 				E9B48A32219E8FE70051416D /* BatteryViewController.xib in Resources */,
 				E91B717921AB9EAD00700082 /* ScreenViewController.xib in Resources */,
 				E91B718221ABC50600700082 /* VibrateViewController.xib in Resources */,
@@ -522,6 +554,7 @@
 				E93756DE21A269DC00E740F1 /* WXClipboard.m in Sources */,
 				E91B717D21ABC3C700700082 /* WXVibrate.m in Sources */,
 				E9B48A41219EC0210051416D /* WXBLE.m in Sources */,
+				E92836A521B912B400692125 /* WXRecorder.m in Sources */,
 				E9B48A2D219E6EDB0051416D /* WXBattery.m in Sources */,
 				1A19B05F2199285C00321431 /* WXLocation.m in Sources */,
 				E9B48A36219EA8130051416D /* WXBluetooth.m in Sources */,
@@ -545,6 +578,7 @@
 				E9B48A31219E8FE70051416D /* BatteryViewController.m in Sources */,
 				E93756E221A2974E00E740F1 /* ClipboardViewController.m in Sources */,
 				E91B717821AB9EAD00700082 /* ScreenViewController.m in Sources */,
+				E92836B121B926B300692125 /* RecorderViewController.m in Sources */,
 				E93CBEAB21B7B13900967CA0 /* IBeaconViewController.m in Sources */,
 				1A19B06C21992AD700321431 /* AppDelegate.m in Sources */,
 				E91B718121ABC50600700082 /* VibrateViewController.m in Sources */,

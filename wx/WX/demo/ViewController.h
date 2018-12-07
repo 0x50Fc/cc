@@ -16,8 +16,9 @@
     UITableView * _tableView;
 }
 
-@property (nonatomic, strong, readonly) WX * wx;
 
+
++(WX *)shareWX;
 +(ViewController *)getInstance;
 
 

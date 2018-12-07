@@ -21,7 +21,7 @@
 
 @implementation BluetoothViewController
 - (IBAction)btnOpenBluetooth:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXBOpenBluetoothAdapterObject * object = [[WXBOpenBluetoothAdapterObject alloc] init];
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"OpenBluetoothAdapter success res = %@", res);
@@ -35,7 +35,7 @@
     [wx openBluetoothAdapter:object];
 }
 - (IBAction)btnCloseBluetooth:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXCloseBluetoothAdapterObject * object = [[WXCloseBluetoothAdapterObject alloc] init];
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"CloseBluetoothAdapter success res = %@", res);
@@ -49,7 +49,7 @@
     [wx closeBluetoothAdapter:object];
 }
 - (IBAction)btnStartBluetoothDevicesDiscovery:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStartBluetoothDevicesDiscoveryObject * object = [[WXStartBluetoothDevicesDiscoveryObject alloc] init];
 //    object.interval = 5000;
 //    object.services = @[@"181D"];
@@ -74,7 +74,7 @@
     
 }
 - (IBAction)btnStopBluetoothDevicesDiscovery:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStopBluetoothDevicesDiscoveryObject * object = [[WXStopBluetoothDevicesDiscoveryObject alloc] init];
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"StopBluetoothDevicesDiscovery success res = %@", res);
@@ -88,7 +88,7 @@
     [wx stopBluetoothDevicesDiscovery:object];
 }
 - (IBAction)btnGetBluetoothDevices:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetBluetoothDevicesObject * object = [[WXGetBluetoothDevicesObject alloc] init];
     object.success = ^(id<WXBluetoothRes> res) {
         NSLog(@"WXGetBluetoothDevicesObject success res = %@", res);
@@ -107,7 +107,7 @@
 
 
 - (IBAction)btnCreateBLEConnection:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXCreateBLEConnectionObject * object = [[WXCreateBLEConnectionObject alloc] init];
  
     object.deviceId = DEVICE_UUID;
@@ -124,7 +124,7 @@
     [wx createBLEConnection:object];
 }
 - (IBAction)btnCloseBLEConnection:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXCloseBLEConnectionObject * object = [[WXCloseBLEConnectionObject alloc]init];
     object.deviceId = DEVICE_UUID;
     object.success = ^(id<WXBluetoothRes> res) {
@@ -139,7 +139,7 @@
     [wx closeBLEConnection:object];
 }
 - (IBAction)btbGetBLEDevicesServices:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetBLEDeviceServicesObject * object = [[WXGetBLEDeviceServicesObject alloc]init];
     object.deviceId = DEVICE_UUID;
     object.success = ^(id<WXBluetoothRes> res) {
@@ -155,7 +155,7 @@
     
 }
 - (IBAction)BtnGetBLEDevicesCharacteristics:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXBGetLEDeviceCharacteristicsObject * object = [[WXBGetLEDeviceCharacteristicsObject alloc] init];
     object.deviceId = DEVICE_UUID;
     object.serviceId = S_ID;
@@ -171,7 +171,7 @@
     [wx getBLEDeviceCharacteristics:object];
 }
 - (IBAction)btnNotifyBLECharacteristicValueChange:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXNotifyBLECharacteristicValueChangeObject * object = [[WXNotifyBLECharacteristicValueChangeObject alloc] init];
     object.deviceId = DEVICE_UUID;
     object.serviceId = S_ID;
@@ -189,7 +189,7 @@
     [wx notifyBLECharacteristicValueChange:object];
 }
 - (IBAction)btnReadBLECharacteristicValue:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXReadBLECharacteristicValueObject * object = [[WXReadBLECharacteristicValueObject alloc] init];
     object.deviceId = DEVICE_UUID;
     object.serviceId = S_ID;
@@ -206,7 +206,7 @@
     [wx readBLECharacteristicValue:object];
 }
 - (IBAction)btnWriteBLECharacteristicValue:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXWriteBLECharacteristicValueObject * object = [[WXWriteBLECharacteristicValueObject alloc] init];
     object.deviceId = DEVICE_UUID;
     object.serviceId = S_ID;
@@ -228,7 +228,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     wx.onBLEConnectionStateChange = ^(id<WXBluetoothRes,WXOnBLEConnectionStateChangeInfo> res) {
         NSLog(@"onBLEConnectionStateChange res = %@", res);
     };

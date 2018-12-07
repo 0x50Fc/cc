@@ -20,6 +20,8 @@
 #import <WX/WXBLE.h>
 #import <WX/WXIBeacon.h>
 
+#import <WX/WXRecorder.h>
+
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;
 

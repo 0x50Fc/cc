@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnAddPhoneContact:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     wx.phoneContactViewController = self;
     WXAddPhoneContactObject * object = [[WXAddPhoneContactObject alloc] init];
     

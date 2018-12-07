@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     wx.onUserCaptureScreen = ^{
         NSLog(@"on user capture");
         NSString * str = [NSString stringWithFormat:@"%d", arc4random()];
@@ -26,7 +26,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnGetScreenBrightness:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetScreenBrightnessObject * object = [[WXGetScreenBrightnessObject alloc] init];
     object.success = ^(id<WXGetScreenBrightnessRes> res) {
         self.labelGetScreenBrightness.text = [NSString stringWithFormat:@"%lf", res.value];
@@ -41,7 +41,7 @@
     [wx getScreenBrightness:object];
 }
 - (IBAction)btnSetScreenBrightness:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXSetScreenBrightnessObject * object = [[WXSetScreenBrightnessObject alloc] init];
     object.value = [self.labelSetScreenBrightness.text doubleValue];
     object.success = ^(id<WXSetScreenBrightnessRes> res) {
@@ -56,7 +56,7 @@
     [wx setScreenBrightness:object];
 }
 - (IBAction)btnKeepScreenOn:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXSetKeepScreenOnObject * object = [[WXSetKeepScreenOnObject alloc] init];
     object.keepScreenOn = YES;
     object.success = ^(id<WXSetKeepScreenOnRes> res) {

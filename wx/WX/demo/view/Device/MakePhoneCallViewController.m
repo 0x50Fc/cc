@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnCall:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     wx.phoneCallViewController = self;
     WXMakePhoneCallObject * object = [[WXMakePhoneCallObject alloc] init];
     object.phoneNumber = self.numberField.text;

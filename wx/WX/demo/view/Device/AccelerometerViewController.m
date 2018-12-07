@@ -15,7 +15,9 @@
 
 @implementation AccelerometerViewController
 - (IBAction)btnStartAccelerometer:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+//    WX * wx = [ViewController shareWX];;
+    WX * wx = [ViewController shareWX];
+    
     WXStartAccelerometerObject * ob = [[WXStartAccelerometerObject alloc] init];
     ob.interval = @"game";
     ob.success = ^(id<WXStartAccelerometerRes> res) {
@@ -34,7 +36,7 @@
     };
 }
 - (IBAction)btnStopAccelerometer:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStartAccelerometerObject * ob = [[WXStartAccelerometerObject alloc] init];
     
     ob.success = ^(id<WXStartAccelerometerRes> res) {
@@ -51,7 +53,7 @@
 }
 
 - (IBAction)btnStartGyroscope:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStartGyroscopeObject * object = [[WXStartGyroscopeObject alloc] init];
     object.interval = @"normol";
     object.success = ^(id<WXGyroscopeRes> res) {
@@ -71,7 +73,7 @@
 }
 
 - (IBAction)btnStopGyroscope:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStopGyroscopeObject * object = [[WXStopGyroscopeObject alloc] init];
     object.success = ^(id<WXGyroscopeRes> res) {
         NSLog(@"stop gyroscope success res = %@", res);
@@ -87,7 +89,7 @@
 
 
 - (IBAction)btnStartDeviceMotion:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStartDeviceMotionListeningObject * object = [[WXStartDeviceMotionListeningObject alloc] init];
     object.interval = @"ui";
     object.success = ^(id<WXDeviceMotionRes> res) {
@@ -107,7 +109,7 @@
 }
 
 - (IBAction)btnStopDeviceMotion:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStopDeviceMotionListeningObject * object = [[WXStopDeviceMotionListeningObject alloc] init];
     object.success = ^(id<WXDeviceMotionRes> res) {
         

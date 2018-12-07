@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnGetLocation:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetLocationObject * ob = [[WXGetLocationObject alloc]init];
     ob.success = ^(id<WXGetLocationRes> res) {
         NSLog(@"success");
@@ -42,7 +42,7 @@
 }
 - (IBAction)btnStartCompass:(id)sender {
     
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     
     wx.onCompassChange = ^(id<WXOnCompassChageRes> res) {
         NSLog(@"on compass change res = %@", res);
@@ -62,7 +62,7 @@
     
 }
 - (IBAction)btnStopCompass:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStopCompassObject * object = [[WXStopCompassObject alloc] init];
     object.success = ^(id<WXCompassRes> res) {
         NSLog(@"wx stop compass success res = %@", res);

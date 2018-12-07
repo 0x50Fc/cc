@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnVirbateLong:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXVibrateLongObject * object = [[WXVibrateLongObject alloc] init];
     object.success = ^(id<WXVibrateLongRes> res) {
         

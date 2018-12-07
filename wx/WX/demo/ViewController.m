@@ -10,7 +10,7 @@
 #import "LocationViewController.h"
 
 @interface ViewController ()
-
+@property (nonatomic, strong, readonly) WX * wx;
 @end
 
 @implementation ViewController
@@ -18,8 +18,11 @@
 @synthesize wx = _wx;
 
 static ViewController * __instance;
-- (IBAction)ddd:(id)sender {
+
++(WX *)shareWX{
+    return [ViewController getInstance].wx;
 }
+
 +(ViewController *)getInstance{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -32,6 +35,7 @@ static ViewController * __instance;
     [super viewDidLoad];
 //   VibrateViewController
     _arrVC = @[
+               @{ @"text":@"录音 - Recorder", @"class":@"RecorderViewController" },
                @{ @"text":@"定位 - Location", @"class":@"LocationViewController" },
                @{ @"text":@"加速器 - Accelerometer", @"class":@"AccelerometerViewController" },
                @{ @"text":@"电量 - Battery", @"class":@"BatteryViewController" },
@@ -78,7 +82,9 @@ static ViewController * __instance;
     
     NSDictionary * dic = [_arrVC objectAtIndex:[indexPath row]];
     NSString * name = [dic valueForKey:@"class"];
-    id vc =  [[NSClassFromString(name) alloc]initWithNibName:name bundle:nil];
+    NSBundle * budnle = [NSBundle bundleForClass:NSClassFromString(name)];
+    NSLog(@"budnle==%@",budnle);
+    id vc =  [[NSClassFromString(name) alloc]initWithNibName:name bundle:budnle];
     [self.navigationController pushViewController:vc animated:YES];
     
 }

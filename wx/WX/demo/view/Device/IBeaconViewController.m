@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnStartBeaconDiscovery:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXStartBeaconDiscoveryObject * object = [[WXStartBeaconDiscoveryObject alloc] init];
     object.uuids = @[@"5D7B50B0-CFBA-4BF8-999B-93F6DA0F4356",@"CF5FE804-E59A-41C3-8669-59B2982EB566"];
     object.success = ^(id<WXIBeaconRes> res) {

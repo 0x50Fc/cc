@@ -24,7 +24,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnGetBatteryInfo:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetBatteryInfoObject * ob = [[WXGetBatteryInfoObject alloc] init];
     ob.success = ^(id<WXGetBatteryInfoRes> res) {
         NSLog(@"WXGetBettery info success res = %@", res);

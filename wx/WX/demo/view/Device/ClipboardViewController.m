@@ -20,7 +20,7 @@
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnSetClipboard:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXSetClipboardObject * object = [[WXSetClipboardObject alloc] init];
     object.data = self.setField.text;
     object.success = ^(id<WXClipboardRes> res) {
@@ -39,7 +39,7 @@
     };
 }
 - (IBAction)btnGetClipboard:(id)sender {
-    WX * wx = [ViewController getInstance].wx;
+    WX * wx = [ViewController shareWX];;
     WXGetClipboardObject * object = [[WXGetClipboardObject alloc] init];
     object.success = ^(id<WXClipboardRes> res) {
         NSLog(@"WX get clipboard success res = %@", res);
