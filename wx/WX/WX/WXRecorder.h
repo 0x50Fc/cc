@@ -24,6 +24,8 @@
 
 @interface WXRecoderManager : NSObject <AVAudioRecorderDelegate>
 -(void)star:(id<WXRecoderManagerStarObject>) object;
+-(void)stop;
+-(void)play;
 @end
 
 @interface WX (WXRecorder)

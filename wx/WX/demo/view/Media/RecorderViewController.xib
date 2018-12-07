@@ -34,6 +34,14 @@
                         <action selector="btnStopRecoder:" destination="-1" eventType="touchUpInside" id="Isu-nx-yLw"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LfG-eF-5jU">
+                    <rect key="frame" x="142" y="188" width="92" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="PlayRocorder"/>
+                    <connections>
+                        <action selector="btnPlayRecorder:" destination="-1" eventType="touchUpInside" id="x8y-d7-1mC"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>

@@ -10,24 +10,33 @@
 #import "ViewController.h"
 
 @interface RecorderViewController ()
-
+@property (nonatomic, strong) WXRecoderManager * recorderManager;
 @end
 
 @implementation RecorderViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    WX * wx = [ViewController shareWX];
+    self.recorderManager = [wx getRecoderManager];
     // Do any additional setup after loading the view from its nib.
 }
 - (IBAction)btnStartRecoder:(id)sender {
-//    WX * wx = [ViewController shareWX];
-//    WXRecoderManager * recocerManager = [wx getRecoderManager];
+    
+    
     WXRecoderManagerStarObject * object = [[WXRecoderManagerStarObject alloc] init];
     
-//    recocerManager star:<#(id<WXRecoderManagerStarObject>)#>
+    [self.recorderManager star:object];
     
 }
 - (IBAction)btnStopRecoder:(id)sender {
+    
+    [self.recorderManager stop];
+    
+}
+- (IBAction)btnPlayRecorder:(id)sender {
+    
+    [self.recorderManager play];
 }
 
 /*
