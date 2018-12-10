@@ -10,7 +10,7 @@
 #import "ViewController.h"
 
 @interface RecorderViewController ()
-@property (nonatomic, strong) WXRecoderManager * recorderManager;
+@property (nonatomic, strong) WXRecorderManager * recorderManager;
 @end
 
 @implementation RecorderViewController
@@ -24,7 +24,8 @@
 - (IBAction)btnStartRecoder:(id)sender {
     
     
-    WXRecoderManagerStarObject * object = [[WXRecoderManagerStarObject alloc] init];
+    WXRecorderManagerStarObject * object = [[WXRecorderManagerStarObject alloc] init];
+    object.duration = 20 * 1000;
     
     [self.recorderManager star:object];
     
