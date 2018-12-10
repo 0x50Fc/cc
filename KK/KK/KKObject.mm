@@ -7,6 +7,48 @@
 //
 
 #import "KKObject.h"
+#include <objc/runtime.h>
+
+@interface KKJSObject()
+
+-(instancetype) initWithJSObject:(kk::JSObject *) object;
+
+@end
+
+namespace kk {
+
+    OBJCObject::OBJCObject(::CFTypeRef object):_object(object) {
+        if(_object) {
+            CFRetain(_object);
+        }
+    }
+    
+    OBJCObject::~OBJCObject() {
+        if(_object) {
+            CFRelease(_object);
+        }
+    }
+    
+    EXObject OBJCObject::EXObject() {
+        return (kk::EXObject) _object;
+    }
+    
+    
+    
+    kk::EXObject EXObjectFromObject(kk::Object * object) {
+        OBJCObject * v = dynamic_cast<OBJCObject *>(object);
+        if(v != nullptr) {
+            return v->EXObject();
+        }
+        return nullptr;
+    }
+    
+    kk::Strong<kk::Object> ObjectFromEXObject(kk::EXObject object) {
+        return new OBJCObject(object);
+    }
+    
+}
+
 
 void duk_push_NSObject(duk_context * ctx, id object) {
     
@@ -58,7 +100,11 @@ void duk_push_NSObject(duk_context * ctx, id object) {
         return;
     }
     
-    duk_push_undefined(ctx);
+    if([object isKindOfClass:[KKJSObject class]]) {
+        kk::PushObject(ctx, (kk::Object *) [(KKJSObject *) object JSObject]);
+        return;
+    }
+
     return;
     
 }
@@ -88,6 +134,42 @@ id duk_to_NSObject(duk_context * ctx,duk_idx_t idx) {
             duk_pop(ctx);
             return vs;
         } else {
+            {
+                kk::Object * v = kk::GetObject(ctx, idx);
+                if(v != nullptr) {
+                    {
+                        kk::_TObject * o = dynamic_cast<kk::_TObject *>(v);
+                        if(o) {
+                            NSMutableDictionary * data = [NSMutableDictionary dictionaryWithCapacity:4];
+                            o->forEach([data](kk::Any & key,kk::Any & value)->void{
+                                id k = KKObjectFromAny(key);
+                                id v = KKObjectFromAny(value);
+                                [data setObject:v forKey:k];
+                            });
+                            return data;
+                        }
+                    }
+                    {
+                        kk::_Array * o = dynamic_cast<kk::_Array *>(v);
+                        if(o) {
+                            NSMutableArray * data = [NSMutableArray arrayWithCapacity:4];
+                            o->forEach([data](kk::Any & item)->void{
+                                id v = KKObjectFromAny(item);
+                                if(v) {
+                                    [data addObject:v];
+                                }
+                            });
+                            return data;
+                        }
+                    }
+                    {
+                        kk::JSObject * o = dynamic_cast<kk::JSObject *>(v);
+                        if(o) {
+                            return [[KKJSObject alloc] initWithJSObject:o];
+                        }
+                    }
+                }
+            }
             NSMutableDictionary * data = [NSMutableDictionary dictionaryWithCapacity:4];
             duk_enum(ctx, idx, DUK_ENUM_INCLUDE_SYMBOLS);
             while(duk_next(ctx, -1, 1)) {
@@ -111,12 +193,19 @@ id duk_to_NSObject(duk_context * ctx,duk_idx_t idx) {
             void * bytes = duk_get_buffer(ctx, idx, &size);
             return [NSData dataWithBytes:bytes length:size];
         }
+        case DUK_TYPE_LIGHTFUNC:
+        {
+            kk::JSObject * v = dynamic_cast<kk::JSObject *>(kk::GetObject(ctx, idx));
+            if(v) {
+                return [[KKJSObject alloc] initWithJSObject:v];
+            }
+        }
+            return nil;
         default:
         return nil;
     }
     
 }
-
 
 kk::Any KKObjectToAny(id object) {
     kk::Any v;
@@ -164,6 +253,8 @@ kk::Any KKObjectToAny(id object) {
         }
         
         v = (kk::Object *) m;
+    } else if([object isKindOfClass:[KKJSObject class]]) {
+        v = (kk::Object *) [(KKJSObject *) object JSObject];
     }
     
     return v;
@@ -222,14 +313,7 @@ id KKObjectFromAny(kk::Any & v) {
         {
             kk::JSObject * object = dynamic_cast<kk::JSObject *>(v.objectValue.get());
             if(object) {
-                duk_context * ctx = object->jsContext();
-                void * heapptr = object->heapptr();
-                if(ctx && heapptr) {
-                    duk_push_heapptr(ctx, heapptr);
-                    id vv = duk_to_NSObject(ctx,-1);
-                    duk_pop(ctx);
-                    return vv;
-                }
+                return [[KKJSObject alloc] initWithJSObject:object];
             }
         }
 
@@ -261,6 +345,35 @@ id KKObjectFromAny(kk::Any & v) {
         return (NSString *) self;
     }
     return [self description];
+}
+
+@end
+
+
+@implementation KKJSObject
+
+@synthesize JSObject = _JSObject;
+
++ (IMP)instanceMethodForSelector:(SEL)aSelector {
+    IMP imp = [super instanceMethodForSelector:aSelector];
+    
+    return imp;
+}
+
+-(instancetype) initWithJSObject:(kk::JSObject *) object {
+    if((self = [super init])) {
+        _JSObject = object;
+        if(_JSObject) {
+            _JSObject->retain();
+        }
+    }
+    return self;
+}
+
+-(void) dealloc {
+    if(_JSObject) {
+        _JSObject->release();
+    }
 }
 
 @end

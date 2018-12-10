@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <WX/WXObject.h>
 
-@protocol WXShooseLocationRes <NSObject>
+@protocol WXChooseLocationRes <NSObject>
 
 @property(nonatomic,strong) NSString * name;
 @property(nonatomic,strong) NSString * address;
@@ -18,15 +18,11 @@
 
 @end
 
-typedef void (^WXShooseLocationObjectSuccess)(id<WXShooseLocationRes> res);
-typedef void (^WXShooseLocationObjectFail)(NSError * error);
-typedef void (^WXShooseLocationObjectComplete)(void);
+@protocol WXChooseLocationObject <NSObject>
 
-@protocol WXShooseLocationObject <NSObject>
-
-@property(nonatomic,strong) WXShooseLocationObjectSuccess success;
-@property(nonatomic,strong) WXShooseLocationObjectFail fail;
-@property(nonatomic,strong) WXShooseLocationObjectComplete complete;
+-(void) success:(id<WXChooseLocationRes>) res;
+-(void) fail:(NSString *) errmsg;
+-(void) complete;
 
 @end
 
@@ -43,44 +39,32 @@ typedef void (^WXShooseLocationObjectComplete)(void);
 
 @end
 
-typedef void (^WXGetLocationObjectSuccess)(id<WXGetLocationRes> res);
-typedef void (^WXGetLocationObjectFail)(NSError * error);
-typedef void (^WXGetLocationObjectComplete)(void);
-
 @protocol WXGetLocationObject <NSObject>
-
-@property(nonatomic,strong) WXGetLocationObjectSuccess success;
-@property(nonatomic,strong) WXGetLocationObjectFail fail;
-@property(nonatomic,strong) WXGetLocationObjectComplete complete;
 
 @property(nonatomic,strong) NSString * type;
 @property(nonatomic,assign) BOOL altitude;
 
+-(void) success:(id<WXGetLocationRes>) res;
+-(void) fail:(NSString *) errmsg;
+-(void) complete;
 
 @end
 
 
-@interface WXShooseLocationRes : NSObject<WXShooseLocationRes>
+@interface WXChooseLocationRes : NSObject<WXChooseLocationRes>
 
 @end
 
-@interface WXShooseLocationObject  : NSObject<WXShooseLocationObject>
-
-@end
 
 @interface WXGetLocationRes : NSObject<WXGetLocationRes>
 
 @end
 
-@interface WXGetLocationObject : NSObject<WXGetLocationObject>
-
-@end
-
 @interface WX (WXLocation)
 
--(void) chooseLocation:(id<WXShooseLocationObject>) object;
+-(void) chooseLocation:(id<WXChooseLocationObject>) object;
 
--(void) getLocation:(id<WXShooseLocationObject>) object;
+-(void) getLocation:(id<WXGetLocationObject>) object;
 
 @end
 

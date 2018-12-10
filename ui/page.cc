@@ -27,6 +27,7 @@ namespace kk {
             duk_put_global_string(_jsContext, "page");
             
             kk::Openlib<kk::Container *>::openlib(_jsContext, this);
+            kk::Openlib<kk::ui::Page *>::openlib(_jsContext, this);
         }
         
         Page::~Page() {

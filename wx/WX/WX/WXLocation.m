@@ -7,9 +7,9 @@
 //
 
 #import "WXLocation.h"
+#include <objc/runtime.h>
 
-
-@implementation WXShooseLocationRes
+@implementation WXChooseLocationRes
 
 @synthesize address = _address;
 @synthesize latitude = _latitude;
@@ -18,13 +18,6 @@
 
 @end
 
-@implementation WXShooseLocationObject
-
-@synthesize fail = _fail;
-@synthesize success = _success;
-@synthesize complete = _complete;
-
-@end
 
 @implementation WXGetLocationRes
 
@@ -38,23 +31,14 @@
 
 @end
 
-@implementation WXGetLocationObject
-
-@synthesize success = _success;
-@synthesize fail = _fail;
-@synthesize complete = _complete;
-@synthesize type = _type;
-@synthesize altitude = _altitude;
-
-@end
 
 @implementation WX (WXLocation)
 
--(void) chooseLocation:(id<WXShooseLocationObject>) object {
-    
+-(void) chooseLocation:(id<WXChooseLocationObject>) object {
+
 }
 
--(void) getLocation:(id<WXShooseLocationObject>) object {
+-(void) getLocation:(id<WXGetLocationObject>) object {
     
 }
 

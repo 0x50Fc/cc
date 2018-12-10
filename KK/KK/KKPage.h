@@ -27,6 +27,7 @@ typedef void * KKPageCPointer;
 @property(nonatomic,readonly,strong) KKApp  * app;
 @property(nonatomic,readonly,strong) UIView * view;
 @property(nonatomic,assign,readonly) KKPageCPointer CPointer;
+@property(nonatomic,readonly,strong) NSMutableDictionary * librarys;
 
 -(instancetype) initWithView:(UIView *) view app:(KKApp *) app;
 

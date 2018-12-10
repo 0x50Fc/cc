@@ -271,6 +271,19 @@ static const kk::Class * Class() { \
         virtual kk::Strong<Object> copy() = 0;
     };
     
+    struct _EXObject {
+        void * unused;
+    };
+    
+    typedef _EXObject * EXObject;
+    
+    struct _EXFunction{
+        void * unused;
+    };
+    
+    extern EXObject EXObjectFromObject(kk::Object * object);
+    extern kk::Strong<kk::Object> ObjectFromEXObject(EXObject object);
+    
     class Any {
     public:
         Any(void);
@@ -291,6 +304,7 @@ static const kk::Class * Class() { \
         Any(String v);
         Any(CString v);
         Any(const Any & v);
+        Any(EXObject v);
         virtual ~Any();
         Type type;
         Strong<Object> objectValue;
@@ -344,6 +358,7 @@ static const kk::Class * Class() { \
         Any & operator=(const String & v);
         Any & operator=(CString v);
         Any & operator=(const Any & v);
+        Any & operator=(EXObject v);
         
         operator CString();
         operator Int8();
@@ -360,6 +375,7 @@ static const kk::Class * Class() { \
         operator String();
         operator Object*();
         operator Function*();
+        operator EXObject();
         
         template<class T>
         operator T*() {

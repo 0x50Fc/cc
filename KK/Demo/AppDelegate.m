@@ -29,6 +29,11 @@
     
     [self.window makeKeyAndVisible];
     
+    void (^on)(void) = ^(){
+        
+    };
+    
+    NSLog(@"%@",NSStringFromClass( [on class]));
     
     
     return YES;

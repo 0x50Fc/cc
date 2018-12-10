@@ -296,6 +296,11 @@ namespace kk {
         }
     }
     
+    Any::Any(EXObject v):Any() {
+        Strong<Object> a = ObjectFromEXObject(v);
+        this->operator=((Object *)a);
+    }
+    
     void Any::reset() {
         stringValue = nullptr;
         length = 0;
@@ -426,6 +431,15 @@ namespace kk {
         length = v.length;
         if(v.type == TypeString) {
             setLString(v.stringValue, v.length);
+        }
+        return * this;
+    }
+    
+    Any & Any::operator=(EXObject v) {
+        reset();
+        if(v != nullptr) {
+            type = TypeObject;
+            objectValue = ObjectFromEXObject(v);
         }
         return * this;
     }
@@ -845,6 +859,11 @@ namespace kk {
     Any::operator Function*() {
         return dynamic_cast<Function *>(objectValue.get());
     }
+    
+    Any::operator EXObject() {
+        return EXObjectFromObject(objectValue.get());
+    }
+    
     
     CString Any::sprintf(CString format,...) {
         va_list va;

@@ -69,6 +69,8 @@
 		1AC3A1F4218AAEAF003563DF /* KK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1A4502ED2186E4EA00F7F0E4 /* KK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1AC3A1F7218AAF65003563DF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC3A1F6218AAF65003563DF /* libc++.tbd */; };
 		1AC3A216218ABEC6003563DF /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC3A215218ABEC6003563DF /* WebKit.framework */; };
+		1AF0657A219D45B100F8F7A8 /* WX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF06577219D45A900F8F7A8 /* WX.framework */; };
+		1AF0657B219D45B100F8F7A8 /* WX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF06577219D45A900F8F7A8 /* WX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1AF639852186F49B00557AD3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF639842186F49B00557AD3 /* CoreGraphics.framework */; };
 		1AF639872186FBAD00557AD3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF639862186FBAD00557AD3 /* UIKit.framework */; };
 		1AF639892186FC1800557AD3 /* View.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1AF639882186FC1800557AD3 /* View.mm */; };
@@ -83,6 +85,27 @@
 			remoteGlobalIDString = 1A4502EC2186E4EA00F7F0E4;
 			remoteInfo = KK;
 		};
+		1AF06576219D45A900F8F7A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF06571219D45A800F8F7A8 /* WX.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1A19B04F219924AF00321431;
+			remoteInfo = WX;
+		};
+		1AF06578219D45A900F8F7A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF06571219D45A800F8F7A8 /* WX.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1A19B06821992AD700321431;
+			remoteInfo = demo;
+		};
+		1AF0657C219D45B100F8F7A8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AF06571219D45A800F8F7A8 /* WX.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A19B04E219924AF00321431;
+			remoteInfo = WX;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -93,6 +116,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				1AC3A1F4218AAEAF003563DF /* KK.framework in Embed Frameworks */,
+				1AF0657B219D45B100F8F7A8 /* WX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,6 +196,7 @@
 		1AC10E8C2186EE0E006C5D5C /* Image.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Image.mm; sourceTree = "<group>"; };
 		1AC3A1F6218AAF65003563DF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		1AC3A215218ABEC6003563DF /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		1AF06571219D45A800F8F7A8 /* WX.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WX.xcodeproj; path = ../wx/WX/WX.xcodeproj; sourceTree = "<group>"; };
 		1AF639842186F49B00557AD3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1AF639862186FBAD00557AD3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1AF639882186FC1800557AD3 /* View.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = View.mm; sourceTree = "<group>"; };
@@ -193,6 +218,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AF0657A219D45B100F8F7A8 /* WX.framework in Frameworks */,
 				1AC3A1F7218AAF65003563DF /* libc++.tbd in Frameworks */,
 				1A3571EE21900472001BAE76 /* KK.framework in Frameworks */,
 			);
@@ -204,6 +230,7 @@
 		1A4502E32186E4E900F7F0E4 = {
 			isa = PBXGroup;
 			children = (
+				1AF06571219D45A800F8F7A8 /* WX.xcodeproj */,
 				1A4502EF2186E4EA00F7F0E4 /* KK */,
 				1AB8DA1221897B6200909DFF /* Demo */,
 				1A4502EE2186E4EA00F7F0E4 /* Products */,
@@ -340,6 +367,15 @@
 			path = Demo;
 			sourceTree = "<group>";
 		};
+		1AF06572219D45A800F8F7A8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1AF06577219D45A900F8F7A8 /* WX.framework */,
+				1AF06579219D45A900F8F7A8 /* demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		1AF639832186F49B00557AD3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +456,7 @@
 			);
 			dependencies = (
 				1AB8DA2821897B7100909DFF /* PBXTargetDependency */,
+				1AF0657D219D45B100F8F7A8 /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -454,6 +491,12 @@
 			mainGroup = 1A4502E32186E4E900F7F0E4;
 			productRefGroup = 1A4502EE2186E4EA00F7F0E4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1AF06572219D45A800F8F7A8 /* Products */;
+					ProjectRef = 1AF06571219D45A800F8F7A8 /* WX.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1A4502EC2186E4EA00F7F0E4 /* KK */,
@@ -461,6 +504,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1AF06577219D45A900F8F7A8 /* WX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = WX.framework;
+			remoteRef = 1AF06576219D45A900F8F7A8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1AF06579219D45A900F8F7A8 /* demo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = demo.app;
+			remoteRef = 1AF06578219D45A900F8F7A8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1A4502EB2186E4EA00F7F0E4 /* Resources */ = {
@@ -536,6 +596,11 @@
 			isa = PBXTargetDependency;
 			target = 1A4502EC2186E4EA00F7F0E4 /* KK */;
 			targetProxy = 1AB8DA2721897B7100909DFF /* PBXContainerItemProxy */;
+		};
+		1AF0657D219D45B100F8F7A8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WX;
+			targetProxy = 1AF0657C219D45B100F8F7A8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -680,6 +745,7 @@
 		1A4502F62186E4EA00F7F0E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -700,8 +766,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.KK;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.kk;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				REEXPORTED_LIBRARY_NAMES = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -710,6 +777,7 @@
 		1A4502F72186E4EA00F7F0E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -730,8 +798,9 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.KK;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.kk;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				REEXPORTED_LIBRARY_NAMES = "";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

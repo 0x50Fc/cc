@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WX/WXObject.h>
 
 //! Project version number for WX.
 FOUNDATION_EXPORT double WXVersionNumber;
